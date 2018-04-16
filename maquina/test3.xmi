@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="ASCII"?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:eMFProject="http://www.example.org/eMFProject">
+  <eMFProject:State name="prueba3"/>
+  <eMFProject:State name="prueba8_change"/>
+  <eMFProject:Command name="command_1"/>
+  <eMFProject:State name="prueba11_change"/>
+  <eMFProject:Command name="command_2"/>
+  <eMFProject:State name="prueba13_change"/>
+  <eMFProject:Command name="command_3"/>
+</xmi:XMI>
