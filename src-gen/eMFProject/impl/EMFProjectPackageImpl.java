@@ -264,7 +264,7 @@ public class EMFProjectPackageImpl extends EPackageImpl implements EMFProjectPac
 
 		initEClass(statemachineEClass, Statemachine.class, "Statemachine", !IS_ABSTRACT, !IS_INTERFACE,
 				IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getStatemachine_State(), this.getState(), null, "state", null, 0, -1, Statemachine.class,
+		initEReference(getStatemachine_State(), this.getState(), null, "state", null, 0, 3, Statemachine.class,
 				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE,
 				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 

@@ -17,6 +17,10 @@ public class EMFOperationsMessages {
 	public static final String ELEMENT_EXITS_METAMODEL="Element exists in the metamodel";
 	public static final String ELEMENT_ATRIBUTE_EXITS="Attribute corresponds to the element";
 	public static final String ATRIBUTE_VALUE_CORRECTLY="Value of the attribute is correct";
+	public static final String ELEMENT_TO_REMOVE_AS_REFERENCE_MINIMUM="the element/reference cannot be deleted, minimum number required would not be satisfied";
+	public static final String ELEMENT_TO_REMOVE_AS_REFERENCE_MAXIMUM="the element/reference cannot be deleted, maximum required number has been reached";
+	public static final String NODE_NOT_EXIST="Node element does not exist";
+	//Elemento nodo no existe
 	
 
 }

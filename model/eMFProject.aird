@@ -173,7 +173,7 @@
       </ownedStyle>
       <actualMapping xmi:type="description_1:ContainerMapping" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@containerMappings[name='EC%20EClass']"/>
     </ownedDiagramElements>
-    <ownedDiagramElements xmi:type="diagram:DEdge" xmi:id="_Ncyk8EFgEeiSO5zHAo-EOg" name="[0..*] state" sourceNode="_DkiGYEFgEeiSO5zHAo-EOg" targetNode="_gWXNQDwhEeiRdLn5REsVUA">
+    <ownedDiagramElements xmi:type="diagram:DEdge" xmi:id="_Ncyk8EFgEeiSO5zHAo-EOg" name="[0..3] state" sourceNode="_DkiGYEFgEeiSO5zHAo-EOg" targetNode="_gWXNQDwhEeiRdLn5REsVUA">
       <target xmi:type="ecore:EReference" href="eMFProject.ecore#//Statemachine/state"/>
       <semanticElements xmi:type="ecore:EReference" href="eMFProject.ecore#//Statemachine/state"/>
       <ownedStyle xmi:type="diagram:EdgeStyle" xmi:id="_Nc5SoEFgEeiSO5zHAo-EOg" description="_Nc4rkEFgEeiSO5zHAo-EOg" sourceArrow="FillDiamond" routingStyle="manhattan" strokeColor="0,0,0">

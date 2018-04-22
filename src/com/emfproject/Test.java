@@ -1,26 +1,6 @@
 package com.emfproject;
 
-import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.EAttribute;
-import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EFactory;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.eclipse.emf.ecore.xmi.XMIResource;
-import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
-import eMFProject.*;
-
 
 public class Test {
 
@@ -162,39 +142,42 @@ public class Test {
 
 	
 		*/
+		
+		//EMFOperationsUtil.showAllMetaModelData();
 		EMFOperations op= new EMFOperations();
 		
-	
-		op.loadModelInstance("maquina/test4.xmi");
+		op.loadModelInstance("maquina/test5.xmi");
 		//try {
 			//op.dumpDataFromModelInstance("alumno",int.class,i,"id");
 		//} catch (IllegalArgumentException e) {
 			// TODO Auto-generated catch block
 			//e.printStackTrace();
 		//}
-		//op.checkIfElementExists("state","name","pepe");
-		//op.deleteElement("command", "name", "novita");
-		//op.renameElement("command", "name", "luisito", "novita");
-		//op.setFocusElement("state", "name", "povale");
-		//op.getFocusedElement();
-		//op.getPropertiesFromFocusedElement();
-		//op.setProperty("name","state_test");
+		
+	
 		//op.clearProperty("name");
 		//op.clearProperty("actions");
-		 //op.addReferenceToFocusedElement("command", "luisito2", "actions");
-		//op.removeReferenceFromFocusedElement("command", "luisito2", "actions");
-		//int i=0;
+		 //op.addReferenceToFocusedElement("command", "", "actions");
+		//op.removeReferenceFromFocusedElement("command", "", "actions");
+		
 		//op.addElement("statemachine");
-		op.addElement("state","name","statename2");
-		//op.deleteElement("state","name","prueba4");
-		//op.renameElement("state", "name", "prueba12", "prueba13");
-		op.setFocusElement("statemachine");
+		//op.addElement("state","name","state36");
+		//op.addElement("state","name","state2");
+		//op.deleteElement("state","name","state2");
+		//op.renameElement("state", "name", "state1", "state1_changed");
+		//op.setFocusElement("state","name","state1_changed");
+		//op.clearProperty("name");
 		//op.getPropertiesFromFocusedElement();
-		//op.setProperty("name","prueba13_change");
-		op.addReferenceToFocusedElement("state", "statename2", "state");
-		//op.removeReferenceFromFocusedElement("command", "command_3", "actions");
+		//op.setProperty("name","state1_changed2");
+		//op.setFocusElement("statemachine");
+		//op.getPropertiesFromFocusedElement();
+		//op.addReferenceToFocusedElement("state", "state34", "state");
+		//op.removeReferenceFromFocusedElement("state", "state1_changed2", "state");
+		op.addElement("state", "name", "state_test38", "statemachine", "state");
 		
 		op.saveModelInstance();
+		//System.out.println(EMFOperationsUtil.getLowerBound("statemachine", "state")+"");
+		//System.out.println(EMFOperationsUtil.getUpperBound("state", "actions")+"");
 		//System.out.println(op.getMetaModelPackageName());
 		
 		}

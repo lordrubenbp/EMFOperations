@@ -11,5 +11,8 @@ Export-Package: eMFProject,
  eMFProject.impl,
  eMFProject.util
 Require-Bundle: org.eclipse.emf.ecore;visibility:=reexport,
- org.eclipse.core.runtime
+ org.eclipse.core.runtime,
+ org.eclipse.emf.common
 Bundle-ActivationPolicy: lazy
+Import-Package: org.antlr.runtime.tree;version="3.2.0",
+ org.eclipse.emf.ecore.xmi

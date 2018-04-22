@@ -34,7 +34,7 @@ public interface Statemachine extends EObject {
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>State</em>' containment reference list.
 	 * @see eMFProject.EMFProjectPackage#getStatemachine_State()
-	 * @model containment="true"
+	 * @model containment="true" upper="3"
 	 * @generated
 	 */
 	EList<State> getState();
