@@ -6,8 +6,10 @@ import eMFProject.Command;
 import eMFProject.EMFProjectFactory;
 import eMFProject.EMFProjectPackage;
 
+import eMFProject.Event;
 import eMFProject.State;
 import eMFProject.Statemachine;
+import eMFProject.Transition;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
@@ -33,6 +35,12 @@ public class EMFProjectPackageImpl extends EPackageImpl implements EMFProjectPac
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	private EClass transitionEClass = null;
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	private EClass commandEClass = null;
 
 	/**
@@ -41,6 +49,13 @@ public class EMFProjectPackageImpl extends EPackageImpl implements EMFProjectPac
 	 * @generated
 	 */
 	private EClass statemachineEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass eventEClass = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -137,6 +152,42 @@ public class EMFProjectPackageImpl extends EPackageImpl implements EMFProjectPac
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EReference getState_Transitions() {
+		return (EReference) stateEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getTransition() {
+		return transitionEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getTransition_Event() {
+		return (EReference) transitionEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getTransition_State() {
+		return (EReference) transitionEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getCommand() {
 		return commandEClass;
 	}
@@ -173,8 +224,53 @@ public class EMFProjectPackageImpl extends EPackageImpl implements EMFProjectPac
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getStatemachine_State() {
+	public EReference getStatemachine_Events() {
 		return (EReference) statemachineEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getStatemachine_ResetEvents() {
+		return (EReference) statemachineEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getStatemachine_States() {
+		return (EReference) statemachineEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getEvent() {
+		return eventEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getEvent_Name() {
+		return (EAttribute) eventEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getEvent_Code() {
+		return (EAttribute) eventEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -206,16 +302,27 @@ public class EMFProjectPackageImpl extends EPackageImpl implements EMFProjectPac
 		isCreated = true;
 
 		// Create classes and their features
-		stateEClass = createEClass(STATE);
-		createEAttribute(stateEClass, STATE__NAME);
-		createEReference(stateEClass, STATE__ACTIONS);
+		statemachineEClass = createEClass(STATEMACHINE);
+		createEReference(statemachineEClass, STATEMACHINE__EVENTS);
+		createEReference(statemachineEClass, STATEMACHINE__RESET_EVENTS);
+		createEReference(statemachineEClass, STATEMACHINE__STATES);
+
+		eventEClass = createEClass(EVENT);
+		createEAttribute(eventEClass, EVENT__NAME);
+		createEAttribute(eventEClass, EVENT__CODE);
 
 		commandEClass = createEClass(COMMAND);
 		createEAttribute(commandEClass, COMMAND__NAME);
 		createEAttribute(commandEClass, COMMAND__CODE);
 
-		statemachineEClass = createEClass(STATEMACHINE);
-		createEReference(statemachineEClass, STATEMACHINE__STATE);
+		stateEClass = createEClass(STATE);
+		createEAttribute(stateEClass, STATE__NAME);
+		createEReference(stateEClass, STATE__ACTIONS);
+		createEReference(stateEClass, STATE__TRANSITIONS);
+
+		transitionEClass = createEClass(TRANSITION);
+		createEReference(transitionEClass, TRANSITION__EVENT);
+		createEReference(transitionEClass, TRANSITION__STATE);
 	}
 
 	/**
@@ -249,12 +356,23 @@ public class EMFProjectPackageImpl extends EPackageImpl implements EMFProjectPac
 		// Add supertypes to classes
 
 		// Initialize classes, features, and operations; add parameters
-		initEClass(stateEClass, State.class, "State", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getState_Name(), ecorePackage.getEString(), "name", null, 0, 1, State.class, !IS_TRANSIENT,
+		initEClass(statemachineEClass, Statemachine.class, "Statemachine", !IS_ABSTRACT, !IS_INTERFACE,
+				IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getStatemachine_Events(), this.getEvent(), null, "events", null, 0, -1, Statemachine.class,
+				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE,
+				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getStatemachine_ResetEvents(), this.getEvent(), null, "resetEvents", null, 0, -1,
+				Statemachine.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES,
+				!IS_UNSETTABLE, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getStatemachine_States(), this.getState(), null, "states", null, 0, -1, Statemachine.class,
+				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE,
+				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(eventEClass, Event.class, "Event", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getEvent_Name(), ecorePackage.getEString(), "name", null, 0, 1, Event.class, !IS_TRANSIENT,
 				!IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getState_Actions(), this.getCommand(), null, "actions", null, 0, -1, State.class, !IS_TRANSIENT,
-				!IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED,
-				IS_ORDERED);
+		initEAttribute(getEvent_Code(), ecorePackage.getEString(), "code", null, 0, 1, Event.class, !IS_TRANSIENT,
+				!IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(commandEClass, Command.class, "Command", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getCommand_Name(), ecorePackage.getEString(), "name", null, 0, 1, Command.class, !IS_TRANSIENT,
@@ -262,10 +380,23 @@ public class EMFProjectPackageImpl extends EPackageImpl implements EMFProjectPac
 		initEAttribute(getCommand_Code(), ecorePackage.getEString(), "code", null, 0, 1, Command.class, !IS_TRANSIENT,
 				!IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(statemachineEClass, Statemachine.class, "Statemachine", !IS_ABSTRACT, !IS_INTERFACE,
-				IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getStatemachine_State(), this.getState(), null, "state", null, 0, 3, Statemachine.class,
+		initEClass(stateEClass, State.class, "State", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getState_Name(), ecorePackage.getEString(), "name", null, 0, 1, State.class, !IS_TRANSIENT,
+				!IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getState_Actions(), this.getCommand(), null, "actions", null, 0, -1, State.class, !IS_TRANSIENT,
+				!IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, !IS_UNIQUE, !IS_DERIVED,
+				IS_ORDERED);
+		initEReference(getState_Transitions(), this.getTransition(), null, "transitions", null, 0, -1, State.class,
 				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE,
+				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(transitionEClass, Transition.class, "Transition", !IS_ABSTRACT, !IS_INTERFACE,
+				IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getTransition_Event(), this.getEvent(), null, "event", null, 0, 1, Transition.class,
+				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE,
+				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getTransition_State(), this.getState(), null, "state", null, 0, 1, Transition.class,
+				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE,
 				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Create resource

@@ -1,4 +1,4 @@
-package com.emfproject.dialogflow;
+package com.emfproject.audiorec;
 
 import javax.sound.sampled.*;
 import java.io.*;

@@ -14,7 +14,7 @@
   limitations under the License.
 */
 
-package com.emfproject.dialogflow.examples;
+package com.emfproject.dialogflow;
 
 // [START dialogflow_import_libraries]
 // Imports the Google Cloud client library

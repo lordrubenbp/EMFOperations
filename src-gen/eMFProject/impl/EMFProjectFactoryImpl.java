@@ -56,12 +56,16 @@ public class EMFProjectFactoryImpl extends EFactoryImpl implements EMFProjectFac
 	@Override
 	public EObject create(EClass eClass) {
 		switch (eClass.getClassifierID()) {
-		case EMFProjectPackage.STATE:
-			return createState();
-		case EMFProjectPackage.COMMAND:
-			return createCommand();
 		case EMFProjectPackage.STATEMACHINE:
 			return createStatemachine();
+		case EMFProjectPackage.EVENT:
+			return createEvent();
+		case EMFProjectPackage.COMMAND:
+			return createCommand();
+		case EMFProjectPackage.STATE:
+			return createState();
+		case EMFProjectPackage.TRANSITION:
+			return createTransition();
 		default:
 			throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -82,6 +86,16 @@ public class EMFProjectFactoryImpl extends EFactoryImpl implements EMFProjectFac
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public Transition createTransition() {
+		TransitionImpl transition = new TransitionImpl();
+		return transition;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public Command createCommand() {
 		CommandImpl command = new CommandImpl();
 		return command;
@@ -95,6 +109,16 @@ public class EMFProjectFactoryImpl extends EFactoryImpl implements EMFProjectFac
 	public Statemachine createStatemachine() {
 		StatemachineImpl statemachine = new StatemachineImpl();
 		return statemachine;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Event createEvent() {
+		EventImpl event = new EventImpl();
+		return event;
 	}
 
 	/**

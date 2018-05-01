@@ -66,9 +66,16 @@ public class EMFProjectSwitch<T> extends Switch<T> {
 	@Override
 	protected T doSwitch(int classifierID, EObject theEObject) {
 		switch (classifierID) {
-		case EMFProjectPackage.STATE: {
-			State state = (State) theEObject;
-			T result = caseState(state);
+		case EMFProjectPackage.STATEMACHINE: {
+			Statemachine statemachine = (Statemachine) theEObject;
+			T result = caseStatemachine(statemachine);
+			if (result == null)
+				result = defaultCase(theEObject);
+			return result;
+		}
+		case EMFProjectPackage.EVENT: {
+			Event event = (Event) theEObject;
+			T result = caseEvent(event);
 			if (result == null)
 				result = defaultCase(theEObject);
 			return result;
@@ -80,9 +87,16 @@ public class EMFProjectSwitch<T> extends Switch<T> {
 				result = defaultCase(theEObject);
 			return result;
 		}
-		case EMFProjectPackage.STATEMACHINE: {
-			Statemachine statemachine = (Statemachine) theEObject;
-			T result = caseStatemachine(statemachine);
+		case EMFProjectPackage.STATE: {
+			State state = (State) theEObject;
+			T result = caseState(state);
+			if (result == null)
+				result = defaultCase(theEObject);
+			return result;
+		}
+		case EMFProjectPackage.TRANSITION: {
+			Transition transition = (Transition) theEObject;
+			T result = caseTransition(transition);
 			if (result == null)
 				result = defaultCase(theEObject);
 			return result;
@@ -104,6 +118,21 @@ public class EMFProjectSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseState(State object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Transition</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Transition</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseTransition(Transition object) {
 		return null;
 	}
 
@@ -134,6 +163,21 @@ public class EMFProjectSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseStatemachine(Statemachine object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Event</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Event</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseEvent(Event object) {
 		return null;
 	}
 

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="ASCII"?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:eMFProject="http://www.example.org/eMFProject">
+  <eMFProject:State name="sleep2"/>
+  <eMFProject:State name="Pepe"/>
+  <eMFProject:State name="juanito"/>
+  <eMFProject:State name="rub&#xe9;n"/>
+  <eMFProject:State name="juan"/>
+  <eMFProject:State name="elena"/>
+  <eMFProject:State name="silla"/>
+  <eMFProject:State name="ito"/>
+  <eMFProject:State name="brocha"/>
+  <eMFProject:State name="nombre"/>
+  <eMFProject:State/>
+  <eMFProject:Command/>
+</xmi:XMI>

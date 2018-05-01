@@ -15,7 +15,7 @@ public class Test {
 		    try {
 				res.load(null);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
 		    EPackage metapackage = (EPackage)res.getContents().get(0);
@@ -42,7 +42,7 @@ public class Test {
 		    {
 		        resource.save(options);
 		    } catch (IOException e) {
-		        // TODO: handle exception
+		        
 		        e.printStackTrace();
 		    }
 		*/
@@ -79,7 +79,7 @@ public class Test {
         try {
             resource.save(Collections.EMPTY_MAP);
         } catch (IOException e) {
-            // TODO Auto-generated catch block
+          
             e.printStackTrace();
         }
 		*/
@@ -104,7 +104,7 @@ public class Test {
         	//aqui deberia meter alguna variable de control para, si en el caso de que contenga alguna instancia, la almacene
 			resource.load(null);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
         for (int i= 0; i <resource.getContents().size(); i++)
@@ -135,7 +135,7 @@ public class Test {
         try {
 			resource.save(Collections.EMPTY_MAP);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
         
@@ -150,7 +150,7 @@ public class Test {
 		//try {
 			//op.dumpDataFromModelInstance("alumno",int.class,i,"id");
 		//} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
+			
 			//e.printStackTrace();
 		//}
 		
@@ -161,7 +161,35 @@ public class Test {
 		//op.removeReferenceFromFocusedElement("command", "", "actions");
 		
 		//op.addElement("statemachine");
-		//op.addElement("state","name","state36");
+		/*Tengo que añadir aparte del nombre de padre, un atributo y su valor*/
+		//op.addElement("command", "name", "test", "state", "actions");
+		//op.addElement("state","name","sleep2");
+		//op.addElement("event","name","wake_up");
+		//op.addElement("state");
+		//op.setFocusElement("state");
+		//op.setProperty("name", "pepe");
+		//op.setFocusElement("state", "name", "pepe");
+		//op.setProperty("name", "juanelo");
+		//op.setFocusElement("statemachine");
+		//op.setFocusElement("statemachine", "state", "name", "sleep", "states");
+		//op.getPropertiesFromFocusedElement();
+		//op.setFocusElement("transition");
+		//op.addReferenceToFocusedElement("state", "name", "sleep2", "state");
+		//op.addReferenceToFocusedElement("event", "name", "wake_up", "event");
+		//op.addElement("statemachine");
+		//op.setFocusElement("statemachine");
+		//op.addReferenceToFocusedElement("event", "name", "wake_up", "events");
+		//op.addReferenceToFocusedElement("state", "name", "sleep2", "states");
+		//op.getPropertiesFromFocusedElement();
+		 //op.addReferenceToFocusedElement("state","name","sleep2", "states");
+		//op.addReferenceToFocusedElement("state", "sleep", "state");
+		//op.setFocusElement("statemachine");
+		//informar si el nombre de la relacion es incorrecto, se lo salta
+		//op.addReferenceToFocusedElement("event", "wake_up", "events");
+		//op.addReferenceToFocusedElement("state", "sleep", "states");
+		
+		
+		//op.addElement("state", "name", "state_test38", "statemachine", "state");
 		//op.addElement("state","name","state2");
 		//op.deleteElement("state","name","state2");
 		//op.renameElement("state", "name", "state1", "state1_changed");
@@ -173,7 +201,7 @@ public class Test {
 		//op.getPropertiesFromFocusedElement();
 		//op.addReferenceToFocusedElement("state", "state34", "state");
 		//op.removeReferenceFromFocusedElement("state", "state1_changed2", "state");
-		op.addElement("state", "name", "state_test38", "statemachine", "state");
+		//op.addElement("state", "name", "state_test38", "statemachine", "state");
 		
 		op.saveModelInstance();
 		//System.out.println(EMFOperationsUtil.getLowerBound("statemachine", "state")+"");

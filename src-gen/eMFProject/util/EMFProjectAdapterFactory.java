@@ -67,8 +67,13 @@ public class EMFProjectAdapterFactory extends AdapterFactoryImpl {
 	 */
 	protected EMFProjectSwitch<Adapter> modelSwitch = new EMFProjectSwitch<Adapter>() {
 		@Override
-		public Adapter caseState(State object) {
-			return createStateAdapter();
+		public Adapter caseStatemachine(Statemachine object) {
+			return createStatemachineAdapter();
+		}
+
+		@Override
+		public Adapter caseEvent(Event object) {
+			return createEventAdapter();
 		}
 
 		@Override
@@ -77,8 +82,13 @@ public class EMFProjectAdapterFactory extends AdapterFactoryImpl {
 		}
 
 		@Override
-		public Adapter caseStatemachine(Statemachine object) {
-			return createStatemachineAdapter();
+		public Adapter caseState(State object) {
+			return createStateAdapter();
+		}
+
+		@Override
+		public Adapter caseTransition(Transition object) {
+			return createTransitionAdapter();
 		}
 
 		@Override
@@ -115,6 +125,20 @@ public class EMFProjectAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
+	 * Creates a new adapter for an object of class '{@link eMFProject.Transition <em>Transition</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see eMFProject.Transition
+	 * @generated
+	 */
+	public Adapter createTransitionAdapter() {
+		return null;
+	}
+
+	/**
 	 * Creates a new adapter for an object of class '{@link eMFProject.Command <em>Command</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
@@ -139,6 +163,20 @@ public class EMFProjectAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createStatemachineAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link eMFProject.Event <em>Event</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see eMFProject.Event
+	 * @generated
+	 */
+	public Adapter createEventAdapter() {
 		return null;
 	}
 

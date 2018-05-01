@@ -66,17 +66,31 @@ public class EMFOperations {
 			System.out.println(EMFOperationsMessages.MODEL_NOT_EXITS);
 		}
 		//System.out.println(inst_resource.getContents());
-		//EMFOperationsUtil.showAllModelData(inst_resource.getContents());
+		//EMFOperationsUtil.showAllModelData(inst_resource);
 		
 		
 
 	}
+	//op.setFocusElement("elementName","parentElement","parentAtributeName","parentAtributeValue","relationName")
+	public void setFocusElement(String parentElement,String childElement,String childAtributeName,String childAtributeValue,String relationName) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, ClassNotFoundException 
+	{
+		
+		if(EMFOperationsUtil.getElementFromResource(parentElement,childElement,childAtributeName,childAtributeValue,relationName,inst_resource)!=null) 
+		{
+			focusedElement=EMFOperationsUtil.getElementFromResource(parentElement,childElement,childAtributeName,childAtributeValue,relationName,inst_resource);
 
+		}
+	}
 	public void setFocusElement(String nameElement, String atributeName, Object atributeValue) {
 
-		String nameNormalized = EMFOperationsUtil.normalizedString(nameElement);
 
-		for (int i = 0; i < inst_resource.getContents().size(); i++) {
+		if(EMFOperationsUtil.getElementFromResource(nameElement, atributeName, atributeValue, inst_resource)!=null) 
+		{
+			focusedElement=EMFOperationsUtil.getElementFromResource(nameElement, atributeName, atributeValue, inst_resource);
+
+		}
+
+		/*for (int i = 0; i < inst_resource.getContents().size(); i++) {
 			// System.out.println(inst_resource.getContents().get(i).toString());
 
 			if (inst_resource.getContents().get(i).toString().contains(atributeName + ": " + atributeValue + ")")
@@ -85,21 +99,23 @@ public class EMFOperations {
 				focusedElement = inst_resource.getContents().get(i);
 
 			}
-		}
+		}*/
 	}
 
 	public void setFocusElement(String nameElement) {
 
-		String nameNormalized = EMFOperationsUtil.normalizedString(nameElement);
-
-		for (int i = 0; i < inst_resource.getContents().size(); i++) {
+		if(EMFOperationsUtil.getElementFromResource(nameElement, inst_resource)!=null) 
+		{
+			focusedElement=EMFOperationsUtil.getElementFromResource(nameElement, inst_resource);
+		}
+		/*for (int i = 0; i < inst_resource.getContents().size(); i++) {
 			// System.out.println(inst_resource.getContents().get(i).toString());
 
 			if (inst_resource.getContents().get(i).toString().contains(nameNormalized)) {
 				focusedElement = inst_resource.getContents().get(i);
 
 			}
-		}
+		}*/
 	}
 	public Object getFocusedElement() {
 		// System.out.println(focusedElement);
@@ -162,7 +178,7 @@ public class EMFOperations {
 
 	}
 
-	public void removeReferenceFromFocusedElement(String nameElement, String atributeNameValue, String referenceName)
+	public void removeReferenceFromFocusedElement(String nameElement,String atributeName, String atributeValue, String referenceName)
 			throws ClassNotFoundException, IllegalAccessException, IllegalArgumentException, InvocationTargetException,
 			NoSuchMethodException, SecurityException, InstantiationException {
 		
@@ -170,7 +186,7 @@ public class EMFOperations {
 		String referenceNameNormalized = EMFOperationsUtil.normalizedString(referenceName);
 	
 		
-		if (EMFOperationsUtil.getElementFromResource(nameNormalized, "name", atributeNameValue,inst_resource) != null) {
+		if (EMFOperationsUtil.getElementFromResource(nameNormalized,atributeName, atributeValue,inst_resource) != null) {
 			// TODO chequear que el elemento es una referencia validad para el
 			// focusedElement
 			// System.out.println(focusedElement.getClass().getSimpleName());
@@ -198,10 +214,10 @@ public class EMFOperations {
 								.invoke(focusedElement);
 
 						// compruebo que el objeto que se quiere referencia ya no lo estuviese antes
-						if (list.contains(EMFOperationsUtil.getElementFromResource(nameNormalized, "name", atributeNameValue,inst_resource))) {
+						if (list.contains(EMFOperationsUtil.getElementFromResource(nameNormalized,atributeName, atributeValue,inst_resource))) {
 							if(EMFOperationsUtil.getUpperBound(elementName, referenceName)<list.size()) 
 							{
-								list.remove(EMFOperationsUtil.getElementFromResource(nameNormalized, "name", atributeNameValue,inst_resource));
+								list.remove(EMFOperationsUtil.getElementFromResource(nameNormalized, atributeName, atributeValue,inst_resource));
 							}else 
 							{
 								System.out.println(EMFOperationsMessages.ELEMENT_TO_REMOVE_AS_REFERENCE_MINIMUM);
@@ -225,7 +241,7 @@ public class EMFOperations {
 		}
 	}
 
-	public void addReferenceToFocusedElement(String nameElement, String atributeNameValue, String referenceName)
+	public void addReferenceToFocusedElement(String nameElement,String atributeName, String atributeValue, String referenceName)
 			throws ClassNotFoundException, IllegalAccessException, IllegalArgumentException, InvocationTargetException,
 			NoSuchMethodException, SecurityException {
 		String nameNormalized = EMFOperationsUtil.normalizedString(nameElement);
@@ -233,7 +249,7 @@ public class EMFOperations {
 		//dependiendo si es referencia o es un hijo del elemento me devolvera un objeto lista u otro, por eso se usa la clase generica List que engloba a todas
 		List list=null;
 		// compruebo que el elemento que quiero añadir existe
-		if (EMFOperationsUtil.getElementFromResource(nameNormalized, "name", atributeNameValue,inst_resource) != null) {
+		if (EMFOperationsUtil.getElementFromResource(nameNormalized,atributeName, atributeValue,inst_resource) != null) {
 			// TODO chequear que el elemento es una referencia validad para el
 			// focusedElement
 			// System.out.println(focusedElement.getClass().getSimpleName());
@@ -259,7 +275,7 @@ public class EMFOperations {
 									.invoke(focusedElement);
 						
 						// compruebo que el objeto que se quiere referencia ya no lo estuviese antes
-						if (list.contains(EMFOperationsUtil.getElementFromResource(nameNormalized, "name", atributeNameValue,inst_resource))) {
+						if (list.contains(EMFOperationsUtil.getElementFromResource(nameNormalized,atributeName, atributeValue,inst_resource))) {
 							System.out.println(EMFOperationsMessages.ELEMENT_ALREADY_REFERENCED);
 						} else {
 							
@@ -267,7 +283,7 @@ public class EMFOperations {
 							//restriccion en el delete reference
 							if(EMFOperationsUtil.getUpperBound(elementName, referenceName)>list.size()||EMFOperationsUtil.getUpperBound(elementName, referenceName)==-1) 
 							{
-								list.add(EMFOperationsUtil.getElementFromResource(nameNormalized, "name", atributeNameValue,inst_resource));
+								list.add(EMFOperationsUtil.getElementFromResource(nameNormalized,atributeName, atributeValue,inst_resource));
 							}else 
 							{
 								System.out.println(EMFOperationsMessages.ELEMENT_TO_REMOVE_AS_REFERENCE_MAXIMUM);
@@ -282,7 +298,7 @@ public class EMFOperations {
 								.forName(EMFOperationsUtil.getMetaModelPackage().getName() + "." + nameNormalized);
 
 						cl.getMethod("set" + referenceNameNormalized, ccl).invoke(focusedElement,
-								EMFOperationsUtil.getElementFromResource(nameNormalized, "name", atributeNameValue,inst_resource));
+								EMFOperationsUtil.getElementFromResource(nameNormalized, atributeName, atributeValue,inst_resource));
 					}
 
 				}
@@ -449,7 +465,7 @@ public class EMFOperations {
 		String nameNormalized = EMFOperationsUtil.normalizedString(nameElement);
 		
 		
-		if (EMFOperationsUtil.getElementFromResource(nameNormalized,inst_resource) == null) {
+		//if (EMFOperationsUtil.getElementFromResource(nameNormalized,inst_resource) == null) {
 			
 			if (EMFOperationsUtil.checkElementInsertion(nameElement)) {
 				
@@ -469,9 +485,10 @@ public class EMFOperations {
 				
 			}
 			
-		}
+		//}
 		
 	}
+	
 	public void addElement(String nameElement, String atributeName, Object atributeValue,String parentNameElement,String relationName)
 			throws IllegalAccessException, ClassNotFoundException {
 
@@ -645,5 +662,7 @@ public class EMFOperations {
 		}
 
 	}
+
+
 
 }

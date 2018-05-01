@@ -1,4 +1,4 @@
-package com.emfproject.dialogflow;
+package com.emfproject.audiorec;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;

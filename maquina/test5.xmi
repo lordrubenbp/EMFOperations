@@ -1,12 +1,6 @@
 <?xml version="1.0" encoding="ASCII"?>
 <xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:eMFProject="http://www.example.org/eMFProject">
-  <eMFProject:Statemachine>
-    <state name="state_test"/>
-    <state name="pepe"/>
-    <state name="state34"/>
-  </eMFProject:Statemachine>
-  <eMFProject:State name="state1_changed2"/>
-  <eMFProject:State name="state35"/>
-  <eMFProject:State name="state36"/>
-  <eMFProject:State name="state_test34"/>
+  <eMFProject:State name="juanelo"/>
+  <eMFProject:State name="juanelo"/>
+  <eMFProject:State name="juanelo"/>
 </xmi:XMI>

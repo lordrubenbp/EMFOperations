@@ -16,6 +16,7 @@ import org.eclipse.emf.ecore.EObject;
  * <ul>
  *   <li>{@link eMFProject.State#getName <em>Name</em>}</li>
  *   <li>{@link eMFProject.State#getActions <em>Actions</em>}</li>
+ *   <li>{@link eMFProject.State#getTransitions <em>Transitions</em>}</li>
  * </ul>
  *
  * @see eMFProject.EMFProjectPackage#getState()
@@ -64,5 +65,21 @@ public interface State extends EObject {
 	 * @generated
 	 */
 	EList<Command> getActions();
+
+	/**
+	 * Returns the value of the '<em><b>Transitions</b></em>' containment reference list.
+	 * The list contents are of type {@link eMFProject.Transition}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Transitions</em>' containment reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Transitions</em>' containment reference list.
+	 * @see eMFProject.EMFProjectPackage#getState_Transitions()
+	 * @model containment="true"
+	 * @generated
+	 */
+	EList<Transition> getTransitions();
 
 } // State

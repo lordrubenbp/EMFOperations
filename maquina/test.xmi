@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="ASCII"?>
-<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:eMFProject="http://www.example.org/eMFProject">
-  <eMFProject:Command name="luisito2"/>
-  <eMFProject:State name="state_test"/>
-  <eMFProject:State name="prueba2"/>
-  <eMFProject:State name="prueba3"/>
-</xmi:XMI>

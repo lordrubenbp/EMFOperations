@@ -2,6 +2,8 @@ package com.emfproject;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,6 +12,7 @@ import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
@@ -160,18 +163,47 @@ public class EMFOperationsUtil {
 		while (i.hasNext()) {
 			EObject o = i.next();
 
-			if (o.toString().contains(atributeName + ": " + atributeValue + ")")
+			if(o.toString().contains(nameNormalized)) 
+			{
+				if(checkIfAtributeAndValueExits(o,atributeName.toLowerCase(),atributeValue.toString().toLowerCase())) 
+				{
+					return o;
+				}
+			}
+			/*if (o.toString().contains(atributeName + ": " + atributeValue + ")")
 					|| o.toString().contains(atributeName + ": " + atributeValue + ",")
 					|| o.toString().contains("(" + atributeName + ": " + atributeValue + ",")
 							&& o.toString().contains(nameNormalized))
-
 			{
+				
 				return o;
-			}
+			}*/
 			// System.out.println(o);
 		}
 		return null;
 
+	}
+	
+	public static boolean checkIfAtributeAndValueExits(EObject object,String atributeName,String atributeValue) 
+	{
+		
+		EList<EAttribute> eAllAttributes = object.eClass().getEAllAttributes();
+	    for (EAttribute eAttribute : eAllAttributes) {
+	    	
+	    	if(eAttribute.getName().equals(atributeName)) 
+	    	{
+	    		if(object.eGet(eAttribute).toString().equals(atributeValue)) 
+	    		{
+	    			 System.out.println("trueee");
+	    			return true;
+	    		}
+	    	}
+	    	  System.out.println(eAttribute.getName()+": "+object.eGet(eAttribute));
+	    	  
+	    }
+	    System.out.println("false"); 
+		return false;
+		
 	}
 
 	public static Object getElementFromResource(String nameElement, Resource resource) {
@@ -187,7 +219,106 @@ public class EMFOperationsUtil {
 			if (o.toString().contains(nameNormalized))
 
 			{
-				return o;
+				
+				//comprueba que los valores de los atributos son nulos, asi devolvera solo un elemento vacio
+				boolean isNull=false;
+			    EList<EAttribute> eAllAttributes = o.eClass().getEAllAttributes();
+			    for (EAttribute eAttribute : eAllAttributes) {
+			    	
+			    	  System.out.println(eAttribute.getName()+": "+o.eGet(eAttribute));
+			    	  
+			    	  if(o.eGet(eAttribute)==null) 
+			    	  {
+			    		  isNull=true;
+			    	  }
+			    	  else 
+			    	  {
+			    		  isNull=false;
+			    	  }
+			            
+			    }
+			  
+				if(o.eContents().size()==0 && o.eCrossReferences().size()==0 && isNull) 
+				{
+					
+					return o;
+				}
+					
+				
+			}
+			// System.out.println(o);
+		}
+		return null;
+
+	}
+	//TODO intentar hacer de otra forma sin reflection
+	public static Object getElementFromResource(String parentElement,String childElement,String childAtributeName,String childAtributeValue,String relationName, Resource resource) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, ClassNotFoundException {
+
+		String parentElementNormalizedImpl = EMFOperationsUtil.normalizedString(parentElement) + "Impl";
+		String parentElementNormalized = EMFOperationsUtil.normalizedString(parentElement);
+		String referenceNameNormalized = EMFOperationsUtil.normalizedString(relationName);
+		String childNormalized=EMFOperationsUtil.normalizedString(childElement);
+		String childAtributeNormalized=EMFOperationsUtil.normalizedString(childAtributeName);
+		List list=null;
+		// System.out.println(nameNormalized);
+
+		TreeIterator<EObject> i = resource.getAllContents();
+
+		while (i.hasNext()) {
+			EObject o = i.next();
+			if (o.toString().contains(parentElementNormalizedImpl))
+
+			{
+				Class cl = Class.forName(EMFOperationsUtil.getMetaModelPackage().getName() + "." + parentElementNormalized);
+				// pillo todas los metodos get y recorro uno a uno llamandolo con el objeto
+				Method[] m = cl.getDeclaredMethods();
+				// recorro los metodos
+				for (int z = 0; z < m.length; z++) {
+					
+					// pillo los get
+					if (m[z].getName().equals("get" + referenceNameNormalized)) {
+						// si la referencia es multiple, devolvera un EList
+						//System.out.println(cl.getMethod(m[z].getName()).invoke(focusedElement).getClass().getSimpleName());
+						// no entras
+						if (m[z].getReturnType().getSimpleName().equals("EList")) {
+							// TODO me queda comprobar si el listado no es de * elementos, saber el numero
+							// de ellos para no hacer una inserccion por encima del valor
+							// esta info deberia tenerla en el metamodelo EPackage
+								
+								 list= (List) cl.getMethod(m[z].getName())
+										.invoke(o);
+							
+							// compruebo que el objeto que se quiere referencia ya no lo estuviese antes
+							if (list.contains(EMFOperationsUtil.getElementFromResource(childNormalized,childAtributeName, childAtributeValue,resource))) {
+								
+								return o;
+							} 
+						}
+						// si la referencia es unica..
+						else if (m[z].getReturnType().getSimpleName().equals(childNormalized)) {
+
+							Class ccl = Class
+									.forName(EMFOperationsUtil.getMetaModelPackage().getName() + "." + childNormalized);
+							Method[] mSub = ccl.getDeclaredMethods();
+							EObject subO=(EObject) cl.getMethod("get" + referenceNameNormalized).invoke(o);
+							
+							for (int x = 0; x < mSub.length; x++) {
+							
+								if (mSub[x].getName().equals("get" + childAtributeNormalized)) {
+									
+									if(ccl.getMethod("get" + childAtributeNormalized).invoke(subO).toString().equals(childAtributeValue)) 
+									{
+										return o;
+									}
+								}
+							}
+							
+							
+						}
+
+					}
+
+				}
 			}
 			// System.out.println(o);
 		}
@@ -208,7 +339,7 @@ public class EMFOperationsUtil {
 
 	}
 
-	public static void showAllModelData(EList<EObject> list) {
+	/*public static void showAllModelData(EList<EObject> list) {
 
 		for (int i = 0; i < list.size(); i++) {
 
@@ -219,7 +350,7 @@ public class EMFOperationsUtil {
 			}
 
 		}
-	}
+	}*/
 
 	public static int getLowerBound(String nameElement, String referenceName) {
 		nameElement=EMFOperationsUtil.normalizedString(nameElement);
@@ -292,6 +423,22 @@ public class EMFOperationsUtil {
 		}
 		return -99;
 	}
+	public static void showAllModelData( Resource resource) {
+
+		
+		TreeIterator<EObject> i = resource.getAllContents();
+
+		while (i.hasNext()) {
+			EObject o = i.next();
+			
+			System.out.println("bep "+o);
+			System.out.println(o.eContents());
+			System.out.println(o.eCrossReferences());
+			//
+		}
+		
+	
+	}
 	public static void showAllMetaModelData() {
 
 		for (int i = 0; i < getMetaModelPackage().eContents().size(); i++) {
@@ -307,8 +454,10 @@ public class EMFOperationsUtil {
 					// System.out.println(myEclass.getEAllReferences());
 
 					EAttribute atribute = myEclass.getEAllAttributes().get(y);
-
-					// System.out.println(atribute.getEAttributeType().getName());
+					
+					System.out.println("Atribute name: "+atribute.getName());
+					System.out.println("Atribute type: "+atribute.getEAttributeType().getName());
+					
 
 				}
 				for (int d = 0; d < myEclass.getEAllReferences().size(); d++) {

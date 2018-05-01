@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.emfproject.dialogflow;
+package com.emfproject.audiorec;
 
 import com.google.auth.oauth2.GoogleCredentials;
 // [START speech_quickstart]

@@ -1,4 +1,4 @@
-package com.emfproject.dialogflow;
+package com.emfproject.audiorec;
 
 import javax.sound.sampled.AudioFileFormat;
 import java.io.File;
@@ -7,7 +7,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
-import com.emfproject.dialogflow.*;
+import com.emfproject.audiorec.*;
 import com.google.cloud.speech.v1p1beta1.RecognitionAudio;
 import com.google.cloud.speech.v1p1beta1.RecognitionConfig;
 import com.google.cloud.speech.v1p1beta1.RecognizeResponse;

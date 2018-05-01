@@ -1,4 +1,4 @@
-package com.emfproject.dialogflow;
+package com.emfproject.audiorec;
 
 import net.sourceforge.javaflacencoder.FLACEncoder;
 import net.sourceforge.javaflacencoder.FLACFileOutputStream;

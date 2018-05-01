@@ -31,6 +31,15 @@ public interface EMFProjectFactory extends EFactory {
 	State createState();
 
 	/**
+	 * Returns a new object of class '<em>Transition</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Transition</em>'.
+	 * @generated
+	 */
+	Transition createTransition();
+
+	/**
 	 * Returns a new object of class '<em>Command</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -47,6 +56,15 @@ public interface EMFProjectFactory extends EFactory {
 	 * @generated
 	 */
 	Statemachine createStatemachine();
+
+	/**
+	 * Returns a new object of class '<em>Event</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Event</em>'.
+	 * @generated
+	 */
+	Event createEvent();
 
 	/**
 	 * Returns the package supported by this factory.

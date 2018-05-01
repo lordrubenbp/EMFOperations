@@ -14,9 +14,10 @@
   limitations under the License.
 */
 
-package com.emfproject.dialogflow.examples;
+package com.emfproject.dialogflow;
 
-import com.emfproject.dialogflow.MicrophoneGestor;
+import com.emfproject.EMFOperations;
+import com.emfproject.audiorec.MicrophoneGestor;
 // [START dialogflow_import_libraries]
 // Imports the Google Cloud client library
 import com.google.cloud.dialogflow.v2.AudioEncoding;
@@ -30,11 +31,13 @@ import com.google.cloud.dialogflow.v2.QueryResult;
 import com.google.cloud.dialogflow.v2.SessionName;
 import com.google.cloud.dialogflow.v2.SessionsClient;
 import com.google.protobuf.ByteString;
+import com.google.protobuf.Value;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Map;
 import java.util.UUID;
 // [END dialogflow_import_libraries]
 
@@ -44,6 +47,7 @@ import java.util.UUID;
  */
 public class DetectIntentAudio {
 
+	 static MicrophoneGestor micg= new MicrophoneGestor();
   // [START dialogflow_detect_intent_audio]
   /**
    * Returns the result of detect intent with an audio file as input.
@@ -79,11 +83,17 @@ public class DetectIntentAudio {
       // Build the query with the InputAudioConfig
       QueryInput queryInput = QueryInput.newBuilder().setAudioConfig(inputAudioConfig).build();
 
+  	Context context= Context.newBuilder().setName("projects/newagent-31936/agent/sessions/"+sessionId+"/contexts/listar-bloc-followup").setLifespanCount(2).build();
+
+      while(true) 
+	    {
+	    	audioFilePath=micg.recordAudio();
+	    	
+	   
       // Read the bytes from the audio file
       byte[] inputAudio = Files.readAllBytes(Paths.get(audioFilePath));
 
    
-	Context context= Context.newBuilder().setName("projects/newagent-31936/agent/sessions/"+sessionId+"/contexts/listar-bloc-followup").setLifespanCount(2).build();
 	QueryParameters parameters=QueryParameters.newBuilder().addContexts(context).build();
 	// Build the DetectIntentRequest
 	DetectIntentRequest request = DetectIntentRequest.newBuilder()
@@ -105,7 +115,42 @@ public class DetectIntentAudio {
       System.out.format("Detected Intent: %s (confidence: %f)\n",
           queryResult.getIntent().getDisplayName(), queryResult.getIntentDetectionConfidence());
       System.out.format("Fulfillment Text: '%s'\n", queryResult.getFulfillmentText());
-      System.out.format("Contexts: '%s'\n", queryResult.getOutputContextsList());
+      //System.out.format("Contexts: '%s'\n", queryResult.getOutputContextsList());
+      //System.out.format("Parameters: '%s'\n", queryResult.getParameters().getFieldsMap());
+      System.out.format("Actions: '%s'\n", queryResult.getAction());
+      
+    
+      String element=queryResult.getParameters().getFieldsMap().get("element").getStringValue().toLowerCase();
+      String atribute=queryResult.getParameters().getFieldsMap().get("atribute").getStringValue().toLowerCase();
+      String value=queryResult.getParameters().getFieldsMap().get("value").getStringValue().toLowerCase();
+      System.out.format(queryResult.getParameters().getFieldsMap().get("element").getStringValue());
+      System.out.format(queryResult.getParameters().getFieldsMap().get("atribute").getStringValue());
+      System.out.format(queryResult.getParameters().getFieldsMap().get("value").getStringValue());
+      EMFOperations op= new EMFOperations();
+	
+      if (element.equals("estado")) 
+      {
+    	  element="state";
+      }
+      if (atribute.equals("nombre")) 
+      {
+    	  atribute="name";
+      }
+      
+	  op.loadModelInstance("maquina/testDialog.xmi");
+	  op.addElement(element, atribute, value);
+	  //op.addElement("state","name","sleep2");
+	  op.saveModelInstance();
+      /*for (Map.Entry<String, Value> entry : queryResult.getParameters().getFieldsMap().entrySet())
+      {
+    	
+          System.out.println(entry.getKey() + "/" + entry.getValue().getStringValue());
+      }*/
+      for (int i=0;i<queryResult.getOutputContextsList().size();i++) 
+      {
+    	  context=queryResult.getOutputContextsList().get(i);
+      }
+	    }
      
     }
   }
@@ -114,17 +159,13 @@ public class DetectIntentAudio {
   // [START run_application]
   public static void main(String[] args) throws Exception {
 	  String audioFilePath = "1";
-	    String projectId = "newagent-31936";
+	    String projectId = "emf-api";
 	    String sessionId = UUID.randomUUID().toString();
-	    String languageCode = "es-ES";
+	    String languageCode = "es-ES";//en-US
 	    
-	   MicrophoneGestor micg= new MicrophoneGestor();
-	    
-	    while(true) 
-	    {
-	    	audioFilePath=micg.recordAudio();
-	    	detectIntentAudio(projectId, audioFilePath, sessionId, languageCode);
-	    }
+	  
+	   detectIntentAudio(projectId, audioFilePath, sessionId, languageCode);
+	   
    
   }
   // [END run_application]
