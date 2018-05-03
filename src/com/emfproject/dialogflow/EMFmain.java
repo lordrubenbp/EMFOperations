@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Scanner;
 import java.util.UUID;
 
@@ -24,6 +26,7 @@ import com.google.cloud.dialogflow.v2.SessionsClient;
 import com.google.cloud.dialogflow.v2.TextInput;
 import com.google.cloud.dialogflow.v2.TextInput.Builder;
 import com.google.protobuf.ByteString;
+import com.google.protobuf.Value;
 
 public class EMFmain {
 
@@ -68,7 +71,10 @@ public class EMFmain {
 		System.out.format("Actions: '%s'\n", queryResult.getAction());
 		System.out.println("Parameters required: " + queryResult.ACTION_FIELD_NUMBER + "");
 		System.out.format("Parameters passed: '%s'\n", queryResult.getAllRequiredParamsPresent());
-		//System.out.format("Parameters : '%s'\n", queryResult.getParameters());
+		System.out.format("Parameters : '%s'\n", queryResult.getParameters());
+		//System.out.println("Parameters number passed: "+queryResult.getParameters().getFieldsMap());
+		
+		
 	}
 
 	public static void textClient() throws ClassNotFoundException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, InstantiationException {

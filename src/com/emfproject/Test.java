@@ -153,14 +153,15 @@ public class Test {
 			
 			//e.printStackTrace();
 		//}
-		
-	 
+		//op.setFocusElement("statemachine");
+		//op.addReferenceToFocusedElement("state", "name", "pepe", "states");
+		op.setFocusElement("statemachine", "state", "name", "pepe", "states");
 		//op.addElement("statemachine");
-		op.addElement("state", "name", "pepe", "statemachine", "states");
+		//op.addElement("state", "name", "pepe", "statemachine", "states");
 		//op.clearProperty("name");
 		//op.clearProperty("actions");
 		 //op.addReferenceToFocusedElement("command", "", "actions");
-		//op.removeReferenceFromFocusedElement("command", "", "actions");
+		 op.removeReferenceFromFocusedElement("state", "name","pepe","states");
 		
 		//op.addElement("statemachine");
 		/*Tengo que añadir aparte del nombre de padre, un atributo y su valor*/

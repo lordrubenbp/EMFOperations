@@ -208,9 +208,7 @@ public class EMFOperations {
 					// System.out.println(cl.getMethod(m[z].getName()).invoke(focusedElement).getClass().getSimpleName());
 					// no entras
 					if (m[z].getReturnType().getSimpleName().equals("EList")) {
-						// TODO me queda comprobar si el listado no es de * elementos, saber el numero
-						// de ellos para no hacer una inserccion por encima del valor
-						// esta info deberia tenerla en el metamodelo EPackage
+						
 						 list = (List) cl.getMethod(m[z].getName())
 								.invoke(focusedElement);
 
@@ -218,7 +216,13 @@ public class EMFOperations {
 						if (list.contains(EMFOperationsUtil.getElementFromResource(nameNormalized,atributeName, atributeValue,inst_resource))) {
 							if(EMFOperationsUtil.getUpperBound(elementName, referenceName)<list.size()) 
 							{
+								EObject o=EcoreUtil.copy((EObject)EMFOperationsUtil.getElementFromResource(nameNormalized, atributeName, atributeValue,inst_resource));
 								list.remove(EMFOperationsUtil.getElementFromResource(nameNormalized, atributeName, atributeValue,inst_resource));
+								//si me devuelve nulo significa que estaba contenido en otro, por el contrario si no es nulo es que estaba referenciado pero no contenido
+								if(EMFOperationsUtil.getElementFromResource(nameNormalized, atributeName, atributeValue,inst_resource)==null) 
+								{
+									inst_resource.getContents().add(o);
+								}
 							}else 
 							{
 								System.out.println(EMFOperationsMessages.ELEMENT_TO_REMOVE_AS_REFERENCE_MINIMUM);
@@ -242,6 +246,7 @@ public class EMFOperations {
 		}
 	}
 
+	//TODO nuevas implementaciones con valores de atributo del padre y otra con valores de una relacion del padre
 	public void addReferenceToFocusedElement(String nameElement,String atributeName, String atributeValue, String referenceName)
 			throws ClassNotFoundException, IllegalAccessException, IllegalArgumentException, InvocationTargetException,
 			NoSuchMethodException, SecurityException {
@@ -311,33 +316,21 @@ public class EMFOperations {
 	}
 
 	
-	//TODO hacer una implementacion mas de delete para elementos que no tienen atributos
+	public void deleteElement(String nameElement) 
+	{
+		EcoreUtil.delete((EObject) EMFOperationsUtil.getElementFromResource(nameElement, inst_resource));
+		System.out.println(EMFOperationsMessages.ELEMENT_DELETED);
+	}
 	public void deleteElement(String nameElement, String atributeName, Object atributeValue) {
 		
 		EcoreUtil.delete((EObject) EMFOperationsUtil.getElementFromResource(nameElement, atributeName, atributeValue, inst_resource));
 		System.out.println(EMFOperationsMessages.ELEMENT_DELETED);
 		
-		/*//MEJOR HACERLO EN EL UTILS
-		//TENGO TMB QUE TODOS LOS CHECK CAMBIARLOS AL NUEVO METODO
-		
-		String nameNormalized=EMFOperationsUtil.normalizedString(nameElement);
-		
-		List<EObject>list=inst_resource.getContents();
-		
-		
-		for (int i = 0; i < list.size(); i++) {
-			// System.out.println(inst_resource.getContents().get(i).toString());
-			if (list.get(i).toString().contains(atributeName + ": " + atributeValue + ")")
-					|| list.get(i).toString().contains(atributeName + ": " + atributeValue + ",")
-							&& list.get(i).toString().contains(nameNormalized)) {
-				list.remove(list.get(i));
-				
-			}
-			
-			
-		}*/
-		
-		
+	}
+	public void deleteElement(String parentElement,String childElement,String childAtributeName,String childAtributeValue,String relationName) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, ClassNotFoundException 
+	{
+		EcoreUtil.delete((EObject) EMFOperationsUtil.getElementFromResource(parentElement, childElement, childAtributeName, childAtributeValue, relationName, inst_resource));
+		System.out.println(EMFOperationsMessages.ELEMENT_DELETED);
 	}
 
 	//TODO cambiar a nuevo metodo de lectura de atributos
@@ -347,12 +340,9 @@ public class EMFOperations {
 		String nameNormalized = EMFOperationsUtil.normalizedString(nameElement);
 		String atributeNameNormalized = EMFOperationsUtil.normalizedString(atributeName);
 		for (int i = 0; i < inst_resource.getContents().size(); i++) {
-			// System.out.println(inst_resource.getContents().get(i).toString());
-			// TODO meter mensaje para indicar si existe o no el elemento a renombrar
-			if (inst_resource.getContents().get(i).toString().contains(atributeName + ": " + oldAtributeValue + ")")
-					|| inst_resource.getContents().get(i).toString()
-							.contains(atributeName + ": " + oldAtributeValue + ",")
-							&& inst_resource.getContents().get(i).toString().contains(nameNormalized)) {
+			// System.out.println(inst_resource.getContents().get(i).toString());			
+			if (inst_resource.getContents().get(i).toString().contains(nameNormalized) && EMFOperationsUtil.checkIfAtributeAndValueExits(inst_resource.getContents().get(i), atributeName, (String)oldAtributeValue)) {
+				
 				Object obj = inst_resource.getContents().get(i);
 				// pillo la clase del objeto que deseo crear
 				Class cl = Class.forName(EMFOperationsUtil.getMetaModelPackage().getName() + "." + nameNormalized);
@@ -489,7 +479,7 @@ public class EMFOperations {
 		//}
 		
 	}
-	
+	//TODO hacer nuevas implementaciones especificando los valores del padre, una valores de atributo y otra con valores de relaciones
 	public void addElement(String nameElement, String atributeName, Object atributeValue,String parentNameElement,String relationName)
 			throws IllegalAccessException, ClassNotFoundException {
 
@@ -500,6 +490,7 @@ public class EMFOperations {
 		String parentNameElementNormalized=EMFOperationsUtil.normalizedString(parentNameElement);
 		String relationNameNormalized=EMFOperationsUtil.normalizedString(relationName);
 	
+		//TODO hacer una implementacion nueva de getElementFromResource de un solo elemento, que sea permisiva y permita tener contenido
 	    if (EMFOperationsUtil.getElementFromResource(parentNameElementNormalized,inst_resource)!= null) {
 		if (EMFOperationsUtil.getElementFromResource(nameNormalized, atributeName, atributeValue,inst_resource) == null) {
 

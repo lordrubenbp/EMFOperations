@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="ASCII"?>
 <xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:eMFProject="http://www.example.org/eMFProject">
-  <eMFProject:State name="pepe" actions="/1"/>
-  <eMFProject:Command name="juan"/>
+  <eMFProject:Statemachine>
+    <states name="pepito"/>
+  </eMFProject:Statemachine>
+  <eMFProject:Statemachine>
+    <states name="pepito2"/>
+  </eMFProject:Statemachine>
 </xmi:XMI>
