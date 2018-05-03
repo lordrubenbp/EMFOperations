@@ -146,7 +146,7 @@ public class Test {
 		//EMFOperationsUtil.showAllMetaModelData();
 		EMFOperations op= new EMFOperations();
 		
-		op.loadModelInstance("maquina/test5.xmi");
+		op.loadModelInstance("maquina/test10.xmi");
 		//try {
 			//op.dumpDataFromModelInstance("alumno",int.class,i,"id");
 		//} catch (IllegalArgumentException e) {
@@ -154,7 +154,9 @@ public class Test {
 			//e.printStackTrace();
 		//}
 		
-	
+	 
+		//op.addElement("statemachine");
+		op.addElement("state", "name", "pepe", "statemachine", "states");
 		//op.clearProperty("name");
 		//op.clearProperty("actions");
 		 //op.addReferenceToFocusedElement("command", "", "actions");

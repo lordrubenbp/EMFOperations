@@ -71,7 +71,7 @@ public class EMFOperations {
 		
 
 	}
-	//op.setFocusElement("elementName","parentElement","parentAtributeName","parentAtributeValue","relationName")
+
 	public void setFocusElement(String parentElement,String childElement,String childAtributeName,String childAtributeValue,String relationName) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, ClassNotFoundException 
 	{
 		
@@ -178,6 +178,7 @@ public class EMFOperations {
 
 	}
 
+	//TODO borra el elemento que esta en la referencia, quizas seria mas correcto que lo desasociarse
 	public void removeReferenceFromFocusedElement(String nameElement,String atributeName, String atributeValue, String referenceName)
 			throws ClassNotFoundException, IllegalAccessException, IllegalArgumentException, InvocationTargetException,
 			NoSuchMethodException, SecurityException, InstantiationException {
@@ -279,8 +280,7 @@ public class EMFOperations {
 							System.out.println(EMFOperationsMessages.ELEMENT_ALREADY_REFERENCED);
 						} else {
 							
-							//TODO esto funciona correctamente, implementar el el metodo de addReference que falta e implementar la misma
-							//restriccion en el delete reference
+							
 							if(EMFOperationsUtil.getUpperBound(elementName, referenceName)>list.size()||EMFOperationsUtil.getUpperBound(elementName, referenceName)==-1) 
 							{
 								list.add(EMFOperationsUtil.getElementFromResource(nameNormalized,atributeName, atributeValue,inst_resource));
@@ -311,7 +311,7 @@ public class EMFOperations {
 	}
 
 	
-
+	//TODO hacer una implementacion mas de delete para elementos que no tienen atributos
 	public void deleteElement(String nameElement, String atributeName, Object atributeValue) {
 		
 		EcoreUtil.delete((EObject) EMFOperationsUtil.getElementFromResource(nameElement, atributeName, atributeValue, inst_resource));
@@ -340,6 +340,7 @@ public class EMFOperations {
 		
 	}
 
+	//TODO cambiar a nuevo metodo de lectura de atributos
 	public void renameElement(String nameElement, String atributeName, Object oldAtributeValue, Object newAtributeValue)
 			throws ClassNotFoundException, IllegalAccessException, IllegalArgumentException, InvocationTargetException,
 			NoSuchMethodException, SecurityException {
@@ -500,7 +501,6 @@ public class EMFOperations {
 		String relationNameNormalized=EMFOperationsUtil.normalizedString(relationName);
 	
 	    if (EMFOperationsUtil.getElementFromResource(parentNameElementNormalized,inst_resource)!= null) {
-	    
 		if (EMFOperationsUtil.getElementFromResource(nameNormalized, atributeName, atributeValue,inst_resource) == null) {
 
 			if (EMFOperationsUtil.checkElementInsertion(nameElement, atributeName, atributeValue)) {
