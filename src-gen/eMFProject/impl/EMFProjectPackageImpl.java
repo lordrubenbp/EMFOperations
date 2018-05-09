@@ -242,8 +242,17 @@ public class EMFProjectPackageImpl extends EPackageImpl implements EMFProjectPac
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getStatemachine_States() {
+	public EReference getStatemachine_Commands() {
 		return (EReference) statemachineEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getStatemachine_States() {
+		return (EReference) statemachineEClass.getEStructuralFeatures().get(3);
 	}
 
 	/**
@@ -305,6 +314,7 @@ public class EMFProjectPackageImpl extends EPackageImpl implements EMFProjectPac
 		statemachineEClass = createEClass(STATEMACHINE);
 		createEReference(statemachineEClass, STATEMACHINE__EVENTS);
 		createEReference(statemachineEClass, STATEMACHINE__RESET_EVENTS);
+		createEReference(statemachineEClass, STATEMACHINE__COMMANDS);
 		createEReference(statemachineEClass, STATEMACHINE__STATES);
 
 		eventEClass = createEClass(EVENT);
@@ -364,6 +374,9 @@ public class EMFProjectPackageImpl extends EPackageImpl implements EMFProjectPac
 		initEReference(getStatemachine_ResetEvents(), this.getEvent(), null, "resetEvents", null, 0, -1,
 				Statemachine.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES,
 				!IS_UNSETTABLE, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getStatemachine_Commands(), this.getCommand(), null, "commands", null, 0, -1, Statemachine.class,
+				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE,
+				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getStatemachine_States(), this.getState(), null, "states", null, 0, -1, Statemachine.class,
 				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE,
 				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

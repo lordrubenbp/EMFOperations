@@ -10,11 +10,12 @@ import com.google.protobuf.Value;
 
 public class EMFDialogflowParse {
 	EMFOperations op = null;
+	public boolean modelLoadedCorrectly=true;
 
 	public EMFDialogflowParse() throws ClassNotFoundException, IllegalAccessException, IllegalArgumentException,
 			InvocationTargetException, NoSuchMethodException, SecurityException {
 		op = new EMFOperations();
-		op.loadModelInstance("maquina/testDialog.xmi");
+		//op.loadModelInstance("maquina/testDialog.xmi");
 	}
 
 	public int getNumberOfParameters(QueryResult queryResult) {
@@ -28,6 +29,16 @@ public class EMFDialogflowParse {
 		}
 		return count;
 	}
+	
+	public boolean getModelLoadedStatus() 
+	{
+		return modelLoadedCorrectly;
+		
+	}
+	public void resetModelLoadedStatus() 
+	{
+		 modelLoadedCorrectly=true;
+	}
 
 	public void parseCode(QueryResult queryResult, String actionCode)
 			throws ClassNotFoundException, IllegalAccessException, IllegalArgumentException, InvocationTargetException,
@@ -39,116 +50,104 @@ public class EMFDialogflowParse {
 		String atribute;
 		String value;
 		String parent;
+		String parentAtribute;
+		String parentValue;
+		String childElement;
+		String childAtribute;
+		String childValue;
 		String relationship;
 		String modelName;
 		String oldValue;
 		String newValue;
+		String childRelationship;
 
 		switch (actionCode) {
-		// addElement
+
+		case "CM":
+			modelName = queryResult.getParameters().getFieldsMap().get("modelName").getStringValue().toLowerCase();
+			modelLoadedCorrectly=op.createModelInstance("maquina/" + modelName + ".xmi");
+			break;
+		case "RAC":
+			return;
 		case "CE":
-
-			switch (numberOfParameters) {
-			case 2:
-				element = queryResult.getParameters().getFieldsMap().get("element").getStringValue().toLowerCase();
-				op.addElement(element);
-				break;
-			case 3:
-				element = queryResult.getParameters().getFieldsMap().get("element").getStringValue().toLowerCase();
-				atribute = queryResult.getParameters().getFieldsMap().get("atribute").getStringValue().toLowerCase();
-				value = queryResult.getParameters().getFieldsMap().get("value").getStringValue().toLowerCase();
-				op.addElement(element, atribute, value);
-				break;
-			case 5:
-				element = queryResult.getParameters().getFieldsMap().get("element").getStringValue().toLowerCase();
-				atribute = queryResult.getParameters().getFieldsMap().get("atribute").getStringValue().toLowerCase();
-				value = queryResult.getParameters().getFieldsMap().get("value").getStringValue().toLowerCase();
-				parent = queryResult.getParameters().getFieldsMap().get("parent").getStringValue().toLowerCase();
-				relationship = queryResult.getParameters().getFieldsMap().get("relationship").getStringValue()
-						.toLowerCase();
-
-				op.addElement(element, atribute, value, parent, relationship);
-				break;
-			}
-
-			break;
-		case "FE":
-			switch (numberOfParameters) {
-			case 2:
-				element = queryResult.getParameters().getFieldsMap().get("element").getStringValue().toLowerCase();
-				op.setFocusElement(element);
-				break;
-			case 3:
-				element = queryResult.getParameters().getFieldsMap().get("element").getStringValue().toLowerCase();
-				atribute = queryResult.getParameters().getFieldsMap().get("atribute").getStringValue().toLowerCase();
-				value = queryResult.getParameters().getFieldsMap().get("value").getStringValue().toLowerCase();
-				op.setFocusElement(element, atribute, value);
-				break;
-			case 5:
-				element = queryResult.getParameters().getFieldsMap().get("element").getStringValue().toLowerCase();
-				atribute = queryResult.getParameters().getFieldsMap().get("atribute").getStringValue().toLowerCase();
-				value = queryResult.getParameters().getFieldsMap().get("value").getStringValue().toLowerCase();
-				parent = queryResult.getParameters().getFieldsMap().get("parent").getStringValue().toLowerCase();
-				relationship = queryResult.getParameters().getFieldsMap().get("relationship").getStringValue()
-						.toLowerCase();
-				op.setFocusElement(parent, element, atribute, value, relationship);
-				
-				break;
-			}
-			break;
-		case "DE":
-			switch (numberOfParameters) {
-			case 2:
-				element = queryResult.getParameters().getFieldsMap().get("element").getStringValue().toLowerCase();
-				op.deleteElement(element);
-				break;
-			case 3:
-				element = queryResult.getParameters().getFieldsMap().get("element").getStringValue().toLowerCase();
-				atribute = queryResult.getParameters().getFieldsMap().get("atribute").getStringValue().toLowerCase();
-				value = queryResult.getParameters().getFieldsMap().get("value").getStringValue().toLowerCase();
-				op.deleteElement(element, atribute, value);
-				break;
-			case 5:
-				element = queryResult.getParameters().getFieldsMap().get("element").getStringValue().toLowerCase();
-				atribute = queryResult.getParameters().getFieldsMap().get("atribute").getStringValue().toLowerCase();
-				value = queryResult.getParameters().getFieldsMap().get("value").getStringValue().toLowerCase();
-				parent = queryResult.getParameters().getFieldsMap().get("parent").getStringValue().toLowerCase();
-				relationship = queryResult.getParameters().getFieldsMap().get("relationship").getStringValue()
-						.toLowerCase();
-				op.deleteElement(parent, element, atribute, value, relationship);
-				break;
-			}
-			break;
-		/*case "CE1":
-
-			element = queryResult.getParameters().getFieldsMap().get("element").getStringValue().toLowerCase();
-			System.out.println(element);
-			op.addElement(element);
-
-			break;
-		// addElement
-		case "CE3":
 
 			element = queryResult.getParameters().getFieldsMap().get("element").getStringValue().toLowerCase();
 			atribute = queryResult.getParameters().getFieldsMap().get("atribute").getStringValue().toLowerCase();
 			value = queryResult.getParameters().getFieldsMap().get("value").getStringValue().toLowerCase();
-
-			op.addElement(element, atribute, value);
-
+			relationship = queryResult.getParameters().getFieldsMap().get("relationship").getStringValue().toLowerCase();
+			parent = queryResult.getParameters().getFieldsMap().get("parent").getStringValue().toLowerCase();
+			parentAtribute=queryResult.getParameters().getFieldsMap().get("parentAtribute").getStringValue().toLowerCase();
+			parentValue=queryResult.getParameters().getFieldsMap().get("parentValue").getStringValue().toLowerCase();
+			childElement= queryResult.getParameters().getFieldsMap().get("childElement").getStringValue().toLowerCase();
+			childAtribute= queryResult.getParameters().getFieldsMap().get("childAtribute").getStringValue().toLowerCase();
+			childValue= queryResult.getParameters().getFieldsMap().get("childValue").getStringValue().toLowerCase();
+			childRelationship=queryResult.getParameters().getFieldsMap().get("childRelationship").getStringValue().toLowerCase();
+			
+			switch (numberOfParameters) {
+			case 4:
+				op.createElement(element);
+				break;
+			case 6:
+				op.createElementToFocusedElement(element, atribute, value, relationship);
+			case 5:
+				op.createElement(element, atribute, value);
+				break;
+			case 7:
+				op.createElement(element, atribute, value, parent, relationship);
+				break;
+			case 8:
+				op.createElement(element, atribute, value, parent, parentAtribute, parentValue, relationship);
+				break;
+			case 10:
+				op.createElement(element, atribute, value, parent, childElement, childAtribute, childValue,childRelationship,relationship);
+			}
+			op.saveModelInstance();
 			break;
-		// addElement
-		case "CE5":
-
+		case "FE":
+			
 			element = queryResult.getParameters().getFieldsMap().get("element").getStringValue().toLowerCase();
 			atribute = queryResult.getParameters().getFieldsMap().get("atribute").getStringValue().toLowerCase();
 			value = queryResult.getParameters().getFieldsMap().get("value").getStringValue().toLowerCase();
 			parent = queryResult.getParameters().getFieldsMap().get("parent").getStringValue().toLowerCase();
 			relationship = queryResult.getParameters().getFieldsMap().get("relationship").getStringValue()
 					.toLowerCase();
-
-			op.addElement(element, atribute, value, parent, relationship);
-
-			break;*/
+			
+			switch (numberOfParameters) {
+			case 2:
+				op.setFocusElement(element);
+				break;
+			case 3:
+				op.setFocusElement(element, atribute, value);
+				break;
+			case 5:
+				op.setFocusElement(parent, element, atribute, value, relationship);
+				
+				break;
+			}
+			op.saveModelInstance();
+			break;
+		case "DE":
+			
+			element = queryResult.getParameters().getFieldsMap().get("element").getStringValue().toLowerCase();
+			atribute = queryResult.getParameters().getFieldsMap().get("atribute").getStringValue().toLowerCase();
+			value = queryResult.getParameters().getFieldsMap().get("value").getStringValue().toLowerCase();
+			parent = queryResult.getParameters().getFieldsMap().get("parent").getStringValue().toLowerCase();
+			relationship = queryResult.getParameters().getFieldsMap().get("relationship").getStringValue().toLowerCase();
+			
+			switch (numberOfParameters) {
+			case 2:
+				op.deleteElement(element);
+				break;
+			case 3:
+				op.deleteElement(element, atribute, value);
+				break;
+			case 5:
+				op.deleteElement(parent, element, atribute, value, relationship);
+				break;
+			}
+			op.saveModelInstance();
+			break;
+	
 		// addReferenceToFocusedElement
 		case "ARFE":
 			element = queryResult.getParameters().getFieldsMap().get("element").getStringValue().toLowerCase();
@@ -157,6 +156,7 @@ public class EMFDialogflowParse {
 			relationship = queryResult.getParameters().getFieldsMap().get("relationship").getStringValue()
 					.toLowerCase();
 			op.addReferenceToFocusedElement(element, atribute, value, relationship);
+			op.saveModelInstance();
 
 			break;
 		// clearProperty
@@ -164,35 +164,16 @@ public class EMFDialogflowParse {
 			relationship = queryResult.getParameters().getFieldsMap().get("relationship").getStringValue()
 					.toLowerCase();
 			op.clearProperty(relationship);
+			op.saveModelInstance();
 			break;
 		// clearProperty
 		case "CP":
 			atribute = queryResult.getParameters().getFieldsMap().get("atribute").getStringValue().toLowerCase();
 			op.clearProperty(atribute);
+			op.saveModelInstance();
 			break;
 
-		/*case "DE1":
-			element = queryResult.getParameters().getFieldsMap().get("element").getStringValue().toLowerCase();
-			op.deleteElement(element);
-			break;
-		// deleteElement
-		case "DE3":
-			element = queryResult.getParameters().getFieldsMap().get("element").getStringValue().toLowerCase();
-			atribute = queryResult.getParameters().getFieldsMap().get("atribute").getStringValue().toLowerCase();
-			value = queryResult.getParameters().getFieldsMap().get("value").getStringValue().toLowerCase();
-
-			op.deleteElement(element, atribute, value);
-
-			break;
-		case "DE5":
-			element = queryResult.getParameters().getFieldsMap().get("element").getStringValue().toLowerCase();
-			atribute = queryResult.getParameters().getFieldsMap().get("atribute").getStringValue().toLowerCase();
-			value = queryResult.getParameters().getFieldsMap().get("value").getStringValue().toLowerCase();
-			parent = queryResult.getParameters().getFieldsMap().get("parent").getStringValue().toLowerCase();
-			relationship = queryResult.getParameters().getFieldsMap().get("relationship").getStringValue()
-					.toLowerCase();
-			op.deleteElement(parent, element, atribute, value, relationship);
-			break;*/
+		
 		// getPropertyFromFocusedElement
 		case "GPFE":
 			op.getPropertiesFromFocusedElement();
@@ -200,8 +181,7 @@ public class EMFDialogflowParse {
 		// loadModelInstance
 		case "LM":
 			modelName = queryResult.getParameters().getFieldsMap().get("modelName").getStringValue().toLowerCase();
-			op.loadModelInstance("maquina/" + modelName + ".xmi");
-
+			modelLoadedCorrectly=op.loadModelInstance("maquina/" + modelName + ".xmi");
 			break;
 
 		// removeReferenceFromFocusedElement
@@ -213,6 +193,7 @@ public class EMFDialogflowParse {
 			relationship = queryResult.getParameters().getFieldsMap().get("relationship").getStringValue()
 					.toLowerCase();
 			op.removeReferenceFromFocusedElement(element, atribute, value, relationship);
+			op.saveModelInstance();
 
 			break;
 		// renameElement
@@ -223,45 +204,20 @@ public class EMFDialogflowParse {
 			oldValue = queryResult.getParameters().getFieldsMap().get("oldValue").getStringValue().toLowerCase();
 			newValue = queryResult.getParameters().getFieldsMap().get("newValue").getStringValue().toLowerCase();
 			op.renameElement(element, atribute, oldValue, newValue);
+			op.saveModelInstance();
 
 			break;
 
 		// saveModelInstance
 		case "SM":
 			break;
-		// setFocusElement
-		/*case "SFE1":
-
-			element = queryResult.getParameters().getFieldsMap().get("element").getStringValue().toLowerCase();
-			op.setFocusElement(element);
-
-			break;
-		// setFocusElement
-		case "SFE3":
-
-			element = queryResult.getParameters().getFieldsMap().get("element").getStringValue().toLowerCase();
-			atribute = queryResult.getParameters().getFieldsMap().get("atribute").getStringValue().toLowerCase();
-			value = queryResult.getParameters().getFieldsMap().get("value").getStringValue().toLowerCase();
-			op.setFocusElement(element, atribute, value);
-			// op.getPropertiesFromFocusedElement();
-
-			break;
-		// setFocusElement
-		case "SFE5":
-
-			element = queryResult.getParameters().getFieldsMap().get("element").getStringValue().toLowerCase();
-			atribute = queryResult.getParameters().getFieldsMap().get("atribute").getStringValue().toLowerCase();
-			value = queryResult.getParameters().getFieldsMap().get("value").getStringValue().toLowerCase();
-			parent = queryResult.getParameters().getFieldsMap().get("parent").getStringValue().toLowerCase();
-			relationship = queryResult.getParameters().getFieldsMap().get("relationship").getStringValue()
-					.toLowerCase();
-			op.setFocusElement(parent, element, atribute, value, relationship);
-			break;*/
+		
 		// setProperty
 		case "SP":
 			atribute = queryResult.getParameters().getFieldsMap().get("atribute").getStringValue().toLowerCase();
 			value = queryResult.getParameters().getFieldsMap().get("value").getStringValue().toLowerCase();
 			op.setProperty(atribute, value);
+			op.saveModelInstance();
 			break;
 
 		case "EXIT":
@@ -270,7 +226,10 @@ public class EMFDialogflowParse {
 			System.out.println("action code no valido");
 			break;
 		}
-		op.saveModelInstance();
+		
+	
+		
+		
 	}
 
 }

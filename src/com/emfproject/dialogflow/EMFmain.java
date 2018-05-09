@@ -36,13 +36,12 @@ public class EMFmain {
 	public static String languageCode = "es-ES";// en-US
 	public static SessionName session = null;
 	public static SessionsClient sessionsClient = null;
-	public static EMFDialogflowParse parse=null;
-	
-
+	public static EMFDialogflowParse parse = null;
+	public static final String RESET_CONTEXT_QUERY="reset all context";
 	public static void main(String args[]) throws IOException {
 
 		try {
-			 parse= new EMFDialogflowParse();
+			parse = new EMFDialogflowParse();
 			sessionsClient = SessionsClient.create();
 			// Set the session name using the sessionId (UUID) and projectID (my-project-id)
 			session = SessionName.of(projectId, sessionId);
@@ -65,56 +64,77 @@ public class EMFmain {
 		System.out.format("Detected Intent: %s (confidence: %f)\n", queryResult.getIntent().getDisplayName(),
 				queryResult.getIntentDetectionConfidence());
 		System.out.format("Fulfillment Text: '%s'\n", queryResult.getFulfillmentText());
-		//System.out.format("Contexts: '%s'\n", queryResult.getOutputContextsList());
+		System.out.format("Contexts: '%s'\n", queryResult.getOutputContextsList());
 		// System.out.format("Parameters: '%s'\n",
 		// queryResult.getParameters().getFieldsMap());
 		System.out.format("Actions: '%s'\n", queryResult.getAction());
-		System.out.println("Parameters required: " + queryResult.ACTION_FIELD_NUMBER + "");
-		System.out.format("Parameters passed: '%s'\n", queryResult.getAllRequiredParamsPresent());
-		System.out.format("Parameters : '%s'\n", queryResult.getParameters());
-		//System.out.println("Parameters number passed: "+queryResult.getParameters().getFieldsMap());
-		
-		
+		// System.out.println("Parameters required: " + queryResult.ACTION_FIELD_NUMBER
+		// + "");
+		// System.out.format("Parameters passed: '%s'\n",
+		// queryResult.getAllRequiredParamsPresent());
+		// System.out.format("Parameters : '%s'\n", queryResult.getParameters());
+		// System.out.println("Parameters number passed:
+		// "+queryResult.getParameters().getFieldsMap());
+
 	}
 
-	public static void textClient() throws ClassNotFoundException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, InstantiationException {
+	public static void textClient() throws ClassNotFoundException, IllegalAccessException, IllegalArgumentException,
+			InvocationTargetException, NoSuchMethodException, SecurityException, InstantiationException {
 
 		Scanner sc = new Scanner(System.in);
-		Context context = Context.newBuilder()
+		/*Context context = Context.newBuilder()
 				.setName("projects/newagent-31936/agent/sessions/" + sessionId + "/contexts/_empty_")
 				.setLifespanCount(2).build();
-		QueryParameters parameters = QueryParameters.newBuilder().addContexts(context).build();
+		QueryParameters parameters = QueryParameters.newBuilder().addContexts(context).build();*/
+		String text;
 		while (true) {
-			System.out.print("Consulta: ");
-			String text = sc.nextLine();
+			
+			System.out.print("Query: ");
+			if (parse.getModelLoadedStatus()) {
+				text = sc.nextLine();
+			} else {
+				parse.resetModelLoadedStatus();
+				text = RESET_CONTEXT_QUERY;
+			}
 			Builder textInput = TextInput.newBuilder().setText(text).setLanguageCode(languageCode);
 
 			// Build the query with the TextInput
 			QueryInput queryInput = QueryInput.newBuilder().setText(textInput).build();
 
 			DetectIntentRequest request = DetectIntentRequest.newBuilder().setSession(session.toString())
-					.setQueryInput(queryInput).setQueryParams(parameters).build();
+					.setQueryInput(queryInput).build();
 			// Performs the detect intent request
 			DetectIntentResponse response = sessionsClient.detectIntent(request);
 
 			QueryResult queryResult = response.getQueryResult();
 
 			printQueryResultInfo(queryResult);
-			
+
 			if (queryResult.getAllRequiredParamsPresent()) {
 				parse.parseCode(queryResult, queryResult.getAction());
 			}
 
-			for (int i = 0; i < queryResult.getOutputContextsList().size(); i++) {
-				context = queryResult.getOutputContextsList().get(i);
-			}
+			// if(parse.getModelLoadedStatus()) {
+			// System.out.println("entre");
+			// for (int i = 0; i < queryResult.getOutputContextsList().size(); i++) {
+			// context = queryResult.getOutputContextsList().get(i);
+
+			// }
+			// }else
+			// {
+
+			// context = Context.newBuilder()
+			// .setName("projects/emf-api/agent/sessions/" + sessionId +
+			// "/contexts/model_load")
+			// .setLifespanCount(0).build();
+			// }
 		}
 
 	}
 
-	public static void audioClient()
-			throws LineUnavailableException, IOException, IllegalAccessException, ClassNotFoundException,
-			IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, InstantiationException {
+	public static void audioClient() throws LineUnavailableException, IOException, IllegalAccessException,
+			ClassNotFoundException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+			SecurityException, InstantiationException {
 		MicrophoneGestor micg = new MicrophoneGestor();
 		AudioEncoding audioEncoding = AudioEncoding.AUDIO_ENCODING_LINEAR_16;
 		int sampleRateHertz = 16000;

@@ -146,7 +146,7 @@ public class Test {
 		//EMFOperationsUtil.showAllMetaModelData();
 		EMFOperations op= new EMFOperations();
 		
-		op.loadModelInstance("maquina/test10.xmi");
+		op.loadModelInstance("maquina/test12.xmi");
 		//try {
 			//op.dumpDataFromModelInstance("alumno",int.class,i,"id");
 		//} catch (IllegalArgumentException e) {
@@ -154,14 +154,21 @@ public class Test {
 			//e.printStackTrace();
 		//}
 		//op.setFocusElement("statemachine");
+		//op.addElement("state","name","stado1");
+		//op.addElement("statemachine");
+		//op.addElement("state", "name", "test", "statemachine", "states");
+		op.createElement("command", "name", "test2", "statemachine", "state", "name", "test", "states","commands");
+		//op.getPropertiesFromFocusedElement();
+		//op.setFocusElement("statemachine");
+		//op.addElementToFocusedElement("state", "name", "juanito", "states");
 		//op.addReferenceToFocusedElement("state", "name", "pepe", "states");
-		op.setFocusElement("statemachine", "state", "name", "pepe", "states");
+		//op.setFocusElement("statemachine", "state", "name", "pepe", "states");
 		//op.addElement("statemachine");
 		//op.addElement("state", "name", "pepe", "statemachine", "states");
 		//op.clearProperty("name");
 		//op.clearProperty("actions");
 		 //op.addReferenceToFocusedElement("command", "", "actions");
-		 op.removeReferenceFromFocusedElement("state", "name","pepe","states");
+		 //op.removeReferenceFromFocusedElement("state", "name","pepe","states");
 		
 		//op.addElement("statemachine");
 		/*Tengo que añadir aparte del nombre de padre, un atributo y su valor*/

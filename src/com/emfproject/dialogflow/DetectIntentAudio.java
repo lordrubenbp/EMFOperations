@@ -138,7 +138,7 @@ public class DetectIntentAudio {
       }
       
 	  op.loadModelInstance("maquina/testDialog.xmi");
-	  op.addElement(element, atribute, value);
+	  op.createElement(element, atribute, value);
 	  //op.addElement("state","name","sleep2");
 	  op.saveModelInstance();
       /*for (Map.Entry<String, Value> entry : queryResult.getParameters().getFieldsMap().entrySet())

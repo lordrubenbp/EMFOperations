@@ -2,6 +2,9 @@ package com.emfproject;
 
 public class EMFOperationsMessages {
 	
+	public static final String MODEL_CREATED="the model has been created correctly";
+	public static final String MODEL_NOT_CREATED="the model has not been created";
+	public static final String MODEL_ALREADY_EXITS="the model already exists";
 	public static final String MODEL_NOT_EXITS ="The model did not previously exist";
 	public static final String MODEL_LOADED ="Model loaded correctly";
 	public static final String ELEMENT_TO_REMOVE_AS_REFERENCE_NOT_EXITS="The element to be deleted as a reference does not exist"; 
@@ -18,9 +21,9 @@ public class EMFOperationsMessages {
 	public static final String ELEMENT_ATRIBUTE_EXITS="Attribute corresponds to the element";
 	public static final String ATRIBUTE_VALUE_CORRECTLY="Value of the attribute is correct";
 	public static final String ELEMENT_TO_REMOVE_AS_REFERENCE_MINIMUM="the element/reference cannot be deleted, minimum number required would not be satisfied";
-	public static final String ELEMENT_TO_REMOVE_AS_REFERENCE_MAXIMUM="the element/reference cannot be deleted, maximum required number has been reached";
+	public static final String ELEMENT_TO_REFERENCE_AS_REFERENCE_MAXIMUM="the element/reference cannot be referenced, maximum required number has been reached";
+	public static final String ELEMENT_TO_CREATE_AS_REFERENCE_MAXIMUM="the element/reference cannot be created, maximum required number has been reached";
 	public static final String NODE_NOT_EXIST="Node element does not exist";
-	//Elemento nodo no existe
 	
 
 }

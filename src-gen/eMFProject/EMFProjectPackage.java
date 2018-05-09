@@ -115,13 +115,22 @@ public interface EMFProjectPackage extends EPackage {
 	int STATEMACHINE__RESET_EVENTS = 1;
 
 	/**
+	 * The feature id for the '<em><b>Commands</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int STATEMACHINE__COMMANDS = 2;
+
+	/**
 	 * The feature id for the '<em><b>States</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int STATEMACHINE__STATES = 2;
+	int STATEMACHINE__STATES = 3;
 
 	/**
 	 * The number of structural features of the '<em>Statemachine</em>' class.
@@ -130,7 +139,7 @@ public interface EMFProjectPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int STATEMACHINE_FEATURE_COUNT = 3;
+	int STATEMACHINE_FEATURE_COUNT = 4;
 
 	/**
 	 * The number of operations of the '<em>Statemachine</em>' class.
@@ -444,6 +453,17 @@ public interface EMFProjectPackage extends EPackage {
 	EReference getStatemachine_ResetEvents();
 
 	/**
+	 * Returns the meta object for the containment reference list '{@link eMFProject.Statemachine#getCommands <em>Commands</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Commands</em>'.
+	 * @see eMFProject.Statemachine#getCommands()
+	 * @see #getStatemachine()
+	 * @generated
+	 */
+	EReference getStatemachine_Commands();
+
+	/**
 	 * Returns the meta object for the containment reference list '{@link eMFProject.Statemachine#getStates <em>States</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -620,6 +640,14 @@ public interface EMFProjectPackage extends EPackage {
 		 * @generated
 		 */
 		EReference STATEMACHINE__RESET_EVENTS = eINSTANCE.getStatemachine_ResetEvents();
+
+		/**
+		 * The meta object literal for the '<em><b>Commands</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference STATEMACHINE__COMMANDS = eINSTANCE.getStatemachine_Commands();
 
 		/**
 		 * The meta object literal for the '<em><b>States</b></em>' containment reference list feature.

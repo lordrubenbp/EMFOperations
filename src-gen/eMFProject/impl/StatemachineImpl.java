@@ -2,6 +2,7 @@
  */
 package eMFProject.impl;
 
+import eMFProject.Command;
 import eMFProject.EMFProjectPackage;
 import eMFProject.Event;
 import eMFProject.State;
@@ -32,6 +33,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * <ul>
  *   <li>{@link eMFProject.impl.StatemachineImpl#getEvents <em>Events</em>}</li>
  *   <li>{@link eMFProject.impl.StatemachineImpl#getResetEvents <em>Reset Events</em>}</li>
+ *   <li>{@link eMFProject.impl.StatemachineImpl#getCommands <em>Commands</em>}</li>
  *   <li>{@link eMFProject.impl.StatemachineImpl#getStates <em>States</em>}</li>
  * </ul>
  *
@@ -56,6 +58,15 @@ public class StatemachineImpl extends MinimalEObjectImpl.Container implements St
 	 * @ordered
 	 */
 	protected EList<Event> resetEvents;
+	/**
+	 * The cached value of the '{@link #getCommands() <em>Commands</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getCommands()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<Command> commands;
 	/**
 	 * The cached value of the '{@link #getStates() <em>States</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
@@ -115,6 +126,19 @@ public class StatemachineImpl extends MinimalEObjectImpl.Container implements St
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EList<Command> getCommands() {
+		if (commands == null) {
+			commands = new EObjectContainmentEList<Command>(Command.class, this,
+					EMFProjectPackage.STATEMACHINE__COMMANDS);
+		}
+		return commands;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EList<State> getStates() {
 		if (states == null) {
 			states = new EObjectContainmentEList<State>(State.class, this, EMFProjectPackage.STATEMACHINE__STATES);
@@ -132,6 +156,8 @@ public class StatemachineImpl extends MinimalEObjectImpl.Container implements St
 		switch (featureID) {
 		case EMFProjectPackage.STATEMACHINE__EVENTS:
 			return ((InternalEList<?>) getEvents()).basicRemove(otherEnd, msgs);
+		case EMFProjectPackage.STATEMACHINE__COMMANDS:
+			return ((InternalEList<?>) getCommands()).basicRemove(otherEnd, msgs);
 		case EMFProjectPackage.STATEMACHINE__STATES:
 			return ((InternalEList<?>) getStates()).basicRemove(otherEnd, msgs);
 		}
@@ -150,6 +176,8 @@ public class StatemachineImpl extends MinimalEObjectImpl.Container implements St
 			return getEvents();
 		case EMFProjectPackage.STATEMACHINE__RESET_EVENTS:
 			return getResetEvents();
+		case EMFProjectPackage.STATEMACHINE__COMMANDS:
+			return getCommands();
 		case EMFProjectPackage.STATEMACHINE__STATES:
 			return getStates();
 		}
@@ -173,6 +201,10 @@ public class StatemachineImpl extends MinimalEObjectImpl.Container implements St
 			getResetEvents().clear();
 			getResetEvents().addAll((Collection<? extends Event>) newValue);
 			return;
+		case EMFProjectPackage.STATEMACHINE__COMMANDS:
+			getCommands().clear();
+			getCommands().addAll((Collection<? extends Command>) newValue);
+			return;
 		case EMFProjectPackage.STATEMACHINE__STATES:
 			getStates().clear();
 			getStates().addAll((Collection<? extends State>) newValue);
@@ -195,6 +227,9 @@ public class StatemachineImpl extends MinimalEObjectImpl.Container implements St
 		case EMFProjectPackage.STATEMACHINE__RESET_EVENTS:
 			getResetEvents().clear();
 			return;
+		case EMFProjectPackage.STATEMACHINE__COMMANDS:
+			getCommands().clear();
+			return;
 		case EMFProjectPackage.STATEMACHINE__STATES:
 			getStates().clear();
 			return;
@@ -214,6 +249,8 @@ public class StatemachineImpl extends MinimalEObjectImpl.Container implements St
 			return events != null && !events.isEmpty();
 		case EMFProjectPackage.STATEMACHINE__RESET_EVENTS:
 			return resetEvents != null && !resetEvents.isEmpty();
+		case EMFProjectPackage.STATEMACHINE__COMMANDS:
+			return commands != null && !commands.isEmpty();
 		case EMFProjectPackage.STATEMACHINE__STATES:
 			return states != null && !states.isEmpty();
 		}

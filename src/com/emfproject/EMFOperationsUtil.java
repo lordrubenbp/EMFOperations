@@ -77,12 +77,25 @@ public class EMFOperationsUtil {
 	public static boolean checkDataTypeInsertion(Object dataToInsert, String dataType) {
 		// TODO añadir todos los tipos de EDataType disponibles
 		try {
-			if (dataType.equals("EString")) {
+			switch(dataType) 
+			{
+			case "EString":
 				dataToInsert = (String) dataToInsert;
-			} else if (dataType.equals("EInt")) {
+				break;
+			case "EInt":
 				dataToInsert = Integer.valueOf((String) dataToInsert);
-
+				break;
+			case "EFloat":
+				dataToInsert = Float.valueOf((String) dataToInsert);
+				break;
+			case "EDouble":
+				dataToInsert = Double.valueOf((String) dataToInsert);
+				break;
+			case "EBoolean":
+				dataToInsert = Boolean.valueOf((String) dataToInsert);
+				break;
 			}
+			
 		} catch (Exception e) {
 			System.out.println(e);
 			return false;
@@ -121,10 +134,9 @@ public class EMFOperationsUtil {
 
 				if (myEclass.getName().toLowerCase().equals(nameElement.toLowerCase())) {
 					System.out.println(EMFOperationsMessages.ELEMENT_EXITS_METAMODEL);
-				
-					
+
 					for (int y = 0; y < myEclass.getEAllAttributes().size(); y++) {
-					 
+
 						// TODO aqui puedo obtener informacion de las referencias que tiene el elemento
 						// en el metamodelo
 						// System.out.println(myEclass.getEAllReferences());
@@ -171,15 +183,7 @@ public class EMFOperationsUtil {
 					return o;
 				}
 			}
-			/*
-			 * if (o.toString().contains(atributeName + ": " + atributeValue + ")") ||
-			 * o.toString().contains(atributeName + ": " + atributeValue + ",") ||
-			 * o.toString().contains("(" + atributeName + ": " + atributeValue + ",") &&
-			 * o.toString().contains(nameNormalized)) {
-			 * 
-			 * return o; }
-			 */
-			// System.out.println(o);
+			
 		}
 		return null;
 
@@ -282,17 +286,11 @@ public class EMFOperationsUtil {
 
 					// pillo los get
 					if (m[z].getName().equals("get" + referenceNameNormalized)) {
-						// si la referencia es multiple, devolvera un EList
-						// System.out.println(cl.getMethod(m[z].getName()).invoke(focusedElement).getClass().getSimpleName());
-						// no entras
+
 						if (m[z].getReturnType().getSimpleName().equals("EList")) {
-							// TODO me queda comprobar si el listado no es de * elementos, saber el numero
-							// de ellos para no hacer una inserccion por encima del valor
-							// esta info deberia tenerla en el metamodelo EPackage
 
 							list = (List) cl.getMethod(m[z].getName()).invoke(o);
 
-							// compruebo que el objeto que se quiere referencia ya no lo estuviese antes
 							if (list.contains(EMFOperationsUtil.getElementFromResource(childNormalized,
 									childAtributeName, childAtributeValue, resource))) {
 
