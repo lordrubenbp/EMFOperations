@@ -147,6 +147,7 @@ public class Test {
 		EMFOperations op= new EMFOperations();
 		
 		op.loadModelInstance("maquina/test12.xmi");
+		//op.createModelInstance("maquina/test12.xmi");
 		//try {
 			//op.dumpDataFromModelInstance("alumno",int.class,i,"id");
 		//} catch (IllegalArgumentException e) {
@@ -154,10 +155,11 @@ public class Test {
 			//e.printStackTrace();
 		//}
 		//op.setFocusElement("statemachine");
-		//op.addElement("state","name","stado1");
+		//op.createElement("state","name","stado1");
+		//op.renameElement("state", "name", "stado3", "stado44");
 		//op.addElement("statemachine");
 		//op.addElement("state", "name", "test", "statemachine", "states");
-		op.createElement("command", "name", "test2", "statemachine", "state", "name", "test", "states","commands");
+		//op.createElement("command", "name", "test2", "statemachine", "state", "name", "test", "states","commands");
 		//op.getPropertiesFromFocusedElement();
 		//op.setFocusElement("statemachine");
 		//op.addElementToFocusedElement("state", "name", "juanito", "states");

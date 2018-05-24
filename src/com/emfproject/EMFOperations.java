@@ -22,6 +22,7 @@ import eMFProject.EMFProjectFactory;
 //TODO añadir los nuevos mensajes necesarios
 //TODO control de errores
 //TODO añadir casuistica en el check de atributos, solo hay string e int// darle una pensada nueva a esta metodologia de comprobacion 
+//TODO rename element esta por hacer, tiene fallos
 
 public class EMFOperations {
 
@@ -47,36 +48,32 @@ public class EMFOperations {
 		projectPackageClass.getMethod("eClass").invoke(o);
 
 		// EMFProjectPackage.eINSTANCE.eClass()
-		//factory = EMFProjectFactory.eINSTANCE;
-		 
+		// factory = EMFProjectFactory.eINSTANCE;
 
 	}
-	
-	public boolean createModelInstance(String path) 
-	{
-		
+
+	public boolean createModelInstance(String path) {
+
 		try {
-		
-		File pathFile=new File(path);
-		
-		if(pathFile.exists()) 
-		{
-			System.out.println(EMFOperationsMessages.MODEL_ALREADY_EXITS);
-			return false;
-		}
-		inst_resourceset = new ResourceSetImpl();
 
-		Map extensionFactoryMap = Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap();
+			File pathFile = new File(path);
 
-		extensionFactoryMap.put("xmi", new XMIResourceFactoryImpl());
+			if (pathFile.exists()) {
+				System.out.println(EMFOperationsMessages.MODEL_ALREADY_EXITS);
+				return false;
+			}
+			inst_resourceset = new ResourceSetImpl();
 
-		inst_resource = (Resource) inst_resourceset.createResource(URI.createFileURI(path));
-		System.out.println(EMFOperationsMessages.MODEL_CREATED);
-		return true;
-		}catch(Exception e) 
-		{
+			Map extensionFactoryMap = Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap();
+
+			extensionFactoryMap.put("xmi", new XMIResourceFactoryImpl());
+
+			inst_resource = (Resource) inst_resourceset.createResource(URI.createFileURI(path));
+			System.out.println(EMFOperationsMessages.MODEL_CREATED);
+			return true;
+		} catch (Exception e) {
 			System.out.println(EMFOperationsMessages.MODEL_NOT_CREATED);
-			inst_resource=null;
+			inst_resource = null;
 			return false;
 		}
 	}
@@ -95,15 +92,16 @@ public class EMFOperations {
 
 			inst_resource.load(null);
 			System.out.println(EMFOperationsMessages.MODEL_LOADED);
+			EMFOperationsUtil.showAllMetaModelData();
 			return true;
 		} catch (IOException e) {
 
 			System.out.println(EMFOperationsMessages.MODEL_NOT_EXITS);
-			inst_resource=null;
+			inst_resource = null;
 			return false;
 		}
 		// System.out.println(inst_resource.getContents());
-		// EMFOperationsUtil.showAllModelData(inst_resource);
+	
 
 	}
 
@@ -116,6 +114,9 @@ public class EMFOperations {
 			focusedElement = EMFOperationsUtil.getElementFromResource(parentElement, childElement, childAtributeName,
 					childAtributeValue, relationName, inst_resource);
 
+		} else {
+			System.out.println(EMFOperationsMessages.ELEMENT_TO_FOCUS_NOT_EXITS);
+
 		}
 	}
 
@@ -125,6 +126,9 @@ public class EMFOperations {
 			focusedElement = EMFOperationsUtil.getElementFromResource(nameElement, atributeName, atributeValue,
 					inst_resource);
 
+		} else {
+			System.out.println(EMFOperationsMessages.ELEMENT_TO_FOCUS_NOT_EXITS);
+
 		}
 
 	}
@@ -133,6 +137,9 @@ public class EMFOperations {
 
 		if (EMFOperationsUtil.getElementFromResource(nameElement, inst_resource) != null) {
 			focusedElement = EMFOperationsUtil.getElementFromResource(nameElement, inst_resource);
+		} else {
+			System.out.println(EMFOperationsMessages.ELEMENT_TO_FOCUS_NOT_EXITS);
+
 		}
 
 	}
@@ -145,70 +152,8 @@ public class EMFOperations {
 	public void getPropertiesFromFocusedElement() throws ClassNotFoundException, IllegalAccessException,
 			IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
 		// System.out.println(focusedElement.getClass().getSimpleName());
-		String sanitalizeElementName[] = focusedElement.getClass().getSimpleName().split("Impl");
-		String elementName = sanitalizeElementName[0];
-		List list = null;
-		// System.out.println(elementName);
-		Class cl = Class.forName(EMFOperationsUtil.getMetaModelPackage().getName() + "." + elementName);
-		// pillo todas los metodos get y recorro uno a uno llamandolo con el objeto
-		Method[] m = cl.getDeclaredMethods();
-		// recorro los metodos
-		for (int z = 0; z < m.length; z++) {
-			// pillo los get
-			if (m[z].getName().contains("get")) {
+		if (focusedElement != null) {
 
-				String propertyName = m[z].getName().substring(3);
-				// System.out.println(cl.getMethod(m[z].getName()).invoke(focusedElement).getClass().getSimpleName());
-				// si el get devuelve un EList, es un conjunto de objetos del otro elemento
-				// referenciado
-				if (m[z].getReturnType().getSimpleName().equals("EList")) {
-					// lo convierto en lista
-					list = (List) cl.getMethod(m[z].getName()).invoke(focusedElement);
-					// recorro cada uno de los elementos
-					for (int y = 0; y < list.size(); y++) {
-						// System.out.println(list.get(y));
-
-						String sanitalizeReferenceName[] = list.get(y).getClass().getSimpleName().split("Impl");
-						String referenceName = sanitalizeReferenceName[0];
-						// System.out.println(referenceName);
-						// hago el mismo proceso que al inicio del metodo pero cada uno de estos objetos
-						Class rcl = Class
-								.forName(EMFOperationsUtil.getMetaModelPackage().getName() + "." + referenceName);
-
-						Method[] mr = rcl.getDeclaredMethods();
-
-						for (int x = 0; x < mr.length; x++) {
-							if (mr[x].getName().contains("get")) {
-								String subPropertyName = mr[x].getName().substring(3);
-								System.out.println(propertyName + ": " + referenceName + ": " + subPropertyName + ": "
-										+ rcl.getMethod(mr[x].getName()).invoke(list.get(y)));
-							}
-						}
-					}
-
-				} else {
-
-					System.out.println(propertyName + ": " + cl.getMethod(m[z].getName()).invoke(focusedElement));
-				}
-
-			}
-
-		}
-
-	}
-
-	public void removeReferenceFromFocusedElement(String nameElement, String atributeName, String atributeValue,
-			String referenceName) throws ClassNotFoundException, IllegalAccessException, IllegalArgumentException,
-			InvocationTargetException, NoSuchMethodException, SecurityException, InstantiationException {
-
-		String nameNormalized = EMFOperationsUtil.normalizedString(nameElement);
-		String referenceNameNormalized = EMFOperationsUtil.normalizedString(referenceName);
-
-		if (EMFOperationsUtil.getElementFromResource(nameNormalized, atributeName, atributeValue,
-				inst_resource) != null) {
-			// TODO chequear que el elemento es una referencia validad para el
-			// focusedElement
-			// System.out.println(focusedElement.getClass().getSimpleName());
 			String sanitalizeElementName[] = focusedElement.getClass().getSimpleName().split("Impl");
 			String elementName = sanitalizeElementName[0];
 			List list = null;
@@ -219,50 +164,121 @@ public class EMFOperations {
 			// recorro los metodos
 			for (int z = 0; z < m.length; z++) {
 				// pillo los get
+				if (m[z].getName().contains("get")) {
 
-				if (m[z].getName().equals("get" + referenceNameNormalized)) {
-					// System.out.println(m[z].getReturnType().getSimpleName());
-					// si la referencia es multiple, devolvera un EList
+					String propertyName = m[z].getName().substring(3);
 					// System.out.println(cl.getMethod(m[z].getName()).invoke(focusedElement).getClass().getSimpleName());
-					// no entras
+					// si el get devuelve un EList, es un conjunto de objetos del otro elemento
+					// referenciado
 					if (m[z].getReturnType().getSimpleName().equals("EList")) {
-
+						// lo convierto en lista
 						list = (List) cl.getMethod(m[z].getName()).invoke(focusedElement);
+						// recorro cada uno de los elementos
+						for (int y = 0; y < list.size(); y++) {
+							// System.out.println(list.get(y));
 
-						// compruebo que el objeto que se quiere referencia ya no lo estuviese antes
-						if (list.contains(EMFOperationsUtil.getElementFromResource(nameNormalized, atributeName,
-								atributeValue, inst_resource))) {
-							if (EMFOperationsUtil.getUpperBound(elementName, referenceName) < list.size()) {
-								EObject o = EcoreUtil
-										.copy((EObject) EMFOperationsUtil.getElementFromResource(nameNormalized,
-												atributeName, atributeValue, inst_resource));
-								list.remove(EMFOperationsUtil.getElementFromResource(nameNormalized, atributeName,
-										atributeValue, inst_resource));
-								// si me devuelve nulo significa que estaba contenido en otro, por el contrario
-								// si no es nulo es que estaba referenciado pero no contenido
-								if (EMFOperationsUtil.getElementFromResource(nameNormalized, atributeName,
-										atributeValue, inst_resource) == null) {
-									inst_resource.getContents().add(o);
+							String sanitalizeReferenceName[] = list.get(y).getClass().getSimpleName().split("Impl");
+							String referenceName = sanitalizeReferenceName[0];
+							// System.out.println(referenceName);
+							// hago el mismo proceso que al inicio del metodo pero cada uno de estos objetos
+							Class rcl = Class
+									.forName(EMFOperationsUtil.getMetaModelPackage().getName() + "." + referenceName);
+
+							Method[] mr = rcl.getDeclaredMethods();
+
+							for (int x = 0; x < mr.length; x++) {
+								if (mr[x].getName().contains("get")) {
+									String subPropertyName = mr[x].getName().substring(3);
+									System.out.println(propertyName + ": " + referenceName + ": " + subPropertyName
+											+ ": " + rcl.getMethod(mr[x].getName()).invoke(list.get(y)));
 								}
-							} else {
-								System.out.println(EMFOperationsMessages.ELEMENT_TO_REMOVE_AS_REFERENCE_MINIMUM);
 							}
-
 						}
-					}
-					// si la referencia es unica..
-					else if (m[z].getReturnType().getSimpleName().equals(nameNormalized)) {
-						Class ccl = Class
-								.forName(EMFOperationsUtil.getMetaModelPackage().getName() + "." + nameNormalized);
-						Object[] parameters = { null };
-						cl.getMethod("set" + referenceNameNormalized, ccl).invoke(focusedElement, parameters);
+
+					} else {
+
+						System.out.println(propertyName + ": " + cl.getMethod(m[z].getName()).invoke(focusedElement));
 					}
 
 				}
 
 			}
 		} else {
-			System.out.println(EMFOperationsMessages.ELEMENT_TO_REMOVE_AS_REFERENCE_NOT_EXITS);
+			System.out.println(EMFOperationsMessages.NOT_FOCUS_ELEMENT);
+		}
+
+	}
+
+	public void removeReferenceFromFocusedElement(String nameElement, String atributeName, String atributeValue,
+			String referenceName) throws ClassNotFoundException, IllegalAccessException, IllegalArgumentException,
+			InvocationTargetException, NoSuchMethodException, SecurityException, InstantiationException {
+
+		if (focusedElement != null) {
+			String nameNormalized = EMFOperationsUtil.normalizedString(nameElement);
+			String referenceNameNormalized = EMFOperationsUtil.normalizedString(referenceName);
+
+			if (EMFOperationsUtil.getElementFromResource(nameNormalized, atributeName, atributeValue,
+					inst_resource) != null) {
+				// TODO chequear que el elemento es una referencia validad para el
+				// focusedElement
+				// System.out.println(focusedElement.getClass().getSimpleName());
+				String sanitalizeElementName[] = focusedElement.getClass().getSimpleName().split("Impl");
+				String elementName = sanitalizeElementName[0];
+				List list = null;
+				// System.out.println(elementName);
+				Class cl = Class.forName(EMFOperationsUtil.getMetaModelPackage().getName() + "." + elementName);
+				// pillo todas los metodos get y recorro uno a uno llamandolo con el objeto
+				Method[] m = cl.getDeclaredMethods();
+				// recorro los metodos
+				for (int z = 0; z < m.length; z++) {
+					// pillo los get
+
+					if (m[z].getName().equals("get" + referenceNameNormalized)) {
+						// System.out.println(m[z].getReturnType().getSimpleName());
+						// si la referencia es multiple, devolvera un EList
+						// System.out.println(cl.getMethod(m[z].getName()).invoke(focusedElement).getClass().getSimpleName());
+						// no entras
+						if (m[z].getReturnType().getSimpleName().equals("EList")) {
+
+							list = (List) cl.getMethod(m[z].getName()).invoke(focusedElement);
+
+							// compruebo que el objeto que se quiere referencia ya no lo estuviese antes
+							if (list.contains(EMFOperationsUtil.getElementFromResource(nameNormalized, atributeName,
+									atributeValue, inst_resource))) {
+								if (EMFOperationsUtil.getUpperBound(elementName, referenceName) < list.size()) {
+									EObject o = EcoreUtil
+											.copy((EObject) EMFOperationsUtil.getElementFromResource(nameNormalized,
+													atributeName, atributeValue, inst_resource));
+									list.remove(EMFOperationsUtil.getElementFromResource(nameNormalized, atributeName,
+											atributeValue, inst_resource));
+									// si me devuelve nulo significa que estaba contenido en otro, por el contrario
+									// si no es nulo es que estaba referenciado pero no contenido
+									if (EMFOperationsUtil.getElementFromResource(nameNormalized, atributeName,
+											atributeValue, inst_resource) == null) {
+										inst_resource.getContents().add(o);
+									}
+								} else {
+									System.out.println(EMFOperationsMessages.ELEMENT_TO_REMOVE_AS_REFERENCE_MINIMUM);
+								}
+
+							}
+						}
+						// si la referencia es unica..
+						else if (m[z].getReturnType().getSimpleName().equals(nameNormalized)) {
+							Class ccl = Class
+									.forName(EMFOperationsUtil.getMetaModelPackage().getName() + "." + nameNormalized);
+							Object[] parameters = { null };
+							cl.getMethod("set" + referenceNameNormalized, ccl).invoke(focusedElement, parameters);
+						}
+
+					}
+
+				}
+			} else {
+				System.out.println(EMFOperationsMessages.ELEMENT_TO_REMOVE_AS_REFERENCE_NOT_EXITS);
+			}
+		} else {
+			System.out.println(EMFOperationsMessages.NOT_FOCUS_ELEMENT);
 		}
 	}
 
@@ -284,63 +300,70 @@ public class EMFOperations {
 	public void createElementToFocusedElement(String nameElement, String atributeName, String atributeValue,
 			String referenceName) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException,
 			NoSuchMethodException, SecurityException, ClassNotFoundException {
-		String nameNormalized = EMFOperationsUtil.normalizedString(nameElement);
-		String referenceNameNormalized = EMFOperationsUtil.normalizedString(referenceName);
-		List list = null;
+		if (focusedElement != null) {
+			String nameNormalized = EMFOperationsUtil.normalizedString(nameElement);
+			String referenceNameNormalized = EMFOperationsUtil.normalizedString(referenceName);
+			List list = null;
 
-		if (EMFOperationsUtil.getElementFromResource(nameNormalized, atributeName, atributeValue,
-				inst_resource) == null) {
-			Object oldFocusElement = null;
-			String sanitalizeElementName[] = focusedElement.getClass().getSimpleName().split("Impl");
-			String elementName = sanitalizeElementName[0];
-			// System.out.println(elementName);
-			Class cl = Class.forName(EMFOperationsUtil.getMetaModelPackage().getName() + "." + elementName);
-			// pillo todas los metodos get y recorro uno a uno llamandolo con el objeto
-			Method[] m = cl.getDeclaredMethods();
-			// recorro los metodos
-			for (int z = 0; z < m.length; z++) {
+			if (EMFOperationsUtil.getElementFromResource(nameNormalized, atributeName, atributeValue,
+					inst_resource) == null) {
+				Object oldFocusElement = null;
+				String sanitalizeElementName[] = focusedElement.getClass().getSimpleName().split("Impl");
+				String elementName = sanitalizeElementName[0];
+				// System.out.println(elementName);
+				Class cl = Class.forName(EMFOperationsUtil.getMetaModelPackage().getName() + "." + elementName);
+				// pillo todas los metodos get y recorro uno a uno llamandolo con el objeto
+				Method[] m = cl.getDeclaredMethods();
+				// recorro los metodos
+				for (int z = 0; z < m.length; z++) {
 
-				if (m[z].getName().equals("get" + referenceNameNormalized)) {
+					if (m[z].getName().equals("get" + referenceNameNormalized)) {
 
-					if (m[z].getReturnType().getSimpleName().equals("EList")) {
+						if (m[z].getReturnType().getSimpleName().equals("EList")) {
 
-						list = (List) cl.getMethod(m[z].getName()).invoke(focusedElement);
+							list = (List) cl.getMethod(m[z].getName()).invoke(focusedElement);
 
-						if (EMFOperationsUtil.getUpperBound(elementName, referenceName) > list.size()
-								|| EMFOperationsUtil.getUpperBound(elementName, referenceName) == -1) {
+							if (EMFOperationsUtil.getUpperBound(elementName, referenceName) > list.size()
+									|| EMFOperationsUtil.getUpperBound(elementName, referenceName) == -1) {
+								oldFocusElement = focusedElement;
+								createElement(nameNormalized, atributeName, atributeValue);
+								focusedElement = oldFocusElement;
+								list.add(EMFOperationsUtil.getElementFromResource(nameNormalized, atributeName,
+										atributeValue, inst_resource));
+								System.out.println(EMFOperationsMessages.NEW_ELEMENT_ADDED_CORRECTLY);
+							} else {
+								System.out.println(EMFOperationsMessages.ELEMENT_TO_CREATE_AS_REFERENCE_MAXIMUM);
+							}
+
+						}
+						// si la referencia es unica..
+						else if (m[z].getReturnType().getSimpleName().equals(nameNormalized)) {
+
+							Class ccl = Class
+									.forName(EMFOperationsUtil.getMetaModelPackage().getName() + "." + nameNormalized);
+
+							// debo guardar el objeto que es focus antes de hacer el addElement, porque este
+							// cambiara el objeto focus
 							oldFocusElement = focusedElement;
 							createElement(nameNormalized, atributeName, atributeValue);
 							focusedElement = oldFocusElement;
-							list.add(EMFOperationsUtil.getElementFromResource(nameNormalized, atributeName,
-									atributeValue, inst_resource));
-						} else {
-							System.out.println(EMFOperationsMessages.ELEMENT_TO_CREATE_AS_REFERENCE_MAXIMUM);
+							// System.out.println(ccl.getName());
+							// System.out.println(focusedElement.getClass().getName());
+							cl.getMethod("set" + referenceNameNormalized, ccl).invoke(focusedElement,
+									ccl.cast(EMFOperationsUtil.getElementFromResource(nameNormalized, atributeName,
+											atributeValue, inst_resource)));
+							System.out.println(EMFOperationsMessages.NEW_ELEMENT_ADDED_CORRECTLY);
 						}
 
 					}
-					// si la referencia es unica..
-					else if (m[z].getReturnType().getSimpleName().equals(nameNormalized)) {
-
-						Class ccl = Class
-								.forName(EMFOperationsUtil.getMetaModelPackage().getName() + "." + nameNormalized);
-
-						// debo guardar el objeto que es focus antes de hacer el addElement, porque este
-						// cambiara el objeto focus
-						oldFocusElement = focusedElement;
-						createElement(nameNormalized, atributeName, atributeValue);
-						focusedElement = oldFocusElement;
-						System.out.println(ccl.getName());
-						System.out.println(focusedElement.getClass().getName());
-						cl.getMethod("set" + referenceNameNormalized, ccl).invoke(focusedElement,
-								ccl.cast(EMFOperationsUtil.getElementFromResource(nameNormalized, atributeName,
-										atributeValue, inst_resource)));
-					}
 
 				}
+			} else {
 
+				System.out.println(EMFOperationsMessages.NEW_ELEMENT_ALREADY_EXITS);
 			}
 		} else {
-			// System.out.println(EMFOperationsMessages.ELEMENT_TO_ADD_AS_REFERENCE_NOT_EXITS);
+			System.out.println(EMFOperationsMessages.NOT_FOCUS_ELEMENT);
 		}
 
 	}
@@ -348,129 +371,217 @@ public class EMFOperations {
 	public void addReferenceToFocusedElement(String nameElement, String atributeName, String atributeValue,
 			String referenceName) throws ClassNotFoundException, IllegalAccessException, IllegalArgumentException,
 			InvocationTargetException, NoSuchMethodException, SecurityException {
-		String nameNormalized = EMFOperationsUtil.normalizedString(nameElement);
-		String referenceNameNormalized = EMFOperationsUtil.normalizedString(referenceName);
-		// dependiendo si es referencia o es un hijo del elemento me devolvera un objeto
-		// lista u otro, por eso se usa la clase generica List que engloba a todas
-		List list = null;
-		// compruebo que el elemento que quiero añadir existe
-		if (EMFOperationsUtil.getElementFromResource(nameNormalized, atributeName, atributeValue,
-				inst_resource) != null) {
-			// TODO chequear que el elemento es una referencia validad para el
-			// focusedElement
-			// System.out.println(focusedElement.getClass().getSimpleName());
-			String sanitalizeElementName[] = focusedElement.getClass().getSimpleName().split("Impl");
-			String elementName = sanitalizeElementName[0];
-			// System.out.println(elementName);
-			Class cl = Class.forName(EMFOperationsUtil.getMetaModelPackage().getName() + "." + elementName);
-			// pillo todas los metodos get y recorro uno a uno llamandolo con el objeto
-			Method[] m = cl.getDeclaredMethods();
-			// recorro los metodos
-			for (int z = 0; z < m.length; z++) {
-				// pillo los get
-				if (m[z].getName().equals("get" + referenceNameNormalized)) {
-					// si la referencia es multiple, devolvera un EList
-					// System.out.println(cl.getMethod(m[z].getName()).invoke(focusedElement).getClass().getSimpleName());
-					// no entras
-					if (m[z].getReturnType().getSimpleName().equals("EList")) {
-						// TODO me queda comprobar si el listado no es de * elementos, saber el numero
-						// de ellos para no hacer una inserccion por encima del valor
-						// esta info deberia tenerla en el metamodelo EPackage
+		if (focusedElement != null) {
+			String nameNormalized = EMFOperationsUtil.normalizedString(nameElement);
+			String referenceNameNormalized = EMFOperationsUtil.normalizedString(referenceName);
+			// dependiendo si es referencia o es un hijo del elemento me devolvera un objeto
+			// lista u otro, por eso se usa la clase generica List que engloba a todas
+			List list = null;
+			// compruebo que el elemento que quiero añadir existe
+			if (EMFOperationsUtil.getElementFromResource(nameNormalized, atributeName, atributeValue,
+					inst_resource) != null) {
+				// TODO chequear que el elemento es una referencia validad para el
+				// focusedElement
+				// System.out.println(focusedElement.getClass().getSimpleName());
+				String sanitalizeElementName[] = focusedElement.getClass().getSimpleName().split("Impl");
+				String elementName = sanitalizeElementName[0];
+				// System.out.println(elementName);
+				Class cl = Class.forName(EMFOperationsUtil.getMetaModelPackage().getName() + "." + elementName);
+				// pillo todas los metodos get y recorro uno a uno llamandolo con el objeto
+				Method[] m = cl.getDeclaredMethods();
+				// recorro los metodos
+				for (int z = 0; z < m.length; z++) {
+					// pillo los get
+					if (m[z].getName().equals("get" + referenceNameNormalized)) {
+						// si la referencia es multiple, devolvera un EList
+						// System.out.println(cl.getMethod(m[z].getName()).invoke(focusedElement).getClass().getSimpleName());
+						// no entras
+						if (m[z].getReturnType().getSimpleName().equals("EList")) {
+							// TODO me queda comprobar si el listado no es de * elementos, saber el numero
+							// de ellos para no hacer una inserccion por encima del valor
+							// esta info deberia tenerla en el metamodelo EPackage
 
-						list = (List) cl.getMethod(m[z].getName()).invoke(focusedElement);
+							list = (List) cl.getMethod(m[z].getName()).invoke(focusedElement);
 
-						// compruebo que el objeto que se quiere referencia ya no lo estuviese antes
-						if (list.contains(EMFOperationsUtil.getElementFromResource(nameNormalized, atributeName,
-								atributeValue, inst_resource))) {
-							System.out.println(EMFOperationsMessages.ELEMENT_ALREADY_REFERENCED);
-						} else {
-
-							if (EMFOperationsUtil.getUpperBound(elementName, referenceName) > list.size()
-									|| EMFOperationsUtil.getUpperBound(elementName, referenceName) == -1) {
-								list.add(EMFOperationsUtil.getElementFromResource(nameNormalized, atributeName,
-										atributeValue, inst_resource));
+							// compruebo que el objeto que se quiere referencia ya no lo estuviese antes
+							if (list.contains(EMFOperationsUtil.getElementFromResource(nameNormalized, atributeName,
+									atributeValue, inst_resource))) {
+								System.out.println(EMFOperationsMessages.ELEMENT_ALREADY_REFERENCED);
 							} else {
-								System.out.println(EMFOperationsMessages.ELEMENT_TO_REFERENCE_AS_REFERENCE_MAXIMUM);
+
+								if (EMFOperationsUtil.getUpperBound(elementName, referenceName) > list.size()
+										|| EMFOperationsUtil.getUpperBound(elementName, referenceName) == -1) {
+									list.add(EMFOperationsUtil.getElementFromResource(nameNormalized, atributeName,
+											atributeValue, inst_resource));
+								} else {
+									System.out.println(EMFOperationsMessages.ELEMENT_TO_REFERENCE_AS_REFERENCE_MAXIMUM);
+								}
+
 							}
-
 						}
-					}
-					// si la referencia es unica..
-					else if (m[z].getReturnType().getSimpleName().equals(nameNormalized)) {
+						// si la referencia es unica..
+						else if (m[z].getReturnType().getSimpleName().equals(nameNormalized)) {
 
-						Class ccl = Class
-								.forName(EMFOperationsUtil.getMetaModelPackage().getName() + "." + nameNormalized);
+							Class ccl = Class
+									.forName(EMFOperationsUtil.getMetaModelPackage().getName() + "." + nameNormalized);
 
-						cl.getMethod("set" + referenceNameNormalized, ccl).invoke(focusedElement, EMFOperationsUtil
-								.getElementFromResource(nameNormalized, atributeName, atributeValue, inst_resource));
+							cl.getMethod("set" + referenceNameNormalized, ccl).invoke(focusedElement,
+									EMFOperationsUtil.getElementFromResource(nameNormalized, atributeName,
+											atributeValue, inst_resource));
+						}
+
 					}
 
 				}
-
+			} else {
+				System.out.println(EMFOperationsMessages.ELEMENT_TO_ADD_AS_REFERENCE_NOT_EXITS);
 			}
 		} else {
-			System.out.println(EMFOperationsMessages.ELEMENT_TO_ADD_AS_REFERENCE_NOT_EXITS);
+			System.out.println(EMFOperationsMessages.NOT_FOCUS_ELEMENT);
 		}
 
 	}
 
 	public void deleteElement(String nameElement) {
-		EcoreUtil.delete((EObject) EMFOperationsUtil.getElementFromResource(nameElement, inst_resource));
-		System.out.println(EMFOperationsMessages.ELEMENT_DELETED);
+		if (EMFOperationsUtil.getElementFromResource(nameElement, inst_resource) != null) {
+			EcoreUtil.delete((EObject) EMFOperationsUtil.getElementFromResource(nameElement, inst_resource));
+			System.out.println(EMFOperationsMessages.ELEMENT_DELETED);
+		} else {
+			System.out.println(EMFOperationsMessages.ELEMENT_TO_DELETE_NOT_EXITS);
+		}
 	}
 
 	public void deleteElement(String nameElement, String atributeName, Object atributeValue) {
 
-		EcoreUtil.delete((EObject) EMFOperationsUtil.getElementFromResource(nameElement, atributeName, atributeValue,
-				inst_resource));
-		System.out.println(EMFOperationsMessages.ELEMENT_DELETED);
+		if (EMFOperationsUtil.getElementFromResource(nameElement, atributeName, atributeValue, inst_resource) != null) {
+			EcoreUtil.delete((EObject) EMFOperationsUtil.getElementFromResource(nameElement, atributeName,
+					atributeValue, inst_resource));
+			System.out.println(EMFOperationsMessages.ELEMENT_DELETED);
+		} else {
+			System.out.println(EMFOperationsMessages.ELEMENT_TO_DELETE_NOT_EXITS);
+		}
 
 	}
 
 	public void deleteElement(String parentElement, String childElement, String childAtributeName,
 			String childAtributeValue, String relationName) throws IllegalAccessException, IllegalArgumentException,
 			InvocationTargetException, NoSuchMethodException, SecurityException, ClassNotFoundException {
-		EcoreUtil.delete((EObject) EMFOperationsUtil.getElementFromResource(parentElement, childElement,
-				childAtributeName, childAtributeValue, relationName, inst_resource));
-		System.out.println(EMFOperationsMessages.ELEMENT_DELETED);
+		if (EMFOperationsUtil.getElementFromResource(parentElement, childElement, childAtributeName, childAtributeValue,
+				relationName, inst_resource) != null) {
+			EcoreUtil.delete((EObject) EMFOperationsUtil.getElementFromResource(parentElement, childElement,
+					childAtributeName, childAtributeValue, relationName, inst_resource));
+			System.out.println(EMFOperationsMessages.ELEMENT_DELETED);
+		} else {
+			System.out.println(EMFOperationsMessages.ELEMENT_TO_DELETE_NOT_EXITS);
+		}
 	}
 
 	public void renameElement(String nameElement, String atributeName, Object oldAtributeValue, Object newAtributeValue)
 			throws ClassNotFoundException, IllegalAccessException, IllegalArgumentException, InvocationTargetException,
 			NoSuchMethodException, SecurityException {
-		String nameNormalized = EMFOperationsUtil.normalizedString(nameElement);
-		String atributeNameNormalized = EMFOperationsUtil.normalizedString(atributeName);
-		for (int i = 0; i < inst_resource.getContents().size(); i++) {
-			// System.out.println(inst_resource.getContents().get(i).toString());
-			if (inst_resource.getContents().get(i).toString().contains(nameNormalized)
-					&& EMFOperationsUtil.checkIfAtributeAndValueExits(inst_resource.getContents().get(i), atributeName,
-							(String) oldAtributeValue)) {
 
-				Object obj = inst_resource.getContents().get(i);
-				// pillo la clase del objeto que deseo crear
-				Class cl = Class.forName(EMFOperationsUtil.getMetaModelPackage().getName() + "." + nameNormalized);
+		if (EMFOperationsUtil.getElementFromResource(nameElement, atributeName, oldAtributeValue,
+				inst_resource) != null) {
 
-				cl.getMethod("set" + atributeNameNormalized, String.class).invoke(obj, (String) newAtributeValue);
+			String nameNormalized = EMFOperationsUtil.normalizedString(nameElement);
+			String atributeNameNormalized = EMFOperationsUtil.normalizedString(atributeName);
+			Class atributeClassType = null;
+
+			Object obj = EMFOperationsUtil.getElementFromResource(nameElement, atributeName, oldAtributeValue,
+					inst_resource);
+			Class cl = Class.forName(EMFOperationsUtil.getMetaModelPackage().getName() + "." + nameNormalized);
+			Method[] m = cl.getDeclaredMethods();
+			for (int z = 0; z < m.length; z++) {
+
+				if (m[z].getParameterCount() > 0) {
+
+					if (m[z].getName().equals("set" + atributeNameNormalized)) {
+
+						Class<?>[] pType = m[z].getParameterTypes();
+
+						for (int i = 0; i < pType.length; i++) {
+
+							atributeClassType = pType[i];
+
+							newAtributeValue = EMFOperationsUtil.castAtributeValue(pType[i].toString(),
+									newAtributeValue);
+
+						}
+					}
+				}
 			}
+			cl.getMethod("set" + atributeNameNormalized, atributeClassType).invoke(obj, newAtributeValue);
+
+			System.out.println(EMFOperationsMessages.PROPERTY_CHANGED_CORRECTLY);
+		} else {
+			System.out.println(EMFOperationsMessages.PROPERTY_NOT_CHANGED);
 		}
+
 	}
 
 	public void setProperty(String atributeName, Object atributeValue)
 			throws ClassNotFoundException, IllegalAccessException, IllegalArgumentException, InvocationTargetException,
 			NoSuchMethodException, SecurityException {
-		Class atributeClassType = null;
-		String atributeNameNormalized = EMFOperationsUtil.normalizedString(atributeName);
-		// tengo que meter chequeadores de que tanto el atributo como el valor existen
-		String sanitalizeElementName[] = focusedElement.getClass().getSimpleName().split("Impl");
-		String elementName = sanitalizeElementName[0];
-		// System.out.println(elementName);
-		if (EMFOperationsUtil.checkElementInsertion(elementName, atributeName, atributeValue)) {
+		if (focusedElement != null) {
+			Class atributeClassType = null;
+			String atributeNameNormalized = EMFOperationsUtil.normalizedString(atributeName);
+			// tengo que meter chequeadores de que tanto el atributo como el valor existen
+			String sanitalizeElementName[] = focusedElement.getClass().getSimpleName().split("Impl");
+			String elementName = sanitalizeElementName[0];
+			// System.out.println(elementName);
+			if (EMFOperationsUtil.checkElementInsertion(elementName, atributeName, atributeValue)) {
+
+				Class cl = Class.forName(EMFOperationsUtil.getMetaModelPackage().getName() + "." + elementName);
+				Method[] m = cl.getDeclaredMethods();
+				// recorro los metodos
+				for (int z = 0; z < m.length; z++) {
+					// System.out.println(m[z].getParameterCount());
+					// filtro por aquellos que tienen un parametro de entrada
+					if (m[z].getParameterCount() > 0) {
+						// filtro por aquel que es un set y encima el nombre es el del parametro mio
+						if (m[z].getName().equals("set" + atributeNameNormalized)) {
+							// pilla la clase del parametro/s que recibe el metodo
+							Class<?>[] pType = m[z].getParameterTypes();
+							// Type[] gpType = m[z].getGenericParameterTypes();
+							// recorro todas las clases de los parametros de entrada de mi metodo
+							for (int i = 0; i < pType.length; i++) {
+
+								// System.out.println("ParameterType "+pType[i].toString());
+								// capturo la clase de mi atributo
+								atributeClassType = pType[i];
+								// convierto mi objeto generico que era el atributeValue, en un objeto
+								// especifico en base a la clase del atributo capturada
+								atributeValue = EMFOperationsUtil.castAtributeValue(pType[i].toString(), atributeValue);
+
+							}
+						}
+					}
+				}
+				cl.getMethod("set" + atributeNameNormalized, atributeClassType).invoke(focusedElement, atributeValue);
+				System.out.println(EMFOperationsMessages.PROPERTY_ADDED_CORRECTLY);
+			} else {
+				System.out.println(EMFOperationsMessages.PROPERTY_NOT_ADDED);
+			}
+		} else {
+			System.out.println(EMFOperationsMessages.NOT_FOCUS_ELEMENT);
+		}
+	}
+
+	public void clearProperty(String atributeName) throws IllegalAccessException, IllegalArgumentException,
+			InvocationTargetException, NoSuchMethodException, SecurityException, ClassNotFoundException {
+		if (focusedElement != null) {
+			Class atributeClassType = null;
+			String atributeNameNormalized = EMFOperationsUtil.normalizedString(atributeName);
+			// tengo que meter chequeadores de que tanto el atributo como el valor existen
+			String sanitalizeElementName[] = focusedElement.getClass().getSimpleName().split("Impl");
+			String elementName = sanitalizeElementName[0];
+			List list = null;
 
 			Class cl = Class.forName(EMFOperationsUtil.getMetaModelPackage().getName() + "." + elementName);
 			Method[] m = cl.getDeclaredMethods();
 			// recorro los metodos
 			for (int z = 0; z < m.length; z++) {
-				// System.out.println(m[z].getParameterCount());
+
 				// filtro por aquellos que tienen un parametro de entrada
 				if (m[z].getParameterCount() > 0) {
 					// filtro por aquel que es un set y encima el nombre es el del parametro mio
@@ -486,66 +597,28 @@ public class EMFOperations {
 							atributeClassType = pType[i];
 							// convierto mi objeto generico que era el atributeValue, en un objeto
 							// especifico en base a la clase del atributo capturada
-							atributeValue = EMFOperationsUtil.castAtributeValue(pType[i].toString(), atributeValue);
+
+						}
+
+						Object[] parameters = { null };
+						cl.getMethod("set" + atributeNameNormalized, atributeClassType).invoke(focusedElement,
+								parameters);
+					}
+
+				} else {
+
+					if (m[z].getName().equals("get" + atributeNameNormalized)) {
+						if (m[z].getReturnType().getSimpleName().equals("EList")) {
+							// lo convierto en lista
+							list = (List) cl.getMethod(m[z].getName()).invoke(focusedElement);
+							list.clear();
 
 						}
 					}
 				}
 			}
-			cl.getMethod("set" + atributeNameNormalized, atributeClassType).invoke(focusedElement, atributeValue);
-			System.out.println(EMFOperationsMessages.PROPERTY_ADDED_CORRECTLY);
 		} else {
-			System.out.println(EMFOperationsMessages.PROPERTY_NOT_ADDED);
-		}
-	}
-
-	public void clearProperty(String atributeName) throws IllegalAccessException, IllegalArgumentException,
-			InvocationTargetException, NoSuchMethodException, SecurityException, ClassNotFoundException {
-		Class atributeClassType = null;
-		String atributeNameNormalized = EMFOperationsUtil.normalizedString(atributeName);
-		// tengo que meter chequeadores de que tanto el atributo como el valor existen
-		String sanitalizeElementName[] = focusedElement.getClass().getSimpleName().split("Impl");
-		String elementName = sanitalizeElementName[0];
-		List list = null;
-
-		Class cl = Class.forName(EMFOperationsUtil.getMetaModelPackage().getName() + "." + elementName);
-		Method[] m = cl.getDeclaredMethods();
-		// recorro los metodos
-		for (int z = 0; z < m.length; z++) {
-
-			// filtro por aquellos que tienen un parametro de entrada
-			if (m[z].getParameterCount() > 0) {
-				// filtro por aquel que es un set y encima el nombre es el del parametro mio
-				if (m[z].getName().equals("set" + atributeNameNormalized)) {
-					// pilla la clase del parametro/s que recibe el metodo
-					Class<?>[] pType = m[z].getParameterTypes();
-					// Type[] gpType = m[z].getGenericParameterTypes();
-					// recorro todas las clases de los parametros de entrada de mi metodo
-					for (int i = 0; i < pType.length; i++) {
-
-						// System.out.println("ParameterType "+pType[i].toString());
-						// capturo la clase de mi atributo
-						atributeClassType = pType[i];
-						// convierto mi objeto generico que era el atributeValue, en un objeto
-						// especifico en base a la clase del atributo capturada
-
-					}
-
-					Object[] parameters = { null };
-					cl.getMethod("set" + atributeNameNormalized, atributeClassType).invoke(focusedElement, parameters);
-				}
-
-			} else {
-
-				if (m[z].getName().equals("get" + atributeNameNormalized)) {
-					if (m[z].getReturnType().getSimpleName().equals("EList")) {
-						// lo convierto en lista
-						list = (List) cl.getMethod(m[z].getName()).invoke(focusedElement);
-						list.clear();
-
-					}
-				}
-			}
+			System.out.println(EMFOperationsMessages.NOT_FOCUS_ELEMENT);
 		}
 
 	}
