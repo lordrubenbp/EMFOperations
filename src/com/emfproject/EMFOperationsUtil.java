@@ -76,7 +76,7 @@ public class EMFOperationsUtil {
 	}
 
 	public static boolean checkDataTypeInsertion(Object dataToInsert, String dataType) {
-		// TODO añadir todos los tipos de EDataType disponibles
+		// TODO aï¿½adir todos los tipos de EDataType disponibles
 		try {
 			switch(dataType) 
 			{
@@ -134,7 +134,7 @@ public class EMFOperationsUtil {
 				EClass myEclass = (EClass) getMetaModelPackage().eContents().get(i);
 
 				if (myEclass.getName().toLowerCase().equals(nameElement.toLowerCase())) {
-					System.out.println(EMFOperationsMessages.ELEMENT_EXITS_METAMODEL);
+					//System.out.println(EMFOperationsMessages.ELEMENT_EXITS_METAMODEL);
 
 					for (int y = 0; y < myEclass.getEAllAttributes().size(); y++) {
 
@@ -143,14 +143,14 @@ public class EMFOperationsUtil {
 						// System.out.println(myEclass.getEAllReferences());
 
 						if (myEclass.getEAllAttributes().get(y).getName().equals(atributeName)) {
-							System.out.println(EMFOperationsMessages.ELEMENT_ATRIBUTE_EXITS);
+							//System.out.println(EMFOperationsMessages.ELEMENT_ATRIBUTE_EXITS);
 
 							EAttribute atribute = myEclass.getEAllAttributes().get(y);
 
 							// System.out.println(atribute.getEAttributeType().getName());
 
 							if (checkDataTypeInsertion(atributeValue, atribute.getEAttributeType().getName())) {
-								System.out.println(EMFOperationsMessages.ATRIBUTE_VALUE_CORRECTLY);
+								//System.out.println(EMFOperationsMessages.ATRIBUTE_VALUE_CORRECTLY);
 								return true;
 							}
 							// TODO de momento solo chequea dos tipos de EDataType
@@ -245,7 +245,8 @@ public class EMFOperationsUtil {
 
 				}
 
-				if (o.eContents().size() == 0 && o.eCrossReferences().size() == 0 && isNull) {
+				//if (o.eContents().size() == 0 && o.eCrossReferences().size() == 0 && isNull) {
+				if ( isNull) {
 
 					return o;
 				}

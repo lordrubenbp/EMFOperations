@@ -7,6 +7,9 @@ public class EMFAdvices {
 	{
 		switch(previusAction) 
 		{
+		case "ERROR_NO_TEXT":
+			System.out.println(EMFAdvicesMessages.NO_TEXT+"\n");
+			break;
 		case "START":
 			System.out.println(EMFAdvicesMessages.START+"\n");
 			break;

@@ -41,18 +41,19 @@ public class EMFmain {
 	public static SessionName session = null;
 	public static SessionsClient sessionsClient = null;
 	public static EMFDialogflowParse parse = null;
-	public static final String RESET_CONTEXT_QUERY="reset all context";
+	public static final String RESET_CONTEXT_QUERY = "reset all context";
+
 	public static void main(String args[]) throws IOException {
 
 		try {
-			//String value = System.getenv("GOOGLE_APPLICATION_CREDENTIALS");
-			//System.out.print(value);
+			// String value = System.getenv("GOOGLE_APPLICATION_CREDENTIALS");
+			// System.out.print(value);
 			parse = new EMFDialogflowParse();
 			sessionsClient = SessionsClient.create();
 			// Set the session name using the sessionId (UUID) and projectID (my-project-id)
 			session = SessionName.of(projectId, sessionId);
 
-			//audioClient();
+			// audioClient();
 			textClient(false);
 
 		} catch (Exception e) {
@@ -84,61 +85,72 @@ public class EMFmain {
 
 	}
 
-	public static void textClient(boolean debug) throws ClassNotFoundException, IllegalAccessException, IllegalArgumentException,
-			InvocationTargetException, NoSuchMethodException, SecurityException, InstantiationException {
+	public static void textClient(boolean debug)
+			throws ClassNotFoundException, IllegalAccessException, IllegalArgumentException, InvocationTargetException,
+			NoSuchMethodException, SecurityException, InstantiationException {
 
 		Scanner sc = new Scanner(System.in);
-		/*Context context = Context.newBuilder()
-				.setName("projects/newagent-31936/agent/sessions/" + sessionId + "/contexts/_empty_")
-				.setLifespanCount(2).build();
-		QueryParameters parameters = QueryParameters.newBuilder().addContexts(context).build();*/
+		/*
+		 * Context context = Context.newBuilder()
+		 * .setName("projects/newagent-31936/agent/sessions/" + sessionId +
+		 * "/contexts/_empty_") .setLifespanCount(2).build(); QueryParameters parameters
+		 * = QueryParameters.newBuilder().addContexts(context).build();
+		 */
 		EMFAdvices.showAdvice("START");
-		String text;
+		String text = null;
+		QueryResult queryResult = null;
 		while (true) {
-			
+
 			System.out.print("[INPUT] Consulta: ");
 			if (parse.getModelLoadedStatus()) {
+
 				text = sc.nextLine();
+
 			} else {
 				parse.resetModelLoadedStatus();
 				text = RESET_CONTEXT_QUERY;
 			}
+
 			Builder textInput = TextInput.newBuilder().setText(text).setLanguageCode(languageCode);
 
 			// Build the query with the TextInput
+
 			QueryInput queryInput = QueryInput.newBuilder().setText(textInput).build();
 
-			DetectIntentRequest request = DetectIntentRequest.newBuilder().setSession(session.toString())
-					.setQueryInput(queryInput).build();
-			// Performs the detect intent request
-			DetectIntentResponse response = sessionsClient.detectIntent(request);
+			try {
+				DetectIntentRequest request = DetectIntentRequest.newBuilder().setSession(session.toString())
+						.setQueryInput(queryInput).build();
+				// Performs the detect intent request
+				DetectIntentResponse response = sessionsClient.detectIntent(request);
 
-			QueryResult queryResult = response.getQueryResult();
+				queryResult = response.getQueryResult();
 
-			if(debug==true) 
-			{
-				printQueryResultInfo(queryResult);
+				if (debug == true) {
+					printQueryResultInfo(queryResult);
 
+				}
+
+				if (queryResult.getAllRequiredParamsPresent()) {
+					parse.parseCode(queryResult, queryResult.getAction());
+				}
+
+				// if(parse.getModelLoadedStatus()) {
+				// System.out.println("entre");
+				// for (int i = 0; i < queryResult.getOutputContextsList().size(); i++) {
+				// context = queryResult.getOutputContextsList().get(i);
+
+				// }
+				// }else
+				// {
+
+				// context = Context.newBuilder()
+				// .setName("projects/emf-api/agent/sessions/" + sessionId +
+				// "/contexts/model_load")
+				// .setLifespanCount(0).build();
+				// }
+			} catch (Exception e) {
+				EMFAdvices.showAdvice("ERROR_NO_TEXT");
 			}
-
-			if (queryResult.getAllRequiredParamsPresent()) {
-				parse.parseCode(queryResult, queryResult.getAction());
-			}
-
-			// if(parse.getModelLoadedStatus()) {
-			// System.out.println("entre");
-			// for (int i = 0; i < queryResult.getOutputContextsList().size(); i++) {
-			// context = queryResult.getOutputContextsList().get(i);
-
-			// }
-			// }else
-			// {
-
-			// context = Context.newBuilder()
-			// .setName("projects/emf-api/agent/sessions/" + sessionId +
-			// "/contexts/model_load")
-			// .setLifespanCount(0).build();
-			// }
 		}
 
 	}
