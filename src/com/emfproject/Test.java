@@ -85,7 +85,7 @@ public class Test {
 		*/
 		
 		
-		/*//PARA LEER UN MODELO XMI INSTANCIADO Y AÑADIR UNA NUEVA INSTANCIA
+		/*//PARA LEER UN MODELO XMI INSTANCIADO Y Aï¿½ADIR UNA NUEVA INSTANCIA
 		ResourceSet resourceSet = new ResourceSetImpl();
 
         // register UML
@@ -144,9 +144,9 @@ public class Test {
 		*/
 		
 		//EMFOperationsUtil.showAllMetaModelData();
-		EMFOperations op= new EMFOperations();
+		EMFOperations op= new EMFOperations(true);
 		
-		op.loadModelInstance("maquina/test12.xmi");
+		op.loadModelInstance("maquina/test10.xmi");
 		//try {
 			//op.dumpDataFromModelInstance("alumno",int.class,i,"id");
 		//} catch (IllegalArgumentException e) {
@@ -156,8 +156,8 @@ public class Test {
 		//op.setFocusElement("statemachine");
 		//op.addElement("state","name","stado1");
 		//op.addElement("statemachine");
-		//op.addElement("state", "name", "test", "statemachine", "states");
-		op.createElement("command", "name", "test2", "statemachine", "state", "name", "test", "states","commands");
+		op.createElement("state", "name", "test", "statemachine", "states");
+		//op.createElement("command", "name", "test2", "statemachine", "state", "name", "pepe", "states","commands");
 		//op.getPropertiesFromFocusedElement();
 		//op.setFocusElement("statemachine");
 		//op.addElementToFocusedElement("state", "name", "juanito", "states");
@@ -171,7 +171,7 @@ public class Test {
 		 //op.removeReferenceFromFocusedElement("state", "name","pepe","states");
 		
 		//op.addElement("statemachine");
-		/*Tengo que añadir aparte del nombre de padre, un atributo y su valor*/
+		/*Tengo que aï¿½adir aparte del nombre de padre, un atributo y su valor*/
 		//op.addElement("command", "name", "test", "state", "actions");
 		//op.addElement("state","name","sleep2");
 		//op.addElement("event","name","wake_up");

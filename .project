@@ -26,4 +26,10 @@
 		<nature>org.eclipse.jdt.core.javanature</nature>
 		<nature>org.eclipse.pde.PluginNature</nature>
 	</natures>
+	<variableList>
+		<variable>
+			<name>GOOGLE_APPLICATION_CREDENTIALS</name>
+			<value>file:/Users/rubenbp/Downloads/EMF-API-e1c5ee0b076d.json</value>
+		</variable>
+	</variableList>
 </projectDescription>

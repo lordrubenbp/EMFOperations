@@ -11,6 +11,8 @@ import java.util.UUID;
 
 import javax.sound.sampled.LineUnavailableException;
 
+import org.omg.CORBA.Environment;
+
 import com.emfproject.EMFOperations;
 import com.emfproject.audiorec.MicrophoneGestor;
 import com.google.cloud.dialogflow.v2.AudioEncoding;
@@ -23,8 +25,10 @@ import com.google.cloud.dialogflow.v2.QueryParameters;
 import com.google.cloud.dialogflow.v2.QueryResult;
 import com.google.cloud.dialogflow.v2.SessionName;
 import com.google.cloud.dialogflow.v2.SessionsClient;
+import com.google.cloud.dialogflow.v2.SessionsSettings;
 import com.google.cloud.dialogflow.v2.TextInput;
 import com.google.cloud.dialogflow.v2.TextInput.Builder;
+import com.google.cloud.dialogflow.v2.stub.SessionsStubSettings;
 import com.google.protobuf.ByteString;
 import com.google.protobuf.Value;
 
@@ -41,13 +45,15 @@ public class EMFmain {
 	public static void main(String args[]) throws IOException {
 
 		try {
+			//String value = System.getenv("GOOGLE_APPLICATION_CREDENTIALS");
+			//System.out.print(value);
 			parse = new EMFDialogflowParse();
 			sessionsClient = SessionsClient.create();
 			// Set the session name using the sessionId (UUID) and projectID (my-project-id)
 			session = SessionName.of(projectId, sessionId);
 
-			// audioClient();
-			textClient();
+			//audioClient();
+			textClient(false);
 
 		} catch (Exception e) {
 
@@ -59,15 +65,15 @@ public class EMFmain {
 	public static void printQueryResultInfo(QueryResult queryResult) {
 		// Display the query result
 
-		System.out.println("====================");
-		System.out.format("Query Text: '%s'\n", queryResult.getQueryText());
-		System.out.format("Detected Intent: %s (confidence: %f)\n", queryResult.getIntent().getDisplayName(),
+		System.out.println("[DEBUG] ====================");
+		System.out.format("[DEBUG] Query Text: '%s'\n", queryResult.getQueryText());
+		System.out.format("[DEBUG] Detected Intent: %s (confidence: %f)\n", queryResult.getIntent().getDisplayName(),
 				queryResult.getIntentDetectionConfidence());
-		System.out.format("Fulfillment Text: '%s'\n", queryResult.getFulfillmentText());
-		System.out.format("Contexts: '%s'\n", queryResult.getOutputContextsList());
+		System.out.format("[DEBUG] Fulfillment Text: '%s'\n", queryResult.getFulfillmentText());
+		System.out.format("[DEBUG] Contexts: '%s'\n", queryResult.getOutputContextsList());
 		// System.out.format("Parameters: '%s'\n",
 		// queryResult.getParameters().getFieldsMap());
-		System.out.format("Actions: '%s'\n", queryResult.getAction());
+		System.out.format("[DEBUG] Actions: '%s'\n", queryResult.getAction());
 		// System.out.println("Parameters required: " + queryResult.ACTION_FIELD_NUMBER
 		// + "");
 		// System.out.format("Parameters passed: '%s'\n",
@@ -78,7 +84,7 @@ public class EMFmain {
 
 	}
 
-	public static void textClient() throws ClassNotFoundException, IllegalAccessException, IllegalArgumentException,
+	public static void textClient(boolean debug) throws ClassNotFoundException, IllegalAccessException, IllegalArgumentException,
 			InvocationTargetException, NoSuchMethodException, SecurityException, InstantiationException {
 
 		Scanner sc = new Scanner(System.in);
@@ -86,10 +92,11 @@ public class EMFmain {
 				.setName("projects/newagent-31936/agent/sessions/" + sessionId + "/contexts/_empty_")
 				.setLifespanCount(2).build();
 		QueryParameters parameters = QueryParameters.newBuilder().addContexts(context).build();*/
+		EMFAdvices.showAdvice("START");
 		String text;
 		while (true) {
 			
-			System.out.print("Query: ");
+			System.out.print("[INPUT] Consulta: ");
 			if (parse.getModelLoadedStatus()) {
 				text = sc.nextLine();
 			} else {
@@ -108,7 +115,11 @@ public class EMFmain {
 
 			QueryResult queryResult = response.getQueryResult();
 
-			printQueryResultInfo(queryResult);
+			if(debug==true) 
+			{
+				printQueryResultInfo(queryResult);
+
+			}
 
 			if (queryResult.getAllRequiredParamsPresent()) {
 				parse.parseCode(queryResult, queryResult.getAction());

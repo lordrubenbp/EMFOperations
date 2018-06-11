@@ -14,7 +14,7 @@ public class EMFDialogflowParse {
 
 	public EMFDialogflowParse() throws ClassNotFoundException, IllegalAccessException, IllegalArgumentException,
 			InvocationTargetException, NoSuchMethodException, SecurityException {
-		op = new EMFOperations();
+		op = new EMFOperations(false);
 		//op.loadModelInstance("maquina/testDialog.xmi");
 	}
 
@@ -45,7 +45,7 @@ public class EMFDialogflowParse {
 			NoSuchMethodException, SecurityException, InstantiationException {
 
 		int numberOfParameters = getNumberOfParameters(queryResult);
-		System.out.println(numberOfParameters);
+		//System.out.println(numberOfParameters);
 		String element;
 		String atribute;
 		String value;
@@ -66,6 +66,8 @@ public class EMFDialogflowParse {
 		case "CM":
 			modelName = queryResult.getParameters().getFieldsMap().get("modelName").getStringValue().toLowerCase();
 			modelLoadedCorrectly=op.createModelInstance("maquina/" + modelName + ".xmi");
+			EMFAdvices.showAdvice("MODEL_CREATED");
+			
 			break;
 		case "RAC":
 			return;
@@ -86,11 +88,16 @@ public class EMFDialogflowParse {
 			switch (numberOfParameters) {
 			case 4:
 				op.createElement(element);
+				if(element.equals("statemachine")) 
+				{
+					EMFAdvices.showAdvice("NEW_STATEMACHINE_CREATED");
+				}
 				break;
 			case 6:
 				op.createElementToFocusedElement(element, atribute, value, relationship);
 			case 5:
 				op.createElement(element, atribute, value);
+				EMFAdvices.showAdvice("NEW_ELEMENT_ORPHAN");
 				break;
 			case 7:
 				op.createElement(element, atribute, value, parent, relationship);
@@ -101,7 +108,9 @@ public class EMFDialogflowParse {
 			case 10:
 				op.createElement(element, atribute, value, parent, childElement, childAtribute, childValue,childRelationship,relationship);
 			}
+			
 			op.saveModelInstance();
+			
 			break;
 		case "FE":
 			
@@ -182,6 +191,7 @@ public class EMFDialogflowParse {
 		case "LM":
 			modelName = queryResult.getParameters().getFieldsMap().get("modelName").getStringValue().toLowerCase();
 			modelLoadedCorrectly=op.loadModelInstance("maquina/" + modelName + ".xmi");
+			EMFAdvices.showAdvice("MODEL_LOADED");
 			break;
 
 		// removeReferenceFromFocusedElement
