@@ -19,6 +19,7 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 
 public class EMFOperationsUtil {
@@ -433,6 +434,7 @@ public class EMFOperationsUtil {
 		while (i.hasNext()) {
 			EObject o = i.next();
 
+			System.out.println(EcoreUtil.getRootContainer(o));
 			System.out.println("bep " + o);
 			System.out.println(o.eContents());
 			System.out.println(o.eCrossReferences());
@@ -448,7 +450,8 @@ public class EMFOperationsUtil {
 			if (getMetaModelPackage().eContents().get(i).getClass().getSimpleName().equals("EClassImpl")) {
 				EClass myEclass = (EClass) getMetaModelPackage().eContents().get(i);
 
-				System.out.println(myEclass.getName());
+				System.out.println(myEclass.eContainer());
+				//System.out.println(myEclass.getName());
 				for (int y = 0; y < myEclass.getEAllAttributes().size(); y++) {
 					// System.out.println(myEclass.getEAllAttributes().get(y).getName());
 					// TODO aqui puedo obtener informacion de las referencias que tiene el elemento
@@ -457,8 +460,8 @@ public class EMFOperationsUtil {
 
 					EAttribute atribute = myEclass.getEAllAttributes().get(y);
 
-					System.out.println("Atribute name: " + atribute.getName());
-					System.out.println("Atribute type: " + atribute.getEAttributeType().getName());
+					//System.out.println("Atribute name: " + atribute.getName());
+					//System.out.println("Atribute type: " + atribute.getEAttributeType().getName());
 
 				}
 				for (int d = 0; d < myEclass.getEAllReferences().size(); d++) {
@@ -469,9 +472,9 @@ public class EMFOperationsUtil {
 
 					EReference reference = myEclass.getEAllReferences().get(d);
 
-					System.out.println("Reference name: " + reference.getName());
-					System.out.println("Min elements: " + reference.getLowerBound());
-					System.out.println("Max elements: " + reference.getUpperBound());
+					//System.out.println("Reference name: " + reference.getName());
+					//System.out.println("Min elements: " + reference.getLowerBound());
+					//System.out.println("Max elements: " + reference.getUpperBound());
 
 				}
 
