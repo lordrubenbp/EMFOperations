@@ -98,7 +98,7 @@ public class EMFOperationsUtil {
 			}
 			
 		} catch (Exception e) {
-			System.out.println(e);
+			//System.out.println(e);
 			return false;
 		}
 
@@ -116,7 +116,7 @@ public class EMFOperationsUtil {
 				EClass myEclass = (EClass) getMetaModelPackage().eContents().get(i);
 
 				if (myEclass.getName().toLowerCase().equals(nameElement.toLowerCase())) {
-					System.out.println(EMFOperationsMessages.ELEMENT_EXITS_METAMODEL);
+					//System.out.println(EMFOperationsMessages.ELEMENT_EXITS_METAMODEL);
 					return true;
 
 				}
@@ -218,7 +218,7 @@ public class EMFOperationsUtil {
 	public static Object getElementFromResource(String nameElement, Resource resource) {
 
 		String nameNormalized = EMFOperationsUtil.normalizedString(nameElement) + "Impl";
-		System.out.println(nameNormalized);
+		//System.out.println(nameNormalized);
 
 		TreeIterator<EObject> i = resource.getAllContents();
 
@@ -435,10 +435,9 @@ public class EMFOperationsUtil {
 		while (i.hasNext()) {
 			EObject o = i.next();
 
-			System.out.println(EcoreUtil.getRootContainer(o));
-			System.out.println("bep " + o);
-			System.out.println(o.eContents());
-			System.out.println(o.eCrossReferences());
+			//System.out.println(EcoreUtil.getRootContainer(o));
+			//System.out.println(o.eContents());
+			//System.out.println(o.eCrossReferences());
 			//
 		}
 
@@ -451,7 +450,7 @@ public class EMFOperationsUtil {
 			if (getMetaModelPackage().eContents().get(i).getClass().getSimpleName().equals("EClassImpl")) {
 				EClass myEclass = (EClass) getMetaModelPackage().eContents().get(i);
 
-				System.out.println(myEclass.eContainer());
+				//System.out.println(myEclass.eContainer());
 				//System.out.println(myEclass.getName());
 				for (int y = 0; y < myEclass.getEAllAttributes().size(); y++) {
 					// System.out.println(myEclass.getEAllAttributes().get(y).getName());

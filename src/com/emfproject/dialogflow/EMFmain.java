@@ -2,9 +2,12 @@ package com.emfproject.dialogflow;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.net.Socket;
+import java.net.UnknownHostException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Map;
+import java.util.ResourceBundle;
 import java.util.Map.Entry;
 import java.util.Scanner;
 import java.util.UUID;
@@ -14,6 +17,7 @@ import javax.sound.sampled.LineUnavailableException;
 import org.omg.CORBA.Environment;
 
 import com.emfproject.EMFOperations;
+import com.emfproject.EMFOperationsMessages;
 import com.emfproject.audiorec.MicrophoneGestor;
 import com.google.cloud.dialogflow.v2.AudioEncoding;
 import com.google.cloud.dialogflow.v2.Context;
@@ -43,22 +47,55 @@ public class EMFmain {
 	public static EMFDialogflowParse parse = null;
 	public static final String RESET_CONTEXT_QUERY = "reset all context";
 
+	public static boolean checkInternetConection() throws UnknownHostException, IOException 
+	{
+		Socket socket = null;
+		boolean reachable = false;
+		try {
+		    socket = new Socket("google.com", 80);
+		    reachable = true;
+		} catch(Exception e) {            
+		    if (socket != null) try { socket.close(); } catch(IOException a) {}
+		}
+		return reachable;
+	}
 	public static void main(String args[]) throws IOException {
 
 		try {
 			// String value = System.getenv("GOOGLE_APPLICATION_CREDENTIALS");
 			// System.out.print(value);
-			parse = new EMFDialogflowParse();
-			sessionsClient = SessionsClient.create();
-			// Set the session name using the sessionId (UUID) and projectID (my-project-id)
-			session = SessionName.of(projectId, sessionId);
+			if(checkInternetConection()) 
+			{
+				
+				if(System.getProperty("user.language").equals("es")) 
+				{
+					languageCode="es_ES";
+				}
+				else 
+				{
+					languageCode="en_US";
+				}
+				parse = new EMFDialogflowParse();
+				
+				sessionsClient = SessionsClient.create();
+				// Set the session name using the sessionId (UUID) and projectID (my-project-id)
+				session = SessionName.of(projectId, sessionId);
 
-			// audioClient();
-			textClient(false);
+				// audioClient();
+				textClient(false);
+			}
+			else{
+				
+				EMFOperationsMessages.printMessage("ERROR_NO_NETWORK");
+			}
+			
+			
 
 		} catch (Exception e) {
 
-			e.printStackTrace();
+			EMFOperationsMessages.printMessage("ERROR_DIALOGFLOW_CONNECTION");
+
+			
 		}
 
 	}
@@ -96,12 +133,13 @@ public class EMFmain {
 		 * "/contexts/_empty_") .setLifespanCount(2).build(); QueryParameters parameters
 		 * = QueryParameters.newBuilder().addContexts(context).build();
 		 */
-		EMFAdvices.showAdvice("START");
+		EMFOperationsMessages.printMessage("START");
 		String text = null;
+		
 		QueryResult queryResult = null;
 		while (true) {
-
-			System.out.print("[INPUT] Consulta: ");
+			try {
+				EMFOperationsMessages.printMessage("QUERY");
 			if (parse.getModelLoadedStatus()) {
 
 				text = sc.nextLine();
@@ -117,7 +155,7 @@ public class EMFmain {
 
 			QueryInput queryInput = QueryInput.newBuilder().setText(textInput).build();
 
-			try {
+			
 				DetectIntentRequest request = DetectIntentRequest.newBuilder().setSession(session.toString())
 						.setQueryInput(queryInput).build();
 				// Performs the detect intent request
@@ -149,7 +187,10 @@ public class EMFmain {
 				// .setLifespanCount(0).build();
 				// }
 			} catch (Exception e) {
-				EMFAdvices.showAdvice("ERROR_NO_TEXT");
+				if(text==null){
+				EMFOperationsMessages.printMessage("ERROR_NO_TEXT");
+
+				}
 			}
 		}
 

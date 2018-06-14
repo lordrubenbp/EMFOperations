@@ -32,9 +32,9 @@ public class EMFOperations {
 	Object factory;
 	String metaModelURI;
 	Object focusedElement;
-	boolean debug;
+	public EMFOperationsMessages messages;
 
-	public EMFOperations(boolean debug) throws ClassNotFoundException, IllegalAccessException, IllegalArgumentException,
+	public EMFOperations() throws ClassNotFoundException, IllegalAccessException, IllegalArgumentException,
 			InvocationTargetException, NoSuchMethodException, SecurityException {
 
 		String packageNameNormalized = EMFOperationsUtil.getMetaModelPackage().getName().substring(0, 1).toUpperCase()
@@ -48,9 +48,9 @@ public class EMFOperations {
 		Object o = projectPackageClass.getMethod("init").invoke(null);
 
 		projectPackageClass.getMethod("eClass").invoke(o);
-		this.debug=debug;
 		
-		System.out.println("here "+debug);
+		
+		
 
 		// EMFProjectPackage.eINSTANCE.eClass()
 		// factory = EMFProjectFactory.eINSTANCE;
@@ -64,8 +64,7 @@ public class EMFOperations {
 			File pathFile = new File(path);
 
 			if (pathFile.exists()) {
-				if(debug)
-				System.out.println(EMFOperationsMessages.MODEL_ALREADY_EXITS);
+				EMFOperationsMessages.printMessage("MODEL_ALREADY_EXITS");
 				return false;
 			}
 			inst_resourceset = new ResourceSetImpl();
@@ -75,12 +74,12 @@ public class EMFOperations {
 			extensionFactoryMap.put("xmi", new XMIResourceFactoryImpl());
 
 			inst_resource = (Resource) inst_resourceset.createResource(URI.createFileURI(path));
-			if(debug)
-			System.out.println(EMFOperationsMessages.MODEL_CREATED);
+			EMFOperationsMessages.printMessage("MODEL_CREATED");
+			
 			return true;
 		} catch (Exception e) {
-			if(debug)
-			System.out.println(EMFOperationsMessages.MODEL_NOT_CREATED);
+			EMFOperationsMessages.printMessage("MODEL_NOT_CREATED");
+			
 			inst_resource = null;
 			return false;
 		}
@@ -99,14 +98,12 @@ public class EMFOperations {
 		try {
 
 			inst_resource.load(null);
-			if(debug)
-			System.out.println(EMFOperationsMessages.MODEL_LOADED);
+			EMFOperationsMessages.printMessage("MODEL_LOADED");
 			
 			//EMFOperationsUtil.showAllMetaModelData();
 			return true;
 		} catch (IOException e) {
-			if(debug)
-			System.out.println(EMFOperationsMessages.MODEL_NOT_EXITS);
+			EMFOperationsMessages.printMessage("MODEL_NOT_EXITS");
 			
 			inst_resource = null;
 			return false;
@@ -126,8 +123,9 @@ public class EMFOperations {
 					childAtributeValue, relationName, inst_resource);
 
 		} else {
-			if(debug)
-			System.out.println(EMFOperationsMessages.ELEMENT_TO_FOCUS_NOT_EXITS);
+			EMFOperationsMessages.printMessage("ELEMENT_TO_FOCUS_NOT_EXITS");
+
+			
 
 		}
 	}
@@ -139,8 +137,8 @@ public class EMFOperations {
 					inst_resource);
 
 		} else {
-			if(debug)
-			System.out.println(EMFOperationsMessages.ELEMENT_TO_FOCUS_NOT_EXITS);
+			EMFOperationsMessages.printMessage("ELEMENT_TO_FOCUS_NOT_EXITS");
+
 
 		}
 
@@ -151,8 +149,7 @@ public class EMFOperations {
 		if (EMFOperationsUtil.getElementFromResource(nameElement, inst_resource) != null) {
 			focusedElement = EMFOperationsUtil.getElementFromResource(nameElement, inst_resource);
 		} else {
-			if(debug)
-			System.out.println(EMFOperationsMessages.ELEMENT_TO_FOCUS_NOT_EXITS);
+			EMFOperationsMessages.printMessage("ELEMENT_TO_FOCUS_NOT_EXITS");
 
 		}
 
@@ -203,24 +200,22 @@ public class EMFOperations {
 							for (int x = 0; x < mr.length; x++) {
 								if (mr[x].getName().contains("get")) {
 									String subPropertyName = mr[x].getName().substring(3);
-									if(debug)
-									System.out.println(propertyName + ": " + referenceName + ": " + subPropertyName
-											+ ": " + rcl.getMethod(mr[x].getName()).invoke(list.get(y)));
+									/*System.out.println(propertyName + ": " + referenceName + ": " + subPropertyName
+											+ ": " + rcl.getMethod(mr[x].getName()).invoke(list.get(y)));*/
 								}
 							}
 						}
 
 					} else {
-						if(debug)
-						System.out.println(propertyName + ": " + cl.getMethod(m[z].getName()).invoke(focusedElement));
+						//System.out.println(propertyName + ": " + cl.getMethod(m[z].getName()).invoke(focusedElement));
 					}
 
 				}
 
 			}
 		} else {
-			if(debug)
-			System.out.println(EMFOperationsMessages.NOT_FOCUS_ELEMENT);
+			EMFOperationsMessages.printMessage("NOT_FOCUS_ELEMENT");
+
 		}
 
 	}
@@ -274,8 +269,7 @@ public class EMFOperations {
 										inst_resource.getContents().add(o);
 									}
 								} else {
-									if(debug)
-									System.out.println(EMFOperationsMessages.ELEMENT_TO_REMOVE_AS_REFERENCE_MINIMUM);
+									EMFOperationsMessages.printMessage("ELEMENT_TO_REMOVE_AS_REFERENCE_MINIMUM");
 								}
 
 							}
@@ -292,12 +286,12 @@ public class EMFOperations {
 
 				}
 			} else {
-				if(debug)
-				System.out.println(EMFOperationsMessages.ELEMENT_TO_REMOVE_AS_REFERENCE_NOT_EXITS);
+				EMFOperationsMessages.printMessage("ELEMENT_TO_REMOVE_AS_REFERENCE_NOT_EXITS");
+
 			}
 		} else {
-			if(debug)
-			System.out.println(EMFOperationsMessages.NOT_FOCUS_ELEMENT);
+			EMFOperationsMessages.printMessage("NOT_FOCUS_ELEMENT");
+
 		}
 	}
 
@@ -349,11 +343,11 @@ public class EMFOperations {
 								focusedElement = oldFocusElement;
 								list.add(EMFOperationsUtil.getElementFromResource(nameNormalized, atributeName,
 										atributeValue, inst_resource));
-								if(debug)
-								System.out.println(EMFOperationsMessages.NEW_ELEMENT_ADDED_CORRECTLY);
+								EMFOperationsMessages.printMessage("NEW_ELEMENT_ADDED_CORRECTLY");
+
 							} else {
-								if(debug)
-								System.out.println(EMFOperationsMessages.ELEMENT_TO_CREATE_AS_REFERENCE_MAXIMUM);
+								EMFOperationsMessages.printMessage("ELEMENT_TO_CREATE_AS_REFERENCE_MAXIMUM");
+
 							}
 
 						}
@@ -373,20 +367,20 @@ public class EMFOperations {
 							cl.getMethod("set" + referenceNameNormalized, ccl).invoke(focusedElement,
 									ccl.cast(EMFOperationsUtil.getElementFromResource(nameNormalized, atributeName,
 											atributeValue, inst_resource)));
-							if(debug)
-							System.out.println(EMFOperationsMessages.NEW_ELEMENT_ADDED_CORRECTLY);
+							EMFOperationsMessages.printMessage("NEW_ELEMENT_ADDED_CORRECTLY");
+
 						}
 
 					}
 
 				}
 			} else {
-				if(debug)
-				System.out.println(EMFOperationsMessages.NEW_ELEMENT_ALREADY_EXITS);
+				EMFOperationsMessages.printMessage("NEW_ELEMENT_ALREADY_EXITS");
+
 			}
 		} else {
-			if(debug)
-			System.out.println(EMFOperationsMessages.NOT_FOCUS_ELEMENT);
+			EMFOperationsMessages.printMessage("NOT_FOCUS_ELEMENT");
+
 		}
 
 	}
@@ -429,8 +423,8 @@ public class EMFOperations {
 							// compruebo que el objeto que se quiere referencia ya no lo estuviese antes
 							if (list.contains(EMFOperationsUtil.getElementFromResource(nameNormalized, atributeName,
 									atributeValue, inst_resource))) {
-								if(debug)
-								System.out.println(EMFOperationsMessages.ELEMENT_ALREADY_REFERENCED);
+								EMFOperationsMessages.printMessage("ELEMENT_ALREADY_REFERENCED");
+
 							} else {
 
 								if (EMFOperationsUtil.getUpperBound(elementName, referenceName) > list.size()
@@ -438,8 +432,8 @@ public class EMFOperations {
 									list.add(EMFOperationsUtil.getElementFromResource(nameNormalized, atributeName,
 											atributeValue, inst_resource));
 								} else {
-									if(debug)
-									System.out.println(EMFOperationsMessages.ELEMENT_TO_REFERENCE_AS_REFERENCE_MAXIMUM);
+									EMFOperationsMessages.printMessage("ELEMENT_TO_REFERENCE_AS_REFERENCE_MAXIMUM");
+
 								}
 
 							}
@@ -459,12 +453,12 @@ public class EMFOperations {
 
 				}
 			} else {
-				if(debug)
-				System.out.println(EMFOperationsMessages.ELEMENT_TO_ADD_AS_REFERENCE_NOT_EXITS);
+				EMFOperationsMessages.printMessage("ELEMENT_TO_ADD_AS_REFERENCE_NOT_EXITS");
+
 			}
 		} else {
-			if(debug)
-			System.out.println(EMFOperationsMessages.NOT_FOCUS_ELEMENT);
+			EMFOperationsMessages.printMessage("NOT_FOCUS_ELEMENT");
+
 		}
 
 	}
@@ -472,11 +466,9 @@ public class EMFOperations {
 	public void deleteElement(String nameElement) {
 		if (EMFOperationsUtil.getElementFromResource(nameElement, inst_resource) != null) {
 			EcoreUtil.delete((EObject) EMFOperationsUtil.getElementFromResource(nameElement, inst_resource));
-			if(debug)
-			System.out.println(EMFOperationsMessages.ELEMENT_DELETED);
+			EMFOperationsMessages.printMessage("ELEMENT_DELETED");
 		} else {
-			if(debug)
-			System.out.println(EMFOperationsMessages.ELEMENT_TO_DELETE_NOT_EXITS);
+			EMFOperationsMessages.printMessage("ELEMENT_TO_DELETE_NOT_EXITS");
 		}
 	}
 
@@ -485,11 +477,11 @@ public class EMFOperations {
 		if (EMFOperationsUtil.getElementFromResource(nameElement, atributeName, atributeValue, inst_resource) != null) {
 			EcoreUtil.delete((EObject) EMFOperationsUtil.getElementFromResource(nameElement, atributeName,
 					atributeValue, inst_resource));
-			if(debug)
-			System.out.println(EMFOperationsMessages.ELEMENT_DELETED);
+			EMFOperationsMessages.printMessage("ELEMENT_DELETED");
+
 		} else {
-			if(debug)
-			System.out.println(EMFOperationsMessages.ELEMENT_TO_DELETE_NOT_EXITS);
+			EMFOperationsMessages.printMessage("ELEMENT_TO_DELETE_NOT_EXITS");
+
 		}
 
 	}
@@ -501,11 +493,11 @@ public class EMFOperations {
 				relationName, inst_resource) != null) {
 			EcoreUtil.delete((EObject) EMFOperationsUtil.getElementFromResource(parentElement, childElement,
 					childAtributeName, childAtributeValue, relationName, inst_resource));
-			if(debug)
-			System.out.println(EMFOperationsMessages.ELEMENT_DELETED);
+			EMFOperationsMessages.printMessage("ELEMENT_DELETED");
+
 		} else {
-			if(debug)
-			System.out.println(EMFOperationsMessages.ELEMENT_TO_DELETE_NOT_EXITS);
+			EMFOperationsMessages.printMessage("ELEMENT_TO_DELETE_NOT_EXITS");
+
 		}
 	}
 
@@ -544,11 +536,10 @@ public class EMFOperations {
 				}
 			}
 			cl.getMethod("set" + atributeNameNormalized, atributeClassType).invoke(obj, newAtributeValue);
-			if(debug)
-			System.out.println(EMFOperationsMessages.PROPERTY_CHANGED_CORRECTLY);
+			EMFOperationsMessages.printMessage("PROPERTY_CHANGED_CORRECTLY");
 		} else {
-			if(debug)
-			System.out.println(EMFOperationsMessages.PROPERTY_NOT_CHANGED);
+			EMFOperationsMessages.printMessage("PROPERTY_NOT_CHANGED");
+
 		}
 
 	}
@@ -592,15 +583,15 @@ public class EMFOperations {
 					}
 				}
 				cl.getMethod("set" + atributeNameNormalized, atributeClassType).invoke(focusedElement, atributeValue);
-				if(debug)
-				System.out.println(EMFOperationsMessages.PROPERTY_ADDED_CORRECTLY);
+				EMFOperationsMessages.printMessage("PROPERTY_ADDED_CORRECTLY");
+
 			} else {
-				if(debug)
-				System.out.println(EMFOperationsMessages.PROPERTY_NOT_ADDED);
+				EMFOperationsMessages.printMessage("PROPERTY_NOT_ADDED");
+
 			}
 		} else {
-			if(debug)
-			System.out.println(EMFOperationsMessages.NOT_FOCUS_ELEMENT);
+			EMFOperationsMessages.printMessage("NOT_FOCUS_ELEMENT");
+
 		}
 	}
 
@@ -655,8 +646,7 @@ public class EMFOperations {
 				}
 			}
 		} else {
-			if(debug)
-			System.out.println(EMFOperationsMessages.NOT_FOCUS_ELEMENT);
+			EMFOperationsMessages.printMessage("NOT_FOCUS_ELEMENT");
 		}
 
 	}
@@ -682,8 +672,7 @@ public class EMFOperations {
 						EMFOperationsUtil.getMetaModelPackage().getName() + "." + packageNameNormalized + "Factory");
 				Object obj = pfcl.getMethod("create" + nameNormalized).invoke(factory);
 				inst_resource.getContents().add((EObject) obj);
-				if(debug)
-				System.out.println(EMFOperationsMessages.NEW_ELEMENT_ADDED_CORRECTLY);
+				EMFOperationsMessages.printMessage("NEW_ELEMENT_ADDED_CORRECTLY");
 
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -805,8 +794,9 @@ public class EMFOperations {
 									// compruebo que el objeto que se quiere referencia ya no lo estuviese antes
 									if (list.contains(EMFOperationsUtil.getElementFromResource(nameNormalized,
 											atributeName, atributeValue, inst_resource))) {
-										if(debug)
-										System.out.println(EMFOperationsMessages.ELEMENT_ALREADY_REFERENCED);
+										
+										EMFOperationsMessages.printMessage("ELEMENT_ALREADY_REFERENCED");
+
 									} else {
 
 										if (EMFOperationsUtil.getUpperBound(parentNameElement, relationName) > list
@@ -817,9 +807,9 @@ public class EMFOperations {
 													atributeName, atributeValue, inst_resource));
 											setFocusElement(nameElement, atributeName, atributeValue);
 										} else {
-											if(debug)
-											System.out.println(
-													EMFOperationsMessages.ELEMENT_TO_CREATE_AS_REFERENCE_MAXIMUM);
+										
+											EMFOperationsMessages.printMessage("ELEMENT_TO_CREATE_AS_REFERENCE_MAXIMUM");
+
 										}
 
 									}
@@ -846,12 +836,12 @@ public class EMFOperations {
 					}
 				}
 			} else {
-				if(debug)
-				System.out.println(EMFOperationsMessages.NEW_ELEMENT_ALREADY_EXITS);
+				EMFOperationsMessages.printMessage("NEW_ELEMENT_ALREADY_EXITS");
+
 			}
 		} else {
-			if(debug)
-			System.out.println(EMFOperationsMessages.NODE_NOT_EXIST);
+			EMFOperationsMessages.printMessage("NODE_NOT_EXIST");
+
 		}
 
 		/*
@@ -983,8 +973,8 @@ public class EMFOperations {
 									// compruebo que el objeto que se quiere referencia ya no lo estuviese antes
 									if (list.contains(EMFOperationsUtil.getElementFromResource(nameNormalized,
 											atributeName, atributeValue, inst_resource))) {
-										if(debug)
-										System.out.println(EMFOperationsMessages.ELEMENT_ALREADY_REFERENCED);
+										EMFOperationsMessages.printMessage("ELEMENT_ALREADY_REFERENCED");
+
 									} else {
 
 										if (EMFOperationsUtil.getUpperBound(parentNameElement, relationName) > list
@@ -995,9 +985,9 @@ public class EMFOperations {
 													atributeName, atributeValue, inst_resource));
 											setFocusElement(nameElement, atributeName, atributeValue);
 										} else {
-											if(debug)
-											System.out.println(
-													EMFOperationsMessages.ELEMENT_TO_CREATE_AS_REFERENCE_MAXIMUM);
+											
+													EMFOperationsMessages.printMessage("ELEMENT_TO_CREATE_AS_REFERENCE_MAXIMUM");
+
 										}
 
 									}
@@ -1024,12 +1014,12 @@ public class EMFOperations {
 					}
 				}
 			} else {
-				if(debug)
-				System.out.println(EMFOperationsMessages.NEW_ELEMENT_ALREADY_EXITS);
+				EMFOperationsMessages.printMessage("NEW_ELEMENT_ALREADY_EXITS");
+
 			}
 		} else {
-			if(debug)
-			System.out.println(EMFOperationsMessages.NODE_NOT_EXIST);
+			EMFOperationsMessages.printMessage("NODE_NOT_EXIST");
+
 		}
 	}
 
@@ -1116,11 +1106,11 @@ public class EMFOperations {
 						if (EMFOperationsUtil.getUpperBound(parentNameElement, relationName) > list.size()
 								|| EMFOperationsUtil.getUpperBound(parentNameElement, relationName) == -1) {
 							list.add((EObject) obj);
-							if(debug)
-							System.out.println(EMFOperationsMessages.NEW_ELEMENT_ADDED_CORRECTLY);
+							EMFOperationsMessages.printMessage("NEW_ELEMENT_ADDED_CORRECTLY");
+
 						} else {
-							if(debug)
-							System.out.println(EMFOperationsMessages.ELEMENT_TO_CREATE_AS_REFERENCE_MAXIMUM);
+							EMFOperationsMessages.printMessage("ELEMENT_TO_CREATE_AS_REFERENCE_MAXIMUM");
+
 							inst_resource.getContents().remove((EObject) obj);
 						}
 
@@ -1131,12 +1121,12 @@ public class EMFOperations {
 					}
 				}
 			} else {
-				if(debug)
-				System.out.println(EMFOperationsMessages.NEW_ELEMENT_ALREADY_EXITS);
+				EMFOperationsMessages.printMessage("NEW_ELEMENT_ALREADY_EXITS");
+
 			}
 		} else {
-			if(debug)
-			System.out.println(EMFOperationsMessages.NODE_NOT_EXIST);
+			EMFOperationsMessages.printMessage("NODE_NOT_EXIST");
+
 		}
 	}
 
@@ -1208,8 +1198,8 @@ public class EMFOperations {
 					// System.out.println(cl.getMethod("get" + atributeNameNormalized).invoke(obj));
 					// lo introduzco en mi modelo
 					inst_resource.getContents().add((EObject) obj);
-					if(debug)
-					System.out.println(EMFOperationsMessages.NEW_ELEMENT_ADDED_CORRECTLY);
+					EMFOperationsMessages.printMessage("NEW_ELEMENT_ADDED_CORRECTLY");
+
 
 					setFocusElement(nameElement, atributeName, atributeValue);
 
@@ -1220,8 +1210,8 @@ public class EMFOperations {
 				}
 			}
 		} else {
-			if(debug)
-			System.out.println(EMFOperationsMessages.NEW_ELEMENT_ALREADY_EXITS);
+			EMFOperationsMessages.printMessage("NEW_ELEMENT_ALREADY_EXITS");
+
 		}
 
 	}
@@ -1230,8 +1220,8 @@ public class EMFOperations {
 
 		try {
 			inst_resource.save(Collections.EMPTY_MAP);
-			if(debug)
-			System.out.println(EMFOperationsMessages.MODEL_INSTANCE_SAVED);
+			EMFOperationsMessages.printMessage("MODEL_INSTANCE_SAVED");
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

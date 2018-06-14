@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import com.emfproject.EMFOperations;
+import com.emfproject.EMFOperationsMessages;
 import com.google.cloud.dialogflow.v2.QueryResult;
 import com.google.protobuf.Value;
 
@@ -14,7 +15,7 @@ public class EMFDialogflowParse {
 
 	public EMFDialogflowParse() throws ClassNotFoundException, IllegalAccessException, IllegalArgumentException,
 			InvocationTargetException, NoSuchMethodException, SecurityException {
-		op = new EMFOperations(false);
+		op = new EMFOperations();
 		//op.loadModelInstance("maquina/testDialog.xmi");
 	}
 
@@ -45,7 +46,7 @@ public class EMFDialogflowParse {
 			NoSuchMethodException, SecurityException, InstantiationException {
 
 		int numberOfParameters = getNumberOfParameters(queryResult);
-		//System.out.println(numberOfParameters);
+		System.out.println(numberOfParameters);
 		String element;
 		String atribute;
 		String value;
@@ -66,7 +67,7 @@ public class EMFDialogflowParse {
 		case "CM":
 			modelName = queryResult.getParameters().getFieldsMap().get("modelName").getStringValue().toLowerCase();
 			modelLoadedCorrectly=op.createModelInstance("maquina/" + modelName + ".xmi");
-			EMFAdvices.showAdvice("MODEL_CREATED");
+			EMFOperationsMessages.printMessage("NEW_MODEL_ADVICE");
 			
 			break;
 		case "RAC":
@@ -90,23 +91,30 @@ public class EMFDialogflowParse {
 				op.createElement(element);
 				if(element.equals("statemachine")) 
 				{
-					EMFAdvices.showAdvice("NEW_STATEMACHINE_CREATED");
+					EMFOperationsMessages.printMessage("NEW_ROOT_NODE_ADVICE");
 				}
 				break;
 			case 6:
 				op.createElementToFocusedElement(element, atribute, value, relationship);
+				//EMFAdvices.showAdvice("ELEMENT_CREATED");
+				break;
 			case 5:
 				op.createElement(element, atribute, value);
-				EMFAdvices.showAdvice("NEW_ELEMENT_ORPHAN");
+				
+				EMFOperationsMessages.printMessage("NEW_ELEMENT_ORPHAN_ADVICE");
 				break;
 			case 7:
 				op.createElement(element, atribute, value, parent, relationship);
+				
 				break;
 			case 8:
 				op.createElement(element, atribute, value, parent, parentAtribute, parentValue, relationship);
+				
 				break;
 			case 10:
 				op.createElement(element, atribute, value, parent, childElement, childAtribute, childValue,childRelationship,relationship);
+				
+				break;
 			}
 			
 			op.saveModelInstance();
@@ -124,6 +132,7 @@ public class EMFDialogflowParse {
 			switch (numberOfParameters) {
 			case 2:
 				op.setFocusElement(element);
+				
 				break;
 			case 3:
 				op.setFocusElement(element, atribute, value);
@@ -133,6 +142,7 @@ public class EMFDialogflowParse {
 				
 				break;
 			}
+			EMFOperationsMessages.printMessage("ELEMENT_FOCUSED_ADVICE");
 			op.saveModelInstance();
 			break;
 		case "DE":
@@ -146,12 +156,19 @@ public class EMFDialogflowParse {
 			switch (numberOfParameters) {
 			case 2:
 				op.deleteElement(element);
+				if(element.equals("statemachine")) 
+				{
+					EMFOperationsMessages.printMessage("DELETE_ROOT_NODE");
+
+				}
 				break;
 			case 3:
 				op.deleteElement(element, atribute, value);
+				
 				break;
 			case 5:
 				op.deleteElement(parent, element, atribute, value, relationship);
+				
 				break;
 			}
 			op.saveModelInstance();
@@ -165,6 +182,7 @@ public class EMFDialogflowParse {
 			relationship = queryResult.getParameters().getFieldsMap().get("relationship").getStringValue()
 					.toLowerCase();
 			op.addReferenceToFocusedElement(element, atribute, value, relationship);
+			
 			op.saveModelInstance();
 
 			break;
@@ -191,7 +209,7 @@ public class EMFDialogflowParse {
 		case "LM":
 			modelName = queryResult.getParameters().getFieldsMap().get("modelName").getStringValue().toLowerCase();
 			modelLoadedCorrectly=op.loadModelInstance("maquina/" + modelName + ".xmi");
-			EMFAdvices.showAdvice("MODEL_LOADED");
+			
 			break;
 
 		// removeReferenceFromFocusedElement

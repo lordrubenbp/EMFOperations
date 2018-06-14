@@ -126,7 +126,7 @@ public class DetectIntentAudio {
       System.out.format(queryResult.getParameters().getFieldsMap().get("element").getStringValue());
       System.out.format(queryResult.getParameters().getFieldsMap().get("atribute").getStringValue());
       System.out.format(queryResult.getParameters().getFieldsMap().get("value").getStringValue());
-      EMFOperations op= new EMFOperations(true);
+      EMFOperations op= new EMFOperations();
 	
       if (element.equals("estado")) 
       {
