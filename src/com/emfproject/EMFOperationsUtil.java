@@ -259,6 +259,41 @@ public class EMFOperationsUtil {
 	}
 
 	// TODO intentar hacer de otra forma sin reflection
+	public static Object getElementFromResource(String childElement, String parentElement,String parentAtribute,String parentValue,Resource resource)
+	{
+		String nameNormalized = EMFOperationsUtil.normalizedString(childElement) + "Impl";
+		EObject obj= (EObject) getElementFromResource(parentElement,parentAtribute,parentValue, resource);
+		
+		TreeIterator<EObject> i = obj.eAllContents();
+		while (i.hasNext()) {
+			EObject o = i.next();
+			if (o.toString().contains(nameNormalized)) {
+			boolean isNull = true;
+			EList<EAttribute> eAllAttributes = o.eClass().getEAllAttributes();
+			for (EAttribute eAttribute : eAllAttributes) {
+
+				// System.out.println(eAttribute.getName()+": "+o.eGet(eAttribute));
+
+				if (o.eGet(eAttribute) == null) {
+					isNull = true;
+				} else {
+					isNull = false;
+				}
+
+			}
+
+			if (o.eContents().size() == 0 && o.eCrossReferences().size() == 0 && isNull) {
+			//if ( isNull) {
+
+				System.out.println(o);
+				return o;
+			}
+		}
+		}
+		
+		return null;
+		
+	}
 	public static Object getElementFromResource(String parentElement, String childElement, String childAtributeName,
 			String childAtributeValue, String relationName, Resource resource)
 			throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException,

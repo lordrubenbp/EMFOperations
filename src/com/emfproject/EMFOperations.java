@@ -113,6 +113,21 @@ public class EMFOperations {
 
 	}
 
+	public void setFocusElement(String parentElement, String parentAtribute,String parentValue,String childElement) 
+	{
+	
+		if (EMFOperationsUtil.getElementFromResource(childElement, parentElement, parentAtribute, parentValue,
+				inst_resource) != null) {
+			focusedElement =EMFOperationsUtil.getElementFromResource(childElement, parentElement, parentAtribute, parentValue,
+					inst_resource);
+
+		} else {
+			EMFOperationsMessages.printMessage("ELEMENT_TO_FOCUS_NOT_EXITS");
+
+			
+
+		}
+	}
 	public void setFocusElement(String parentElement, String childElement, String childAtributeName,
 			String childAtributeValue, String relationName) throws IllegalAccessException, IllegalArgumentException,
 			InvocationTargetException, NoSuchMethodException, SecurityException, ClassNotFoundException {
@@ -178,7 +193,7 @@ public class EMFOperations {
 				if (m[z].getName().contains("get")) {
 
 					String propertyName = m[z].getName().substring(3);
-					// System.out.println(cl.getMethod(m[z].getName()).invoke(focusedElement).getClass().getSimpleName());
+					//System.out.println(cl.getMethod(m[z].getName()).invoke(focusedElement).getClass().getSimpleName());
 					// si el get devuelve un EList, es un conjunto de objetos del otro elemento
 					// referenciado
 					if (m[z].getReturnType().getSimpleName().equals("EList")) {
@@ -186,7 +201,7 @@ public class EMFOperations {
 						list = (List) cl.getMethod(m[z].getName()).invoke(focusedElement);
 						// recorro cada uno de los elementos
 						for (int y = 0; y < list.size(); y++) {
-							// System.out.println(list.get(y));
+							 System.out.println(list.get(y));
 
 							String sanitalizeReferenceName[] = list.get(y).getClass().getSimpleName().split("Impl");
 							String referenceName = sanitalizeReferenceName[0];
@@ -200,14 +215,14 @@ public class EMFOperations {
 							for (int x = 0; x < mr.length; x++) {
 								if (mr[x].getName().contains("get")) {
 									String subPropertyName = mr[x].getName().substring(3);
-									/*System.out.println(propertyName + ": " + referenceName + ": " + subPropertyName
-											+ ": " + rcl.getMethod(mr[x].getName()).invoke(list.get(y)));*/
+									System.out.println(propertyName + ": " + referenceName + ": " + subPropertyName
+											+ ": " + rcl.getMethod(mr[x].getName()).invoke(list.get(y)));
 								}
 							}
 						}
 
 					} else {
-						//System.out.println(propertyName + ": " + cl.getMethod(m[z].getName()).invoke(focusedElement));
+						System.out.println(propertyName + ": " + cl.getMethod(m[z].getName()).invoke(focusedElement));
 					}
 
 				}
@@ -1126,12 +1141,12 @@ public class EMFOperations {
 				}
 			} else {
 				EMFOperationsMessages.printMessage("NEW_ELEMENT_ALREADY_EXITS");
-				return;
+				
 
 			}
 		} else {
 			EMFOperationsMessages.printMessage("NODE_NOT_EXIST");
-			return;
+			
 
 		}
 	}
@@ -1217,7 +1232,7 @@ public class EMFOperations {
 			}
 		} else {
 			EMFOperationsMessages.printMessage("NEW_ELEMENT_ALREADY_EXITS");
-			return;
+			
 
 		}
 
@@ -1263,9 +1278,9 @@ public class EMFOperations {
 									list = (List) pcl.getMethod(mx[j].getName()).invoke(parentObj);
 
 									// compruebo que el objeto que se quiere referencia ya no lo estuviese antes
-									if (list.contains(EMFOperationsUtil.getElementFromResource(nameNormalized, inst_resource))) {
+									if (list.contains((EObject)newElement)) {
 										EMFOperationsMessages.printMessage("ELEMENT_ALREADY_REFERENCED");
-										return;
+										
 
 									} else {
 
@@ -1273,12 +1288,12 @@ public class EMFOperations {
 												.size()
 												|| EMFOperationsUtil.getUpperBound(parentNameElement,
 														relationName) == -1) {
-											list.add(EMFOperationsUtil.getElementFromResource(nameNormalized, inst_resource));
+											list.add((EObject)newElement);
 											setFocusElement(nameElement);
 										} else {
 											
 													EMFOperationsMessages.printMessage("ELEMENT_TO_CREATE_AS_REFERENCE_MAXIMUM");
-													return;
+													
 
 										}
 
@@ -1291,16 +1306,16 @@ public class EMFOperations {
 											EMFOperationsUtil.getMetaModelPackage().getName() + "." + nameNormalized);
 									
 									ccl.getMethod("set" + relationNameNormalized, ccl).invoke(parentObj,
-											EMFOperationsUtil.getElementFromResource(nameNormalized, inst_resource));
+											(EObject)newElement);
 									setFocusElement(nameElement);
 								}
 
 							}else 
 							{
 								
-								EMFOperationsMessages.printMessage("RELATION_NOT_EXIST");
-								inst_resource.getContents().remove((EObject) newElement);
-								return;
+								//EMFOperationsMessages.printMessage("RELATION_NOT_EXIST");
+								//inst_resource.getContents().remove((EObject) newElement);
+								
 							}
 						}
 
@@ -1309,7 +1324,7 @@ public class EMFOperations {
 			
 		} else {
 			EMFOperationsMessages.printMessage("NODE_NOT_EXIST");
-			return;
+			
 
 		}
 		

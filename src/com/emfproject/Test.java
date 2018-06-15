@@ -170,7 +170,14 @@ public class Test {
 
 		//op.getPropertiesFromFocusedElement();
 		//op.setFocusElement("state","name","test");
-		op.createElement("transition", "state", "name","test","transitionss");
+		op.createElement("transition", "state", "name","test","transitions");
+		
+		
+		op.setFocusElement("state", "name", "test", "transition");
+		
+		op.createElementToFocusedElement("event", "name", "testevento", "event");
+		op.getPropertiesFromFocusedElement();
+		
 		//op.addElementToFocusedElement("state", "name", "juanito", "states");
 		//op.addReferenceToFocusedElement("transition");
 		//op.setFocusElement("statemachine", "state", "name", "pepe", "states");

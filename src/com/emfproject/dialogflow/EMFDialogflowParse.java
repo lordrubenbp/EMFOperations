@@ -46,7 +46,7 @@ public class EMFDialogflowParse {
 			NoSuchMethodException, SecurityException, InstantiationException {
 
 		int numberOfParameters = getNumberOfParameters(queryResult);
-		//System.out.println(numberOfParameters);
+		System.out.println(numberOfParameters);
 		String element;
 		String atribute;
 		String value;
@@ -96,7 +96,7 @@ public class EMFDialogflowParse {
 				break;
 			case 6:
 				op.createElementToFocusedElement(element, atribute, value, relationship);
-				//EMFAdvices.showAdvice("ELEMENT_CREATED");
+				
 				break;
 			case 5:
 				op.createElement(element, atribute, value);
@@ -104,7 +104,16 @@ public class EMFDialogflowParse {
 				EMFOperationsMessages.printMessage("NEW_ELEMENT_ORPHAN_ADVICE");
 				break;
 			case 7:
-				op.createElement(element, atribute, value, parent, relationship);
+				if(!parentValue.equals("")) 
+				{
+					System.out.println(element+" "+parent+" "+parentAtribute+" "+parentValue+" "+relationship);
+					op.createElement(element, parent, parentAtribute,parentValue,relationship);
+				}else 
+				{
+					
+					op.createElement(element, atribute, value, parent, relationship);
+				}
+				
 				
 				break;
 			case 8:

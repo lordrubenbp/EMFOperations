@@ -1,2 +1,7 @@
 <?xml version="1.0" encoding="ASCII"?>
-<eMFProject:State xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:eMFProject="http://www.example.org/eMFProject" name="test"/>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:eMFProject="http://www.example.org/eMFProject">
+  <eMFProject:State name="test">
+    <transitions event="/1"/>
+  </eMFProject:State>
+  <eMFProject:Event name="testevento"/>
+</xmi:XMI>
