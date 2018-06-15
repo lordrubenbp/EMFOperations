@@ -46,7 +46,7 @@ public class EMFDialogflowParse {
 			NoSuchMethodException, SecurityException, InstantiationException {
 
 		int numberOfParameters = getNumberOfParameters(queryResult);
-		System.out.println(numberOfParameters);
+		//System.out.println(numberOfParameters);
 		String element;
 		String atribute;
 		String value;

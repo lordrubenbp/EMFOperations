@@ -9,16 +9,28 @@
   <foreignModel>eMFProject.ecore</foreignModel>
   <testsDirectory xsi:nil="true"/>
   <genPackages prefix="EMFProject" disposableProviderFactory="true" ecorePackage="eMFProject.ecore#/">
-    <genClasses ecoreClass="eMFProject.ecore#//State">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eMFProject.ecore#//State/name"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference eMFProject.ecore#//State/actions"/>
+    <genClasses ecoreClass="eMFProject.ecore#//Statemachine">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eMFProject.ecore#//Statemachine/events"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference eMFProject.ecore#//Statemachine/resetEvents"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eMFProject.ecore#//Statemachine/commands"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eMFProject.ecore#//Statemachine/states"/>
+    </genClasses>
+    <genClasses ecoreClass="eMFProject.ecore#//Event">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eMFProject.ecore#//Event/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eMFProject.ecore#//Event/code"/>
     </genClasses>
     <genClasses ecoreClass="eMFProject.ecore#//Command">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eMFProject.ecore#//Command/name"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eMFProject.ecore#//Command/code"/>
     </genClasses>
-    <genClasses ecoreClass="eMFProject.ecore#//Statemachine">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eMFProject.ecore#//Statemachine/state"/>
+    <genClasses ecoreClass="eMFProject.ecore#//State">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eMFProject.ecore#//State/name"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference eMFProject.ecore#//State/actions"/>
+      <genFeatures children="true" createChild="true" propertySortChoices="true" ecoreFeature="ecore:EReference eMFProject.ecore#//State/transitions"/>
+    </genClasses>
+    <genClasses ecoreClass="eMFProject.ecore#//Transition">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference eMFProject.ecore#//Transition/event"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference eMFProject.ecore#//Transition/state"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

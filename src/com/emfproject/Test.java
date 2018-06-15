@@ -147,7 +147,8 @@ public class Test {
 		EMFOperations op= new EMFOperations();
 		
 
-		op.loadModelInstance("maquina/testprueba2.xmi");
+		//op.loadModelInstance("maquina/prueba.xmi");
+		op.createModelInstance("maquina/prueba2.xmi");
 
 		//try {
 			//op.dumpDataFromModelInstance("alumno",int.class,i,"id");
@@ -161,15 +162,17 @@ public class Test {
 		//op.addElement("statemachine");
 
 		//op.createElement("state", "name", "test", "statemachine", "states");
-		op.setFocusElement("statemachine");
-		//op.createElement("state", "name", "test", "statemachine", "states");
-		op.clearProperty("states");
+		//op.setFocusElement("statemachine");
+		op.createElement("state", "name", "test");
+		//op.createElement("transition");
+		//op.clearProperty("states");
 		//op.createElement("command", "name", "test2", "statemachine", "state", "name", "pepe", "states","commands");
 
 		//op.getPropertiesFromFocusedElement();
-		//op.setFocusElement("statemachine");
+		//op.setFocusElement("state","name","test");
+		op.createElement("transition", "state", "name","test","transitionss");
 		//op.addElementToFocusedElement("state", "name", "juanito", "states");
-		//op.addReferenceToFocusedElement("state", "name", "pepe", "states");
+		//op.addReferenceToFocusedElement("transition");
 		//op.setFocusElement("statemachine", "state", "name", "pepe", "states");
 		//op.addElement("statemachine");
 		//op.addElement("state", "name", "pepe", "statemachine", "states");

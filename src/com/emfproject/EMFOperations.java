@@ -656,10 +656,11 @@ public class EMFOperations {
 	 * 
 	 * @param nameElement
 	 */
-	public void createElement(String nameElement) {
+	public Object createElement(String nameElement) {
 		String packageNameNormalized = EMFOperationsUtil
 				.normalizedString(EMFOperationsUtil.getMetaModelPackage().getName());
 		String nameNormalized = EMFOperationsUtil.normalizedString(nameElement);
+		Object obj=null;
 
 		// if (EMFOperationsUtil.getElementFromResource(nameNormalized,inst_resource) ==
 		// null) {
@@ -670,9 +671,10 @@ public class EMFOperations {
 
 				Class pfcl = Class.forName(
 						EMFOperationsUtil.getMetaModelPackage().getName() + "." + packageNameNormalized + "Factory");
-				Object obj = pfcl.getMethod("create" + nameNormalized).invoke(factory);
+				 obj = pfcl.getMethod("create" + nameNormalized).invoke(factory);
 				inst_resource.getContents().add((EObject) obj);
 				EMFOperationsMessages.printMessage("NEW_ELEMENT_ADDED_CORRECTLY");
+				
 
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -682,6 +684,8 @@ public class EMFOperations {
 
 		// }
 		setFocusElement(nameElement);
+		return obj;
+		
 
 	}
 
@@ -1122,10 +1126,12 @@ public class EMFOperations {
 				}
 			} else {
 				EMFOperationsMessages.printMessage("NEW_ELEMENT_ALREADY_EXITS");
+				return;
 
 			}
 		} else {
 			EMFOperationsMessages.printMessage("NODE_NOT_EXIST");
+			return;
 
 		}
 	}
@@ -1211,11 +1217,103 @@ public class EMFOperations {
 			}
 		} else {
 			EMFOperationsMessages.printMessage("NEW_ELEMENT_ALREADY_EXITS");
+			return;
 
 		}
 
 	}
 
+	public void createElement(String nameElement,String parentNameElement,
+			String parentAtributeName, String parentAtributeValue, String relationName) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, ClassNotFoundException {
+		
+		String packageNameNormalized = EMFOperationsUtil
+				.normalizedString(EMFOperationsUtil.getMetaModelPackage().getName());
+		String nameNormalized = EMFOperationsUtil.normalizedString(nameElement);
+		String parentNameElementNormalized = EMFOperationsUtil.normalizedString(parentNameElement);
+		String relationNameNormalized = EMFOperationsUtil.normalizedString(relationName);
+		List list = null;
+		Object newElement=null;
+
+		if (EMFOperationsUtil.getElementFromResource(parentNameElementNormalized, parentAtributeName,
+				parentAtributeValue, inst_resource) != null) {
+		
+				if (EMFOperationsUtil.checkElementInsertion(nameElement)) {
+
+					newElement=createElement(nameElement);
+				
+
+						Class pcl = Class.forName(
+								EMFOperationsUtil.getMetaModelPackage().getName() + "." + parentNameElementNormalized);
+						Object parentObj = EMFOperationsUtil.getElementFromResource(parentNameElementNormalized,
+								parentAtributeName, parentAtributeValue, inst_resource);
+
+						Method[] mx = pcl.getDeclaredMethods();
+
+						for (int j = 0; j < mx.length; j++) {
+
+							if (mx[j].getName().equals("get" + relationNameNormalized)) {
+								// si la referencia es multiple, devolvera un EList
+								// System.out.println(cl.getMethod(m[z].getName()).invoke(focusedElement).getClass().getSimpleName());
+								// no entras
+								if (mx[j].getReturnType().getSimpleName().equals("EList")) {
+									// TODO me queda comprobar si el listado no es de * elementos, saber el numero
+									// de ellos para no hacer una inserccion por encima del valor
+									// esta info deberia tenerla en el metamodelo EPackage
+
+									list = (List) pcl.getMethod(mx[j].getName()).invoke(parentObj);
+
+									// compruebo que el objeto que se quiere referencia ya no lo estuviese antes
+									if (list.contains(EMFOperationsUtil.getElementFromResource(nameNormalized, inst_resource))) {
+										EMFOperationsMessages.printMessage("ELEMENT_ALREADY_REFERENCED");
+										return;
+
+									} else {
+
+										if (EMFOperationsUtil.getUpperBound(parentNameElement, relationName) > list
+												.size()
+												|| EMFOperationsUtil.getUpperBound(parentNameElement,
+														relationName) == -1) {
+											list.add(EMFOperationsUtil.getElementFromResource(nameNormalized, inst_resource));
+											setFocusElement(nameElement);
+										} else {
+											
+													EMFOperationsMessages.printMessage("ELEMENT_TO_CREATE_AS_REFERENCE_MAXIMUM");
+													return;
+
+										}
+
+									}
+								}
+								// si la referencia es unica..
+								else if (mx[j].getReturnType().getSimpleName().equals(nameNormalized)) {
+
+									Class ccl = Class.forName(
+											EMFOperationsUtil.getMetaModelPackage().getName() + "." + nameNormalized);
+									
+									ccl.getMethod("set" + relationNameNormalized, ccl).invoke(parentObj,
+											EMFOperationsUtil.getElementFromResource(nameNormalized, inst_resource));
+									setFocusElement(nameElement);
+								}
+
+							}else 
+							{
+								
+								EMFOperationsMessages.printMessage("RELATION_NOT_EXIST");
+								inst_resource.getContents().remove((EObject) newElement);
+								return;
+							}
+						}
+
+					
+				}
+			
+		} else {
+			EMFOperationsMessages.printMessage("NODE_NOT_EXIST");
+			return;
+
+		}
+		
+	}
 	public void saveModelInstance() {
 
 		try {

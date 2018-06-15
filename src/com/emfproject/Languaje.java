@@ -11,7 +11,7 @@ public class Languaje {
 		//Locale es_ES = new Locale("es", "ES");
 		//System.out.println(ResourceBundle.getBundle("com.emfproject.lang.Messages").getString("MODEL_CREATED"));
 		//System.out.println(ResourceBundle.getBundle("com.emfproject.lang.Messages").getString("MODEL_CREATED"));
-		EMFOperationsMessages.printMessage("ELEMENT_FOCUSED_ADVICE");
+		EMFOperationsMessages.printMessage("PRUEBA");
 
 	}
 

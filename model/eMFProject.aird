@@ -5,8 +5,6 @@
     <semanticResources>eMFProject.genmodel</semanticResources>
     <semanticResources>../maquina/test2.xmi</semanticResources>
     <semanticResources>http://www.eclipse.org/emf/2002/Ecore</semanticResources>
-    <semanticResources>../maquina/testprueba2.xmi</semanticResources>
-    <semanticResources>../maquina/testprueba3.xmi</semanticResources>
     <semanticResources>../maquina/prueba2.xmi</semanticResources>
     <semanticResources>../maquina/test23.xmi</semanticResources>
     <semanticResources>../maquina/test.xmi</semanticResources>
