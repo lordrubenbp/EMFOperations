@@ -64,6 +64,21 @@ public class EMFDialogflowParse {
 
 		switch (actionCode) {
 
+		case "VM":
+			op.validateModel();
+			
+			break;
+		case "SRN":
+			element = queryResult.getParameters().getFieldsMap().get("element").getStringValue().toLowerCase();
+			op.setNodeElement(element);
+			break;
+		case "CRN":
+			
+			element = queryResult.getParameters().getFieldsMap().get("element").getStringValue().toLowerCase();
+			op.createElement(element);
+			op.setNodeElement(element);
+			
+			break;
 		case "CM":
 			modelName = queryResult.getParameters().getFieldsMap().get("modelName").getStringValue().toLowerCase();
 			modelLoadedCorrectly=op.createModelInstance("maquina/" + modelName + ".xmi");
@@ -106,7 +121,7 @@ public class EMFDialogflowParse {
 			case 7:
 				if(!parentValue.equals("")) 
 				{
-					System.out.println(element+" "+parent+" "+parentAtribute+" "+parentValue+" "+relationship);
+					//System.out.println(element+" "+parent+" "+parentAtribute+" "+parentValue+" "+relationship);
 					op.createElement(element, parent, parentAtribute,parentValue,relationship);
 				}else 
 				{
@@ -135,21 +150,28 @@ public class EMFDialogflowParse {
 			atribute = queryResult.getParameters().getFieldsMap().get("atribute").getStringValue().toLowerCase();
 			value = queryResult.getParameters().getFieldsMap().get("value").getStringValue().toLowerCase();
 			parent = queryResult.getParameters().getFieldsMap().get("parent").getStringValue().toLowerCase();
+			parentAtribute=queryResult.getParameters().getFieldsMap().get("parentAtribute").getStringValue().toLowerCase();
+			parentValue=queryResult.getParameters().getFieldsMap().get("parentValue").getStringValue().toLowerCase();
 			relationship = queryResult.getParameters().getFieldsMap().get("relationship").getStringValue()
 					.toLowerCase();
 			
 			switch (numberOfParameters) {
-			case 2:
+			case 3:
 				op.setFocusElement(element);
 				
 				break;
-			case 3:
+			case 4:
 				op.setFocusElement(element, atribute, value);
 				break;
 			case 5:
-				op.setFocusElement(parent, element, atribute, value, relationship);
+				
+					op.setFocusElement(element, parent, parentAtribute, parentValue);
 				
 				break;
+			case 6:
+				op.setFocusElement(parent, element, atribute, value, relationship);
+				break;
+				
 			}
 			EMFOperationsMessages.printMessage("ELEMENT_FOCUSED_ADVICE");
 			op.saveModelInstance();

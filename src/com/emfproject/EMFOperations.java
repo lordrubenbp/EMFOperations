@@ -32,7 +32,7 @@ public class EMFOperations {
 	Object factory;
 	String metaModelURI;
 	Object focusedElement;
-	public EMFOperationsMessages messages;
+	String rootNodeName;
 
 	public EMFOperations() throws ClassNotFoundException, IllegalAccessException, IllegalArgumentException,
 			InvocationTargetException, NoSuchMethodException, SecurityException {
@@ -113,7 +113,7 @@ public class EMFOperations {
 
 	}
 
-	public void setFocusElement(String parentElement, String parentAtribute,String parentValue,String childElement) 
+	public void setFocusElement(String childElement,String parentElement, String parentAtribute,String parentValue) 
 	{
 	
 		if (EMFOperationsUtil.getElementFromResource(childElement, parentElement, parentAtribute, parentValue,
@@ -163,6 +163,7 @@ public class EMFOperations {
 
 		if (EMFOperationsUtil.getElementFromResource(nameElement, inst_resource) != null) {
 			focusedElement = EMFOperationsUtil.getElementFromResource(nameElement, inst_resource);
+			System.out.println("encontrado");
 		} else {
 			EMFOperationsMessages.printMessage("ELEMENT_TO_FOCUS_NOT_EXITS");
 
@@ -1339,6 +1340,30 @@ public class EMFOperations {
 			e.printStackTrace();
 		}
 
+	}
+
+	public void setNodeElement(String element) {
+		
+		rootNodeName=EMFOperationsUtil.normalizedString(element);
+		
+		
+	}
+	public void validateModel() 
+	{
+		
+		 //System.out.println(inst_resource.getContents().size());
+		 //System.out.println(rootNodeName);
+		 //System.out.println(inst_resource.getContents().get(0).eClass().getName());
+		 
+		 if(inst_resource.getContents().size()==1 && inst_resource.getContents().get(0).eClass().getName().equals(rootNodeName) ) 
+		 {
+			 EMFOperationsMessages.printMessage("MODEL_VALIDATED");
+		 }else 
+		 {
+			 EMFOperationsMessages.printMessage("MODEL_NOT_VALIDATED");
+		 }
+		
+				
 	}
 
 }

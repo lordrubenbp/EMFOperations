@@ -282,8 +282,8 @@ public class EMFOperationsUtil {
 
 			}
 
-			if (o.eContents().size() == 0 && o.eCrossReferences().size() == 0 && isNull) {
-			//if ( isNull) {
+			//if (o.eContents().size() == 0 && o.eCrossReferences().size() == 0 && isNull) {
+			if ( isNull) {
 
 				System.out.println(o);
 				return o;
