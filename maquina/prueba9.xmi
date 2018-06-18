@@ -1,10 +1,5 @@
 <?xml version="1.0" encoding="ASCII"?>
 <eMFProject:Statemachine xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:eMFProject="http://www.example.org/eMFProject">
-  <events name="pepeevent"/>
-  <commands name="pepecommand"/>
-  <states name="pepe">
-    <transitions event="//@events.0"/>
-  </states>
   <states name="prueba"/>
-  <states name="ghgh"/>
+  <states name="prueba2"/>
 </eMFProject:Statemachine>

@@ -32,7 +32,7 @@ public class EMFOperations {
 	Object factory;
 	String metaModelURI;
 	Object focusedElement;
-	String rootNodeName;
+	String rootNodeName=null;
 
 	public EMFOperations() throws ClassNotFoundException, IllegalAccessException, IllegalArgumentException,
 			InvocationTargetException, NoSuchMethodException, SecurityException {
@@ -202,7 +202,7 @@ public class EMFOperations {
 						list = (List) cl.getMethod(m[z].getName()).invoke(focusedElement);
 						// recorro cada uno de los elementos
 						for (int y = 0; y < list.size(); y++) {
-							 System.out.println(list.get(y));
+							// System.out.println(list.get(y));
 
 							String sanitalizeReferenceName[] = list.get(y).getClass().getSimpleName().split("Impl");
 							String referenceName = sanitalizeReferenceName[0];
@@ -220,10 +220,12 @@ public class EMFOperations {
 											+ ": " + rcl.getMethod(mr[x].getName()).invoke(list.get(y)));
 								}
 							}
+							System.out.println("----------------");
 						}
 
 					} else {
 						System.out.println(propertyName + ": " + cl.getMethod(m[z].getName()).invoke(focusedElement));
+						System.out.println("----------------");
 					}
 
 				}
@@ -359,7 +361,7 @@ public class EMFOperations {
 								focusedElement = oldFocusElement;
 								list.add(EMFOperationsUtil.getElementFromResource(nameNormalized, atributeName,
 										atributeValue, inst_resource));
-								EMFOperationsMessages.printMessage("NEW_ELEMENT_ADDED_CORRECTLY");
+								
 
 							} else {
 								EMFOperationsMessages.printMessage("ELEMENT_TO_CREATE_AS_REFERENCE_MAXIMUM");
@@ -383,7 +385,7 @@ public class EMFOperations {
 							cl.getMethod("set" + referenceNameNormalized, ccl).invoke(focusedElement,
 									ccl.cast(EMFOperationsUtil.getElementFromResource(nameNormalized, atributeName,
 											atributeValue, inst_resource)));
-							EMFOperationsMessages.printMessage("NEW_ELEMENT_ADDED_CORRECTLY");
+							
 
 						}
 
@@ -1354,13 +1356,17 @@ public class EMFOperations {
 		 //System.out.println(inst_resource.getContents().size());
 		 //System.out.println(rootNodeName);
 		 //System.out.println(inst_resource.getContents().get(0).eClass().getName());
-		 
+		 if(rootNodeName!=null) {
 		 if(inst_resource.getContents().size()==1 && inst_resource.getContents().get(0).eClass().getName().equals(rootNodeName) ) 
 		 {
 			 EMFOperationsMessages.printMessage("MODEL_VALIDATED");
 		 }else 
 		 {
 			 EMFOperationsMessages.printMessage("MODEL_NOT_VALIDATED");
+		 }
+		 }else 
+		 {
+			 EMFOperationsMessages.printMessage("NOT_ROOT_NODE");
 		 }
 		
 				

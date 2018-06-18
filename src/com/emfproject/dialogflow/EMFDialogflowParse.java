@@ -46,7 +46,7 @@ public class EMFDialogflowParse {
 			NoSuchMethodException, SecurityException, InstantiationException {
 
 		int numberOfParameters = getNumberOfParameters(queryResult);
-		System.out.println(numberOfParameters);
+		System.out.println("[DEBUG] parameters recived: "+numberOfParameters);
 		String element;
 		String atribute;
 		String value;
@@ -64,31 +64,28 @@ public class EMFDialogflowParse {
 
 		switch (actionCode) {
 
+		//validateModel
 		case "VM":
 			op.validateModel();
 			
 			break;
+		//setRootNode
 		case "SRN":
 			element = queryResult.getParameters().getFieldsMap().get("element").getStringValue().toLowerCase();
 			op.setNodeElement(element);
 			break;
-		case "CRN":
-			
-			element = queryResult.getParameters().getFieldsMap().get("element").getStringValue().toLowerCase();
-			op.createElement(element);
-			op.setNodeElement(element);
-			
-			break;
+		//createModel
 		case "CM":
 			modelName = queryResult.getParameters().getFieldsMap().get("modelName").getStringValue().toLowerCase();
 			modelLoadedCorrectly=op.createModelInstance("maquina/" + modelName + ".xmi");
 			EMFOperationsMessages.printMessage("NEW_MODEL_ADVICE");
 			
 			break;
+		//resetAllContext
 		case "RAC":
 			return;
+		//createElement
 		case "CE":
-
 			element = queryResult.getParameters().getFieldsMap().get("element").getStringValue().toLowerCase();
 			atribute = queryResult.getParameters().getFieldsMap().get("atribute").getStringValue().toLowerCase();
 			value = queryResult.getParameters().getFieldsMap().get("value").getStringValue().toLowerCase();
@@ -144,6 +141,7 @@ public class EMFDialogflowParse {
 			op.saveModelInstance();
 			
 			break;
+		//focusElement
 		case "FE":
 			
 			element = queryResult.getParameters().getFieldsMap().get("element").getStringValue().toLowerCase();
@@ -176,6 +174,7 @@ public class EMFDialogflowParse {
 			EMFOperationsMessages.printMessage("ELEMENT_FOCUSED_ADVICE");
 			op.saveModelInstance();
 			break;
+			//deleteElement
 		case "DE":
 			
 			element = queryResult.getParameters().getFieldsMap().get("element").getStringValue().toLowerCase();
@@ -282,7 +281,7 @@ public class EMFDialogflowParse {
 		case "EXIT":
 			System.exit(0);
 		default:
-			System.out.println("action code no valido");
+			EMFOperationsMessages.printMessage("INVALID_CODE");
 			break;
 		}
 		
