@@ -8,7 +8,11 @@ import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -176,7 +180,51 @@ public class EMFOperations {
 		return focusedElement;
 	}
 
-	public void getPropertiesFromFocusedElement() throws ClassNotFoundException, IllegalAccessException,
+	public void recursiva(EObject object) 
+	{
+		EObject o = object;
+		
+		System.out.println("Element: "+o.eClass().getName());
+		EList<EAttribute> eAllAttributes = o.eClass().getEAllAttributes();
+		for (EAttribute eAttribute : eAllAttributes) {
+
+			System.out.println(eAttribute.getName()+": "+o.eGet(eAttribute));
+
+
+		}
+		if(o.eCrossReferences().size()>0||o.eContents().size()>0) 
+		{
+			System.out.println(">>>>>>>>>>>>>>>>>>>");
+		}else 
+		{
+			System.out.println("-------------------");
+		}
+		
+
+		for(EObject eobject:o.eCrossReferences()) 
+		{
+			recursiva(eobject);
+		}
+		for(EObject eobject:o.eContents()) 
+		{
+			recursiva(eobject);
+		}
+		
+	}
+	public void getPropertiesFromFocusedElement() 
+	{
+		EObject efocusElement= (EObject) focusedElement;
+		
+		
+		EList<EObject> i = efocusElement.eContents();
+		
+		for(EObject eobj:i) 
+		{
+			 recursiva(eobj);
+		}
+	
+	}
+	/*public void getPropertiesFromFocusedElement() throws ClassNotFoundException, IllegalAccessException,
 			IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
 		// System.out.println(focusedElement.getClass().getSimpleName());
 		if (focusedElement != null) {
@@ -202,7 +250,7 @@ public class EMFOperations {
 						list = (List) cl.getMethod(m[z].getName()).invoke(focusedElement);
 						// recorro cada uno de los elementos
 						for (int y = 0; y < list.size(); y++) {
-							// System.out.println(list.get(y));
+							//System.out.println(list.get(y));
 
 							String sanitalizeReferenceName[] = list.get(y).getClass().getSimpleName().split("Impl");
 							String referenceName = sanitalizeReferenceName[0];
@@ -215,18 +263,22 @@ public class EMFOperations {
 
 							for (int x = 0; x < mr.length; x++) {
 								if (mr[x].getName().contains("get")) {
+									
 									String subPropertyName = mr[x].getName().substring(3);
+								
 									System.out.println(propertyName + ": " + referenceName + ": " + subPropertyName
 											+ ": " + rcl.getMethod(mr[x].getName()).invoke(list.get(y)));
+									
+									
 								}
 							}
-							System.out.println("----------------");
+							
 						}
-
+						
 					} else {
 						System.out.println(propertyName + ": " + cl.getMethod(m[z].getName()).invoke(focusedElement));
-						System.out.println("----------------");
 					}
+					
 
 				}
 
@@ -236,7 +288,7 @@ public class EMFOperations {
 
 		}
 
-	}
+	}*/
 
 	public void removeReferenceFromFocusedElement(String nameElement, String atributeName, String atributeValue,
 			String referenceName) throws ClassNotFoundException, IllegalAccessException, IllegalArgumentException,

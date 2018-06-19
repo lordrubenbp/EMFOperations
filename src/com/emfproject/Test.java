@@ -147,7 +147,7 @@ public class Test {
 		EMFOperations op= new EMFOperations();
 		
 
-		op.loadModelInstance("maquina/prueba2.xmi");
+		op.loadModelInstance("maquina/prueba8.xmi");
 		//op.createModelInstance("maquina/prueba2.xmi");
 
 		//try {
@@ -179,7 +179,7 @@ public class Test {
 		//op.getPropertiesFromFocusedElement();
 		op.setNodeElement("statemachine");
 		op.setFocusElement("statemachine");
-		op.getPropertiesFromFocusedElement();
+		
 		op.validateModel();
 		
 		//op.addElementToFocusedElement("state", "name", "juanito", "states");
