@@ -163,9 +163,8 @@ public class EMFmain {
 
 				queryResult = response.getQueryResult();
 
-				if (debug == true) {
-					printQueryResultInfo(queryResult);
-
+				if(!queryResult.getFulfillmentText().equals("")) {
+				System.out.format("[RESPONSE] Fulfillment Text: '%s'\n", queryResult.getFulfillmentText());
 				}
 
 				if (queryResult.getAllRequiredParamsPresent()) {

@@ -14,6 +14,7 @@ import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
@@ -186,18 +187,34 @@ public class EMFOperations {
 		
 		System.out.println("Element: "+o.eClass().getName());
 		EList<EAttribute> eAllAttributes = o.eClass().getEAllAttributes();
-		for (EAttribute eAttribute : eAllAttributes) {
+		EList<EReference> eAllReferences=o.eClass().getEAllContainments();
+		
+		for (EReference eReference : eAllReferences) {
 
-			System.out.println(eAttribute.getName()+": "+o.eGet(eAttribute));
+			System.out.println(eReference.getName()+": "+o.eGet(eReference));
+			
 
 
 		}
-		if(o.eCrossReferences().size()>0||o.eContents().size()>0) 
+		for (EAttribute eAttribute : eAllAttributes) {
+
+			System.out.println(eAttribute.getName()+": "+o.eGet(eAttribute));
+			//TODO aqui hay mucha chicha, puedo cambiar los atributos con estos metodos abstractos
+			//o.eSet(eAttribute, "hola");
+
+
+		}
+		if(o.eContents().size()>0) 
 		{
-			System.out.println(">>>>>>>>>>>>>>>>>>>");
+			System.out.println("CONTENT >>>>>>>>>>>>>");
+			
+		}else if(o.eCrossReferences().size()>0) {
+			
+			System.out.println("REFERENCE >>>>>>>>>>>>>");
+			
 		}else 
 		{
-			System.out.println("-------------------");
+			System.out.println("-----------------------");
 		}
 		
 
@@ -215,13 +232,14 @@ public class EMFOperations {
 	{
 		EObject efocusElement= (EObject) focusedElement;
 		
+		 recursiva(efocusElement);
 		
-		EList<EObject> i = efocusElement.eContents();
+		/*EList<EObject> i = efocusElement.eContents();
 		
 		for(EObject eobj:i) 
 		{
 			 recursiva(eobj);
-		}
+		}*/
 	
 	}
 	/*public void getPropertiesFromFocusedElement() throws ClassNotFoundException, IllegalAccessException,

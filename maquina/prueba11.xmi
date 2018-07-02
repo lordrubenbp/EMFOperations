@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="ASCII"?>
+<eMFProject:Statemachine
+    xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI"
+    xmlns:eMFProject="http://www.example.org/eMFProject">
+  <events name="paused"/>
+  <commands
+      name="switch"/>
+  <states name="idle"
+      actions="//@commands.0">
+    <transitions
+        event="//@events.0"/>
+  </states>
+  <states/>
+</eMFProject:Statemachine>

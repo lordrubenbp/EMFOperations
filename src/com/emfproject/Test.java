@@ -143,102 +143,17 @@ public class Test {
 	
 		*/
 		
-		//EMFOperationsUtil.showAllMetaModelData();
+
 		EMFOperations op= new EMFOperations();
 		
 
-		op.loadModelInstance("maquina/prueba8.xmi");
-		//op.createModelInstance("maquina/prueba2.xmi");
-
-		//try {
-			//op.dumpDataFromModelInstance("alumno",int.class,i,"id");
-		//} catch (IllegalArgumentException e) {
-			
-			//e.printStackTrace();
-		//}
-		//op.setFocusElement("statemachine");
-		//op.createElement("state","name","stado1");
-		//op.renameElement("state", "name", "stado3", "stado44");
-		//op.addElement("statemachine");
-
-		//op.createElement("state", "name", "test", "statemachine", "states");
-		//op.setFocusElement("statemachine");
-		//op.createElement("statemachine");
-		//op.createElement("transition");
-		//op.clearProperty("states");
-		//op.createElement("command", "name", "test2", "statemachine", "state", "name", "pepe", "states","commands");
-
-		//op.getPropertiesFromFocusedElement();
-		//op.setFocusElement("state","name","test");
-		//op.createElement("transition", "state", "name","test","transitions");
 		
+		op.createModelInstance("maquina/prueba12.xmi");
+		op.createElement("state","name","pepe");
 		
-		//op.setFocusElement("transition","state", "name", "test");
-		
-		//op.createElementToFocusedElement("event", "name", "testevento", "event");
-		//op.getPropertiesFromFocusedElement();
-		op.setNodeElement("statemachine");
-		op.setFocusElement("statemachine");
-		
-		op.validateModel();
-		
-		//op.addElementToFocusedElement("state", "name", "juanito", "states");
-		//op.addReferenceToFocusedElement("transition");
-		//op.setFocusElement("statemachine", "state", "name", "pepe", "states");
-		//op.addElement("statemachine");
-		//op.addElement("state", "name", "pepe", "statemachine", "states");
-		//op.clearProperty("name");
-		//op.clearProperty("actions");
-		 //op.addReferenceToFocusedElement("command", "", "actions");
-		 //op.removeReferenceFromFocusedElement("state", "name","pepe","states");
-		
-		//op.addElement("statemachine");
-		/*Tengo que a�adir aparte del nombre de padre, un atributo y su valor*/
-		//op.addElement("command", "name", "test", "state", "actions");
-		//op.addElement("state","name","sleep2");
-		//op.addElement("event","name","wake_up");
-		//op.addElement("state");
-		//op.setFocusElement("state");
-		//op.setProperty("name", "pepe");
-		//op.setFocusElement("state", "name", "pepe");
-		//op.setProperty("name", "juanelo");
-		//op.setFocusElement("statemachine");
-		//op.setFocusElement("statemachine", "state", "name", "sleep", "states");
-		//op.getPropertiesFromFocusedElement();
-		//op.setFocusElement("transition");
-		//op.addReferenceToFocusedElement("state", "name", "sleep2", "state");
-		//op.addReferenceToFocusedElement("event", "name", "wake_up", "event");
-		//op.addElement("statemachine");
-		//op.setFocusElement("statemachine");
-		//op.addReferenceToFocusedElement("event", "name", "wake_up", "events");
-		//op.addReferenceToFocusedElement("state", "name", "sleep2", "states");
-		//op.getPropertiesFromFocusedElement();
-		 //op.addReferenceToFocusedElement("state","name","sleep2", "states");
-		//op.addReferenceToFocusedElement("state", "sleep", "state");
-		//op.setFocusElement("statemachine");
-		//informar si el nombre de la relacion es incorrecto, se lo salta
-		//op.addReferenceToFocusedElement("event", "wake_up", "events");
-		//op.addReferenceToFocusedElement("state", "sleep", "states");
-		
-		
-		//op.addElement("state", "name", "state_test38", "statemachine", "state");
-		//op.addElement("state","name","state2");
-		//op.deleteElement("state","name","state2");
-		//op.renameElement("state", "name", "state1", "state1_changed");
-		//op.setFocusElement("state","name","state1_changed");
-		//op.clearProperty("name");
-		//op.getPropertiesFromFocusedElement();
-		//op.setProperty("name","state1_changed2");
-		//op.setFocusElement("statemachine");
-		//op.getPropertiesFromFocusedElement();
-		//op.addReferenceToFocusedElement("state", "state34", "state");
-		//op.removeReferenceFromFocusedElement("state", "state1_changed2", "state");
-		//op.addElement("state", "name", "state_test38", "statemachine", "state");
 		
 		op.saveModelInstance();
-		//System.out.println(EMFOperationsUtil.getLowerBound("statemachine", "state")+"");
-		//System.out.println(EMFOperationsUtil.getUpperBound("state", "actions")+"");
-		//System.out.println(op.getMetaModelPackageName());
+		
 		
 		}
 

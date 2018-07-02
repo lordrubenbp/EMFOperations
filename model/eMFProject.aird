@@ -5,7 +5,6 @@
     <semanticResources>eMFProject.genmodel</semanticResources>
     <semanticResources>../maquina/test2.xmi</semanticResources>
     <semanticResources>http://www.eclipse.org/emf/2002/Ecore</semanticResources>
-    <semanticResources>../maquina/prueba2.xmi</semanticResources>
     <semanticResources>../maquina/test23.xmi</semanticResources>
     <semanticResources>../maquina/test.xmi</semanticResources>
     <semanticResources>../maquina/pepe.xmi</semanticResources>
@@ -16,7 +15,7 @@
     <semanticResources>../maquina/jeje.xmi</semanticResources>
     <semanticResources>../maquina/pepes.xmi</semanticResources>
     <semanticResources>../maquina/modelito.xmi</semanticResources>
-    <semanticResources>../maquina/prueba3.xmi</semanticResources>
+    <semanticResources>Statemachine.xmi</semanticResources>
     <ownedViews xmi:type="viewpoint:DView" xmi:id="_k3I3kDjxEeiRdLn5REsVUA">
       <viewpoint xmi:type="description:Viewpoint" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']"/>
       <ownedRepresentationDescriptors xmi:type="viewpoint:DRepresentationDescriptor" xmi:id="_gqXEsEZQEeicGrCl-WGssg" name="eMFProject class diagram" repPath="#_gqNTsEZQEeicGrCl-WGssg">
