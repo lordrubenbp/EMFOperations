@@ -203,199 +203,20 @@ public class EMFOperationsNew {
 
 	}
 
-	// public void createElementInsideSimpleElement(String nameElement, String
-	// atributeName, Object atributeValue,
-	// String parentNameElement, String relationName) throws IllegalAccessException,
-	// ClassNotFoundException {
-	// String nameNormalized = EMFOperationsUtil.normalizedString(nameElement);
-	// String parentNameNormalized =
-	// EMFOperationsUtil.normalizedString(parentNameElement);
-	//
-	// if (EMFOperationsUtilNew.getElement(nameNormalized, atributeName,
-	// atributeValue,
-	// inst_resource) == null) {
-	//
-	// if (EMFOperationsUtilNew.getSimpleElement(parentNameNormalized,
-	// inst_resource) != null) {
-	//
-	// EObject eObjectParent = (EObject)
-	// EMFOperationsUtilNew.getSimpleElement(parentNameNormalized,
-	// inst_resource);
-	// if (eObjectParent != null) {
-	// EList<EReference> eAllReferences =
-	// eObjectParent.eClass().getEAllReferences();
-	//
-	// boolean referenceExists = false;
-	// for (EReference eReference : eAllReferences) {
-	//
-	// if (eReference.getName().equals(relationName)) {
-	// referenceExists = true;
-	//
-	// if (eReference.getUpperBound() > 0 || eReference.getUpperBound() == -1) {
-	//
-	// EObject eObjectChildren = createElement(nameElement, atributeName,
-	// atributeValue);
-	//
-	// if (eObjectChildren != null) {
-	// if (eReference.getUpperBound() == 1) {
-	//
-	// eObjectParent.eSet(eReference, eObjectChildren);
-	// } else {
-	// EList<EObject> list = (EList) eObjectParent.eGet(eReference);
-	// list.add(eObjectChildren);
-	// }
-	// }
-	//
-	// }
-	//
-	// }
-	//
-	// }
-	// if (!referenceExists) {
-	// EMFOperationsMessages.printMessage("REFERENCE_NOT_EXISTS");
-	// }
-	// }
-	// } else {
-	//
-	// EMFOperationsMessages.printMessage("PARENT_NOT_EXIST");
-	// }
-	// } else {
-	// EMFOperationsMessages.printMessage("NEW_ELEMENT_ALREADY_EXITS");
-	// }
-	//
-	// }
-
-	// // estos dos metodos en principio me sobrarian
-	// public void createElementInsideElement(String nameElement, String
-	// atributeName, Object atributeValue,
-	// String parentNameElement, String parentAtributeName, String
-	// parentAtributeValue, String relationName)
-	// throws IllegalAccessException, ClassNotFoundException {
-	//
-	// String nameNormalized = EMFOperationsUtil.normalizedString(nameElement);
-	// String parentNameNormalized =
-	// EMFOperationsUtil.normalizedString(parentNameElement);
-	//
-	// if (EMFOperationsUtilNew.getElement(parentNameNormalized, parentAtributeName,
-	// parentAtributeValue,
-	// inst_resource) != null) {
-	//
-	// if (EMFOperationsUtilNew.getElement(nameNormalized, atributeName,
-	// atributeValue,
-	// inst_resource) == null) {
-	//
-	// EObject eObjectParent = (EObject)
-	// EMFOperationsUtilNew.getElement(parentNameNormalized,
-	// parentAtributeName, parentAtributeValue, inst_resource);
-	//
-	// if (eObjectParent != null) {
-	// EList<EReference> eAllReferences =
-	// eObjectParent.eClass().getEAllReferences();
-	//
-	// boolean referenceExists = false;
-	//
-	// for (EReference eReference : eAllReferences) {
-	// if (eReference.getName().equals(relationName)) {
-	// referenceExists = true;
-	// if (eReference.getUpperBound() > 0 || eReference.getUpperBound() == -1) {
-	//
-	// EObject eObjectChildren = createElement(nameElement, atributeName,
-	// atributeValue);
-	//
-	// if (eObjectChildren != null) {
-	// if (eReference.getUpperBound() == 1) {
-	//
-	// eObjectParent.eSet(eReference, eObjectChildren);
-	// } else {
-	// EList<EObject> list = (EList) eObjectParent.eGet(eReference);
-	// list.add(eObjectChildren);
-	// }
-	// }
-	//
-	// }
-	//
-	// }
-	//
-	// }
-	// if (!referenceExists) {
-	// EMFOperationsMessages.printMessage("REFERENCE_NOT_EXISTS");
-	// }
-	// }
-	// } else {
-	// EMFOperationsMessages.printMessage("NEW_ELEMENT_ALREADY_EXITS");
-	// }
-	// } else {
-	// EMFOperationsMessages.printMessage("PARENT_NOT_EXIST");
-	// }
-	//
-	// }
-	//
-	// public void createSimpleElementInsideElement(String nameElement, String
-	// parentNameElement,
-	// String parentAtributeName, String parentAtributeValue, String relationName) {
-	//
-	// String parentNameNormalized =
-	// EMFOperationsUtil.normalizedString(parentNameElement);
-	//
-	// if (EMFOperationsUtilNew.getElement(parentNameNormalized, parentAtributeName,
-	// parentAtributeValue,
-	// inst_resource) != null) {
-	//
-	// EObject eObjectParent = (EObject)
-	// EMFOperationsUtilNew.getElement(parentNameNormalized,
-	// parentAtributeName, parentAtributeValue, inst_resource);
-	// if (eObjectParent != null) {
-	// EList<EReference> eAllReferences =
-	// eObjectParent.eClass().getEAllReferences();
-	// boolean referenceExists = false;
-	// for (EReference eReference : eAllReferences) {
-	//
-	// if (eReference.getName().equals(relationName)) {
-	// referenceExists = true;
-	//
-	// if (eReference.getUpperBound() > 0 || eReference.getUpperBound() == -1) {
-	//
-	// EObject eObjectChildren = createSimpleElement(nameElement);
-	//
-	// if (eObjectChildren != null) {
-	// if (eReference.getUpperBound() == 1) {
-	//
-	// eObjectParent.eSet(eReference, eObjectChildren);
-	// } else {
-	// EList<EObject> list = (EList) eObjectParent.eGet(eReference);
-	// list.add(eObjectChildren);
-	// }
-	// }
-	//
-	// }
-	//
-	// }
-	//
-	// }
-	// if (!referenceExists) {
-	// EMFOperationsMessages.printMessage("REFERENCE_NOT_EXISTS");
-	// }
-	// }
-	//
-	// } else {
-	// EMFOperationsMessages.printMessage("PARENT_NOT_EXIST");
-	// }
-	//
-	// }
-	//
-	//
-
 	// DELETE FUNCTIONS
 
-	public void deleteSimpleElement(String nameElement) {
+	// CHEQUEADA
+	// TODO hacer una deleteSimpleElement
+	public void deleteSimpleElementOrder(String nameElement, int order) {
 		if (EMFOperationsUtil.getElementFromResource(nameElement, inst_resource) != null) {
-			EcoreUtil.delete((EObject) EMFOperationsUtilNew.getSimpleElement(nameElement, inst_resource));
+			EcoreUtil.delete((EObject) EMFOperationsUtilNew.getSimpleElementOrder(nameElement, inst_resource, order));
 			EMFOperationsMessages.printMessage("ELEMENT_DELETED");
 		} else {
 			EMFOperationsMessages.printMessage("ELEMENT_TO_DELETE_NOT_EXITS");
 		}
 	}
 
+	// CHEQUEADA
 	public void deleteElement(String nameElement, String atributeName, Object atributeValue) {
 
 		if (EMFOperationsUtilNew.getElement(nameElement, atributeName, atributeValue, inst_resource) != null) {
@@ -410,75 +231,7 @@ public class EMFOperationsNew {
 
 	}
 
-	// FOCUS FUNCTION
-
-	// public void focusSimpleElementContentElement(String childElement, String
-	// parentElement, String parentAtribute, String parentValue,String relationName)
-	// {
-	//
-	// focusedElement =
-	// EMFOperationsUtilNew.getSimpleElementContentElement(childElement,
-	// parentElement, parentAtribute,
-	// parentValue,relationName,inst_resource);
-	//
-	// if (focusedElement== null) {
-	// EMFOperationsMessages.printMessage("ELEMENT_TO_FOCUS_NOT_EXITS");
-	//
-	// }
-	// }
-	// public void focusSimpleElementReferenceElement(String childElement, String
-	// parentElement, String parentAtribute, String parentValue,String relationName)
-	// {
-	//
-	// focusedElement =
-	// EMFOperationsUtilNew.getSimpleElementReferencedElement(childElement,
-	// parentElement, parentAtribute,
-	// parentValue,relationName,inst_resource);
-	//
-	// if (focusedElement== null) {
-	// EMFOperationsMessages.printMessage("ELEMENT_TO_FOCUS_NOT_EXITS");
-	//
-	// }
-	// }
-	// public void focusElementContentSimpleElement(String parentElement, String
-	// childElement, String childAtributeName,
-	// String childAtributeValue, String relationName) throws
-	// IllegalAccessException, IllegalArgumentException,
-	// InvocationTargetException, NoSuchMethodException, SecurityException,
-	// ClassNotFoundException {
-	//
-	// focusedElement =
-	// EMFOperationsUtilNew.getElementContentSimpleElement(parentElement,
-	// childElement, childAtributeName,
-	// childAtributeValue, relationName, inst_resource);
-	//
-	// if (focusedElement == null) {
-	//
-	// EMFOperationsMessages.printMessage("ELEMENT_TO_FOCUS_NOT_EXITS");
-	//
-	// }
-	// }
-	//
-	// public void focusElementReferenceSimpleElement(String parentElement, String
-	// childElement, String childAtributeName,
-	// String childAtributeValue, String relationName) throws
-	// IllegalAccessException, IllegalArgumentException,
-	// InvocationTargetException, NoSuchMethodException, SecurityException,
-	// ClassNotFoundException {
-	//
-	// focusedElement =
-	// EMFOperationsUtilNew.getElementReferencedSimpleElement(parentElement,
-	// childElement, childAtributeName,
-	// childAtributeValue, relationName, inst_resource);
-	//
-	// if (focusedElement == null) {
-	//
-	// EMFOperationsMessages.printMessage("ELEMENT_TO_FOCUS_NOT_EXITS");
-	//
-	// }
-	// }
-
-	// CHEQUEADO
+	// CHEQUEADO //CAMBIADO
 	public void focusElement(String nameElement, String atributeName, Object atributeValue) {
 
 		focusedElement = EMFOperationsUtilNew.getElement(nameElement, atributeName, atributeValue, inst_resource);
@@ -491,61 +244,15 @@ public class EMFOperationsNew {
 	}
 
 	// CHEQUEADO
-	public void focusSimpleElement(String nameElement) {
+	public void focusSimpleElementOrder(String nameElement, int order) {
 
-		focusedElement = EMFOperationsUtilNew.getSimpleElement(nameElement, inst_resource);
+		focusedElement = EMFOperationsUtilNew.getSimpleElementOrder(nameElement, inst_resource, order);
 		if (focusedElement == null) {
 
 			EMFOperationsMessages.printMessage("ELEMENT_TO_FOCUS_NOT_EXITS");
 		}
 
 	}
-
-	// UPDATE FUNCTIONS
-	// public void updateElementAtribute(String nameElement, String atributeName,
-	// Object oldAtributeValue,
-	// Object newAtributeValue) throws ClassNotFoundException,
-	// IllegalAccessException, IllegalArgumentException,
-	// InvocationTargetException, NoSuchMethodException, SecurityException {
-	//
-	// if (EMFOperationsUtilNew.getElement(nameElement, atributeName,
-	// oldAtributeValue, inst_resource) != null) {
-	//
-	// EObject eObject = (EObject) EMFOperationsUtilNew.getElement(nameElement,
-	// atributeName, oldAtributeValue,
-	// inst_resource);
-	//
-	// if (eObject != null) {
-	// EList<EAttribute> eAllAttributes = eObject.eClass().getEAllAttributes();
-	//
-	// boolean atributeExists = false;
-	// for (EAttribute eAtribute : eAllAttributes) {
-	// if (eAtribute.getName().equals(atributeName)) {
-	// atributeExists = true;
-	// if (eObject.eGet(eAtribute).equals(oldAtributeValue)) {
-	// try {
-	// eObject.eSet(eAtribute, newAtributeValue);
-	// EMFOperationsMessages.printMessage("NEW_ATRIBUTE_ADDED_CORRECTLY");
-	// } catch (Exception e) {
-	// EMFOperationsMessages.printMessage("NEW_ATRIBUTE_VALUE_INCORRECT");
-	//
-	// }
-	// }
-	//
-	// }
-	// }
-	// if (!atributeExists) {
-	// EMFOperationsMessages.printMessage("NEW_ATRIBUTE_INCORRECT");
-	// deleteSimpleElement(eObject.eClass().getName());
-	// }
-	// }
-	//
-	// } else {
-	// EMFOperationsMessages.printMessage("ELEMENT_TO_UPDATE_NOT_EXISTS");
-	//
-	// }
-	//
-	// }
 
 	// FUNCTIONS OVER FOCUSED ELEMENT
 
@@ -559,30 +266,7 @@ public class EMFOperationsNew {
 		}
 
 	}
-	// public void focusElementContentOrderFocusedElement(String nameElement, String
-	// atributeName, String atributeValue,
-	// String relationName,int order) {
-	// focusedElement =
-	// EMFOperationsUtilNew.getElementContentOrderFocusedElement(nameElement,
-	// atributeName, atributeValue,
-	// (EObject) focusedElement, relationName, order);
-	// if (focusedElement == null) {
-	//
-	// EMFOperationsMessages.printMessage("ELEMENT_TO_FOCUS_NOT_EXITS");
-	// }
-	// }
 
-	// public void focusSimpleElementContentFocusElement(String nameElement, String
-	// relationName) {
-	// focusedElement =
-	// EMFOperationsUtilNew.getSimpleElementContentFocusedElement(nameElement,
-	// (EObject) focusedElement, relationName);
-	// if (focusedElement == null) {
-	//
-	// EMFOperationsMessages.printMessage("ELEMENT_TO_FOCUS_NOT_EXITS");
-	// }
-	//
-	// }
 	// CHEQUEADO
 	public void focusElementContentFocusedElement(String nameElement, String atributeName, String atributeValue,
 			String relationName) {
@@ -593,32 +277,6 @@ public class EMFOperationsNew {
 			EMFOperationsMessages.printMessage("ELEMENT_TO_FOCUS_NOT_EXITS");
 		}
 	}
-
-	// public void focusElementReferenceFocusedElement(String nameElement, String
-	// atributeName, String atributeValue,
-	// String relationName) {
-	// focusedElement =
-	// EMFOperationsUtilNew.getElementReferenceFocusedElement(nameElement,
-	// atributeName,
-	// atributeValue, (EObject) focusedElement, relationName);
-	// if (focusedElement == null) {
-	//
-	// EMFOperationsMessages.printMessage("ELEMENT_TO_FOCUS_NOT_EXITS");
-	// }
-	// }
-	//
-	// public void focusSimpleElementReferenceElementFocusElement(String
-	// nameElement, String childElement,
-	// String childAtributeName, String childAtributeValue, String relationName) {
-	//
-	// }
-
-	// public void deleteSimpleElementeReferenceElementFocusELement(String
-	// nameElement,String childElement,String childAtributeName, String
-	// childAtributeValue,String relationName)
-	// {
-	//
-	// }
 
 	// CHEQUEADA
 	public void createSimpleElementContentFocusElement(String nameElement, String relationName) {
@@ -679,6 +337,7 @@ public class EMFOperationsNew {
 
 	}
 
+	// CHEQUEADO
 	public void deleteSimpleElementContentOrderFocusElement(String nameElement, String relationName, int order) {
 		Object objectToDelete = null;
 		objectToDelete = EMFOperationsUtilNew.getSimpleElementContentOrderFocusedElement(nameElement,
@@ -693,6 +352,7 @@ public class EMFOperationsNew {
 		}
 	}
 
+	// CHEQUEADO
 	public void deleteElementContentFocusElement(String nameElement, String atributeName, String atributeValue,
 			String relationName) {
 		Object objectToDelete = null;
@@ -707,81 +367,6 @@ public class EMFOperationsNew {
 			System.out.println("Elemento borrado del objeto focus");
 		}
 	}
-
-	// public void deleteSimpleElementInsideFocusElement(String nameElement, String
-	// relationName)
-	// throws ClassNotFoundException, IllegalAccessException,
-	// IllegalArgumentException, InvocationTargetException,
-	// NoSuchMethodException, SecurityException, InstantiationException {
-	//
-	// if (EMFOperationsUtilNew.getSimpleElementEmpty(nameElement, inst_resource) !=
-	// null) {
-	//
-	// if (focusedElement != null) {
-	// EList<EReference> eAllReferences = ((EObject)
-	// focusedElement).eClass().getEAllReferences();
-	//
-	// boolean referenceExists = false;
-	// for (EReference eReference : eAllReferences) {
-	//
-	// if (eReference.getName().equals(relationName)) {
-	// referenceExists = true;
-	//
-	// EObject eObjectChildren = (EObject)
-	// EMFOperationsUtilNew.getSimpleElementEmpty(nameElement,
-	// inst_resource);
-	//
-	// if (eObjectChildren != null) {
-	// if (eReference.getUpperBound() == 1) {
-	//
-	// if (((EObject) focusedElement).eGet(eReference).equals(eObjectChildren)) {
-	// EcoreUtil.delete(eObjectChildren);
-	// EMFOperationsMessages.printMessage("ELEMENT_DELETED");
-	// }
-	//
-	// } else {
-	// EList<EObject> list = (EList) ((EObject) focusedElement).eGet(eReference);
-	// list.remove(eObjectChildren);
-	// EMFOperationsMessages.printMessage("ELEMENT_DELETED");
-	// }
-	// }
-	//
-	// }
-	//
-	// }
-	// if (!referenceExists) {
-	// EMFOperationsMessages.printMessage("REFERENCE_NOT_EXISTS");
-	// }
-	// }
-	// } else {
-	// EMFOperationsMessages.printMessage("ELEMENT_TO_DELETE_NOT_EXITS");
-	//
-	// }
-	//
-	// }
-
-	// // TODO hacer lo mismo para eliminar un elemento sin atributos
-	// public void deleteElementContentFocusElement(String nameElement, String
-	// atributeName, String atributeValue,
-	// String relationName) throws ClassNotFoundException, IllegalAccessException,
-	// IllegalArgumentException,
-	// InvocationTargetException, NoSuchMethodException, SecurityException,
-	// InstantiationException {
-	//
-	// Object eObjectToDelete=null;
-	// eObjectToDelete =
-	// EMFOperationsUtilNew.getElementContentFocusedElement(nameElement,
-	// atributeName, atributeValue,
-	// (EObject) focusedElement, relationName);
-	// if (eObjectToDelete == null) {
-	//
-	// EMFOperationsMessages.printMessage("ELEMENT_TO_FOCUS_NOT_EXITS");
-	// }else
-	// {
-	// EcoreUtil.delete((EObject) eObjectToDelete);
-	// }
-	//
-	// }
 
 	// CHEQUEADO
 	public void clearAtributeFocusElement(String atributeName) throws IllegalAccessException, IllegalArgumentException,
@@ -813,6 +398,54 @@ public class EMFOperationsNew {
 		}
 
 	}
+
+	public void removeElementAsReferenceFocusElement(String nameElement, String atributeName, Object atributeValue,
+			String relationName) {
+
+		EObject elementToRemove = (EObject) EMFOperationsUtilNew.getElementReferenceFocusedElement(nameElement,
+				atributeName, atributeValue, (EObject) focusedElement, relationName);
+
+		if (focusedElement != null && elementToRemove != null) {
+
+			EList<EReference> eAllReferences = ((EObject) focusedElement).eClass().getEAllReferences();
+
+			boolean referenceExists = false;
+			boolean isContaintReference = false;
+			for (EReference eReference : eAllReferences) {
+				if (eReference.getName().equals(relationName)) {
+					referenceExists = true;
+
+					if (!eReference.isContainment()) {
+
+						if (eReference.getUpperBound() > 1 || eReference.getUpperBound() == -1) {
+
+							EList<EObject> list = (EList<EObject>) ((EObject) focusedElement).eGet(eReference);
+							list.remove(elementToRemove);
+
+						} else {
+							((EObject) focusedElement).eSet(eReference, null);
+						}
+
+					} else {
+						isContaintReference = true;
+					}
+
+				}
+			}
+			if (!referenceExists) {
+				EMFOperationsMessages.printMessage("REFERENCE_NOT_EXISTS");
+			}
+			if (isContaintReference) {
+				// es una relacion de contener, no de referenciar
+				System.out.println("fallo");
+			}
+		} else {
+			EMFOperationsMessages.printMessage("NOT_FOCUS_ELEMENT");
+		}
+
+	}
+
+	
 
 	// CHEQUEADO
 	public void clearReferenceFocusElement(String referenceName)
@@ -852,6 +485,7 @@ public class EMFOperationsNew {
 
 	}
 
+	// CHEQUEADA
 	public void addElementAsReferenceFocusElement(String nameElement, String atributeName, Object atributeValue,
 			String relationName) {
 		EObject eObjectToAdd = null;
@@ -911,7 +545,7 @@ public class EMFOperationsNew {
 			for (EReference eReference : eAllReferences) {
 				// con el isContaiment puedo saber si existe la relacion y encima es de
 				// referencia o no, debo dejar pasar solo las que son true
-				System.out.println(eReference.getName() + ":" + eReference.isContainment());
+				// System.out.println(eReference.getName() + ":" + eReference.isContainment());
 				if (eReference.getName().equals(relationName)) {
 					referenceExists = true;
 					if (eReference.isContainment()) {
@@ -952,91 +586,10 @@ public class EMFOperationsNew {
 
 	}
 
-//	public void getPropertiesRecursive(EObject object) {
-//		EObject o = object;
-//
-//		System.out.println("*Element: " + o.eClass().getName());
-//		EList<EAttribute> eAllAttributes = o.eClass().getEAllAttributes();
-//		EList<EReference> eAllReferences = o.eClass().getEAllReferences();
-//
-//		for (EAttribute eAttribute : eAllAttributes) {
-//
-//			System.out.println(eAttribute.getName() + ": " + o.eGet(eAttribute));
-//
-//		}
-//		
-//		for (EReference eReference : eAllReferences) {
-//
-//			if (!eReference.isContainment()) {
-//				
-//				System.out.println(eReference.getName() + ": ");
-//				
-//				if(eReference.getUpperBound()>1||(eReference.getUpperBound()==-1))
-//						{
-//							EList<EObject> allChildrenInReference=(EList<EObject>) o.eGet(eReference);
-//							
-//							for(EObject eChildrenInReference:allChildrenInReference) 
-//							{
-//								EList<EAttribute> eAllAttributesChildren = eChildrenInReference.eClass().getEAllAttributes();
-//								System.out.println("\t*Element: "+eChildrenInReference.eClass().getName());
-//								for (EAttribute eAttributeChildren : eAllAttributesChildren) {
-//
-//									System.out.println("\t"+eAttributeChildren.getName() + ": " + eChildrenInReference.eGet(eAttributeChildren));
-//
-//								}
-//							}
-//							
-//							
-//						}else 
-//						{
-//							
-//							EObject obj=(EObject) o.eGet(eReference);
-//							if(obj!=null) {
-//							EList<EAttribute> eAllAttributesChildren = obj.eClass().getEAllAttributes();
-//							System.out.println("\t*Element: "+obj.eClass().getName());
-//							for (EAttribute eAttributeChildren : eAllAttributesChildren) {
-//
-//								System.out.println("\t"+eAttributeChildren.getName() + ": " + obj.eGet(eAttributeChildren));
-//
-//							}
-//							}
-//						}
-//			}
-//
-//		}
-//
-//		
-//
-////		if (o.eCrossReferences().size() > 0) {
-////
-////			System.out.println("<<<<<<<<<< REFERENCE >>>>>>>>>>>");
-////
-////			for (EObject eobject : o.eCrossReferences()) {
-////
-////				// getPropertiesRecursive(eobject);
-////				System.out.println(eobject.eClass().getName());
-////
-////				EList<EAttribute> eAllAttributesChildren = o.eClass().getEAllAttributes();
-////
-////				for (EAttribute eAttributeChildren : eAllAttributesChildren) {
-////
-////					System.out.println(eAttributeChildren.getName() + ": " + o.eGet(eAttributeChildren));
-////
-////				}
-////
-////			}
-////
-////		} else {
-////			System.out.println("-----------------------");
-////		}
-//
-//	}
-
-	//CHEQUEADO
+	// CHEQUEADO
 	public void getPropertiesFocusElement() {
 		EObject o = (EObject) focusedElement;
 
-		
 		System.out.println("*Element: " + o.eClass().getName());
 		EList<EAttribute> eAllAttributes = o.eClass().getEAllAttributes();
 		EList<EReference> eAllReferences = o.eClass().getEAllReferences();
@@ -1046,43 +599,41 @@ public class EMFOperationsNew {
 			System.out.println(eAttribute.getName() + ": " + o.eGet(eAttribute));
 
 		}
-		
+
 		for (EReference eReference : eAllReferences) {
 
 			if (!eReference.isContainment()) {
-				
+
 				System.out.println(eReference.getName() + ": ");
-				
-				if(eReference.getUpperBound()>1||(eReference.getUpperBound()==-1))
-						{
-							EList<EObject> allChildrenInReference=(EList<EObject>) o.eGet(eReference);
-							
-							for(EObject eChildrenInReference:allChildrenInReference) 
-							{
-								EList<EAttribute> eAllAttributesChildren = eChildrenInReference.eClass().getEAllAttributes();
-								System.out.println("\t*Element: "+eChildrenInReference.eClass().getName());
-								for (EAttribute eAttributeChildren : eAllAttributesChildren) {
 
-									System.out.println("\t"+eAttributeChildren.getName() + ": " + eChildrenInReference.eGet(eAttributeChildren));
+				if (eReference.getUpperBound() > 1 || (eReference.getUpperBound() == -1)) {
+					EList<EObject> allChildrenInReference = (EList<EObject>) o.eGet(eReference);
 
-								}
-							}
-							
-							
-						}else 
-						{
-							
-							EObject obj=(EObject) o.eGet(eReference);
-							if(obj!=null) {
-							EList<EAttribute> eAllAttributesChildren = obj.eClass().getEAllAttributes();
-							System.out.println("\t*Element: "+obj.eClass().getName());
-							for (EAttribute eAttributeChildren : eAllAttributesChildren) {
+					for (EObject eChildrenInReference : allChildrenInReference) {
+						EList<EAttribute> eAllAttributesChildren = eChildrenInReference.eClass().getEAllAttributes();
+						System.out.println("\t*Element: " + eChildrenInReference.eClass().getName());
+						for (EAttribute eAttributeChildren : eAllAttributesChildren) {
 
-								System.out.println("\t"+eAttributeChildren.getName() + ": " + obj.eGet(eAttributeChildren));
+							System.out.println("\t" + eAttributeChildren.getName() + ": "
+									+ eChildrenInReference.eGet(eAttributeChildren));
 
-							}
-							}
 						}
+					}
+
+				} else {
+
+					EObject obj = (EObject) o.eGet(eReference);
+					if (obj != null) {
+						EList<EAttribute> eAllAttributesChildren = obj.eClass().getEAllAttributes();
+						System.out.println("\t*Element: " + obj.eClass().getName());
+						for (EAttribute eAttributeChildren : eAllAttributesChildren) {
+
+							System.out
+									.println("\t" + eAttributeChildren.getName() + ": " + obj.eGet(eAttributeChildren));
+
+						}
+					}
+				}
 			}
 		}
 

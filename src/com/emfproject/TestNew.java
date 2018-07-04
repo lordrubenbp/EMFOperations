@@ -11,48 +11,89 @@ public class TestNew {
 	{
 		EMFOperationsNew op= new EMFOperationsNew();
 		
-
-		//op.createModelInstance("maquina/prueba15.xmi");
-		op.loadModelInstance("maquina/prueba15.xmi");
 		
-		//op.createElement("state", "name", "pruebita");
-		//op.createElement("pene");
-		//op.createElement("state", "name", "gawrg");
-		//op.createElement("pene", "state", "name", "pruebita", "transitions");
-		//op.createElement("transition");
-		//op.createElementWithAtributeAndReference("state", "name", "mivida", "statemachine", "states");
-		//op.createElementWithAtributeAndReference("command", "name", "pichita", "state", "name", "testeo", "actions");
-		//op.createSimpleElementWithReference("transition", "state", "name", "testeo", "transitions");
-		//op.setFocusElement("statemachine");
-		//op.createSimpleElement("transition");
-		//op.createElementWithAtribute("state", "name", "pepe");
-		//op.createSimpleElement("statemachine");
-		//op.getPropertiesFromFocusedElement();
-		//op.focusElementReferenceSimpleElement("transition", "state", "name", "hola3", "state");
-		//op.focusElementContentSimpleElement("transition", "state", "name", "hola3", "state");
-		//op.focusElement("state","name","hola");
-		//op.focusSimpleElement("statemachine");
-		op.focusSimpleElement("statemachine");
-		op.focusElementContentFocusedElement("state", "name", "hola", "states");
+
+		//crear el modelo statemachine_test
+		op.createModelInstance("maquina/statemachine_test.xmi");
+		// crear maquina de estados
+		op.createSimpleElement("statemachine");
+		// seleccionar maquina de estados
+		op.focusSimpleElementOrder("statemachine",1);
+		
+		// crear el estado idle en estados
+		op.createElementContentFocusElement("state", "name", "idle", "states");
+		op.createElementContentFocusElement("state", "name", "active", "states");
+		op.createElementContentFocusElement("state", "name", "waitingForLight", "states");
+		op.createElementContentFocusElement("state", "name", "waitingForDraw", "states");
+		op.createElementContentFocusElement("state", "name", "unlockedPanel", "states");
+		
+		// crear el comando unlockPanel en comandos
+		op.createElementContentFocusElement("command", "name", "unlockPanel", "commands");
+		op.createElementContentFocusElement("command", "name", "lockPanel", "commands");
+		op.createElementContentFocusElement("command", "name", "lockDoor", "commands");
+		op.createElementContentFocusElement("command", "name", "unlockDoor", "commands");
+		
+		//crear el evento doorClosed en eventos
+		op.createElementContentFocusElement("event", "name", "doorClosed", "events");
+		op.createElementContentFocusElement("event", "name", "drawOpened", "events");
+		op.createElementContentFocusElement("event", "name", "panelClosed", "events");
+		op.createElementContentFocusElement("event", "name", "lightOn", "events");
+		op.createElementContentFocusElement("event", "name", "doorOpened", "events");
+		
+		//seleccionar el estado idle
+		op.focusElement("state", "name", "idle");
+		
+		//crear una transicion en transiciones
+		op.createSimpleElementContentFocusElement("transition", "transitions");
+		
+		//seleccionar la transicion de transiciones
 		op.focusSimpleElementContentOrderFocusElement("transition", "transitions", 1);
-		//op.addElementAsReferenceFocusElement("state", "name", "hola1", "state");
-		//op.addElementAsReferenceFocusElement("command", "name", "comando_1", "actions");
-		//op.deleteElementContentFocusElement("state", "name", "hola3", "states");
-		//op.focusElementContentFocusedElement("state", "name", "hola1", "states");
-		//op.deleteSimpleElementContentOrderFocusElement("transition", "transitions", 1);
-		//op.focusElement("state", "name", "hola1");
-		//op.focusSimpleElementContentFocusElement("transition", "transitions");
-		//op.clearReferenceFocusElement("transitions");
-		//op.focusElementContentFocusedElement("state", "name", "active", "states");
-		//op.focusSimpleElementContentOrderFocusElement("state", "states", 2);
-		//op.createElementContentFocusElement("state", "name", "joseluis11", "states");
+		
+		//añadir en estado, el estado active
+		op.addElementAsReferenceFocusElement("state", "name", "active", "state");
+		
+		//añadir en evento, el evento doorClosed
+		op.addElementAsReferenceFocusElement("event", "name", "doorClosed", "event");
+		
+	
+		//seleccionar el estado active
+		op.focusElement("state", "name", "active");
+		
+		//crear una transicion en transiciones
+		op.createSimpleElementContentFocusElement("transition", "transitions");
+		//crear una transicion en transiciones
+		op.createSimpleElementContentFocusElement("transition", "transitions");
+		
+		
+		//seleccionar la primera transiciones de transiciones
+		op.focusSimpleElementContentOrderFocusElement("transition", "transitions", 1);
+		
+		//añadir en estado, el estado waitingForLight
+		op.addElementAsReferenceFocusElement("state", "name", "waitingForLight", "state");
+		//añadir en evento, el evento drawOpened
+		op.addElementAsReferenceFocusElement("event", "name", "drawOpened", "event");
+		
+		//seleccionar el estado active
+		op.focusElement("state", "name", "active");
+		
+		//seleccionar la segunda transicion de transiciones
+		op.focusSimpleElementContentOrderFocusElement("transition", "transitions", 2);
+		op.addElementAsReferenceFocusElement("state", "name", "waitingForDraw", "state");
+		op.addElementAsReferenceFocusElement("event", "name", "lightOn", "event");
+		
+		op.focusElement("state", "name", "active");
+		op.addElementAsReferenceFocusElement("command", "name", "unlockPanel", "actions");
+		op.addElementAsReferenceFocusElement("command", "name", "lockDoor", "actions");
+		op.removeElementAsReferenceFocusElement("command", "name", "unlockPanel", "actions");
+		
 		
 		op.getPropertiesFocusElement();
-		//op.deleteSimpleElementReferencedInToFocusedElement("transition", "transitions");
-		//op.clearReferenceFromFocusedElement("state");
-		//op.updateElementAtribute("state", "name", "sielito", "hola");
+
+
+	
+
+
 		
-		//op.createElement("command", "name", "comandito", "state", "name", "stadito", "actions");
 		op.saveModelInstance();
 	}
 	

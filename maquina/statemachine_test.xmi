@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="ASCII"?>
+<eMFProject:Statemachine xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:eMFProject="http://www.example.org/eMFProject">
+  <events name="doorClosed"/>
+  <events name="drawOpened"/>
+  <events name="panelClosed"/>
+  <events name="lightOn"/>
+  <events name="doorOpened"/>
+  <commands name="unlockPanel"/>
+  <commands name="lockPanel"/>
+  <commands name="lockDoor"/>
+  <commands name="unlockDoor"/>
+  <states name="idle">
+    <transitions event="//@events.0" state="//@states.1"/>
+  </states>
+  <states name="active" actions="//@commands.2">
+    <transitions event="//@events.1" state="//@states.2"/>
+    <transitions event="//@events.3" state="//@states.3"/>
+  </states>
+  <states name="waitingForLight"/>
+  <states name="waitingForDraw"/>
+  <states name="unlockedPanel"/>
+</eMFProject:Statemachine>

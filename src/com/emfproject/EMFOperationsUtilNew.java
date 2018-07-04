@@ -114,17 +114,17 @@ public class EMFOperationsUtilNew {
 		return null;
 	}
 //CHEQUEADO
-	public static Object getSimpleElement(String nameElement, Resource resource) {
+	public static Object getSimpleElementOrder(String nameElement, Resource resource,int order) {
 
 		String nameNormalized = EMFOperationsUtil.normalizedString(nameElement) + "Impl";
 		// System.out.println(nameNormalized);
 
-		EList<EObject> allEObjects =  resource.getContents();
+		TreeIterator<EObject> allEObjects =  resource.getAllContents();
 		ArrayList<EObject> allEObjectsWithName = new ArrayList<EObject>();
 
-		for(EObject o:allEObjects) {
+		while(allEObjects.hasNext()) {
 			
-
+			EObject o=allEObjects.next();
 			if (o.toString().contains(nameNormalized))
 
 			{
@@ -152,13 +152,10 @@ public class EMFOperationsUtilNew {
 			// System.out.println(o);
 		}
 		
-		if(allEObjectsWithName.size()==1) 
+		
+		if (allEObjectsWithName.size()>0) 
 		{
-			return allEObjectsWithName.get(0);
-		}
-		else 
-		{
-			System.out.println("HAY MAS DE UN OBJETO IGUAL");
+			return allEObjectsWithName.get(order-1);
 		}
 		return null;
 
@@ -211,11 +208,13 @@ public class EMFOperationsUtilNew {
 		
 		String nameNormalized = EMFOperationsUtil.normalizedString(nameElement);
 
-		EList<EObject> allEObjects =  resource.getContents();
+		TreeIterator<EObject> allEObjects =  resource.getAllContents();
 		ArrayList<EObject> allEObjectsWithName = new ArrayList<EObject>();
 		
-		for(EObject o:allEObjects ){
+		while(allEObjects.hasNext())
+		{
 
+			EObject o=allEObjects.next();
 			if (o.eClass().getName().equals(nameNormalized)) {
 
 				EList<EAttribute> eAllAttributes = o.eClass().getEAllAttributes();
@@ -752,7 +751,7 @@ public class EMFOperationsUtilNew {
 	}
 
 	public static Object getElementReferenceFocusedElement(String nameElement, String atributeName,
-			String atributeValue, EObject focusObject, String relationName) {
+			Object atributeValue, EObject focusObject, String relationName) {
 
 		String nameNormalized = EMFOperationsUtil.normalizedString(nameElement);
 	
