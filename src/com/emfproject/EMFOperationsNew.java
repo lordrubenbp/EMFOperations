@@ -25,7 +25,7 @@ public class EMFOperationsNew {
 	Resource inst_resource;
 	Object factory;
 	String metaModelURI;
-	Object focusedElement = null;
+	public Object focusedElement = null;
 	String rootNodeName = null;
 
 	public EMFOperationsNew() throws ClassNotFoundException, IllegalAccessException, IllegalArgumentException,
@@ -279,7 +279,7 @@ public class EMFOperationsNew {
 	}
 
 	// CHEQUEADA
-	public void createSimpleElementContentFocusElement(String nameElement, String relationName) {
+	public EObject createSimpleElementContentFocusElement(String nameElement, String relationName) {
 
 		String nameNormalized = EMFOperationsUtil.normalizedString(nameElement);
 
@@ -315,6 +315,7 @@ public class EMFOperationsNew {
 								} else {
 									EList<EObject> list = (EList) ((EObject) focusedElement).eGet(eReference);
 									list.add(eObjectChildren);
+									return eObjectChildren;
 								}
 							}
 
@@ -334,6 +335,7 @@ public class EMFOperationsNew {
 
 			EMFOperationsMessages.printMessage("NOT_FOCUS_ELEMENT");
 		}
+		return null;
 
 	}
 
@@ -529,7 +531,7 @@ public class EMFOperationsNew {
 	}
 
 	// CHEQUEADO
-	public void createElementContentFocusElement(String nameElement, String atributeName, String atributeValue,
+	public EObject createElementContentFocusElement(String nameElement, String atributeName, String atributeValue,
 			String relationName) throws IllegalAccessException, ClassNotFoundException {
 		String nameNormalized = EMFOperationsUtil.normalizedString(nameElement);
 
@@ -564,6 +566,7 @@ public class EMFOperationsNew {
 								} else {
 									EList<EObject> list = (EList) ((EObject) focusedElement).eGet(eReference);
 									list.add(eObjectChildren);
+									return eObjectChildren;
 								}
 							}
 
@@ -583,6 +586,7 @@ public class EMFOperationsNew {
 
 			EMFOperationsMessages.printMessage("NOT_FOCUS_ELEMENT");
 		}
+		return null;
 
 	}
 

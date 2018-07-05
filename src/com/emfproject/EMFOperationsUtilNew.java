@@ -129,24 +129,24 @@ public class EMFOperationsUtilNew {
 
 			{
 
-				boolean isNull = true;
-				EList<EAttribute> eAllAttributes = o.eClass().getEAllAttributes();
-				for (EAttribute eAttribute : eAllAttributes) {
-
-					if (o.eGet(eAttribute) == null) {
-						isNull = true;
-					} else {
-						isNull = false;
-					}
-
-				}
-
-				if (isNull) {
+//				boolean isNull = true;
+//				EList<EAttribute> eAllAttributes = o.eClass().getEAllAttributes();
+//				for (EAttribute eAttribute : eAllAttributes) {
+//
+//					if (o.eGet(eAttribute) == null) {
+//						isNull = true;
+//					} else {
+//						isNull = false;
+//					}
+//
+//				}
+//
+//				if (isNull) {
 					
 					allEObjectsWithName.add(o);
 
 					//return o;
-				}
+//				}
 
 			}
 			// System.out.println(o);
@@ -625,11 +625,11 @@ public class EMFOperationsUtilNew {
 			for (EReference eReference : eAllReferences) {
 
 				if (eReference.getName().equals(relationName)) {
-					System.out.println("bep relacion");
+					//System.out.println("bep relacion");
 
 					referenceExists = true;
 			
-							System.out.println("bep atributo");
+							//System.out.println("bep atributo");
 
 							TreeIterator<EObject> y = focusObject.eAllContents();
 							
@@ -639,7 +639,7 @@ public class EMFOperationsUtilNew {
 
 								System.out.println(o.eClass().getName());
 								if (o.eClass().getName().equals(nameNormalized)) {
-									System.out.println("bep hijo");
+									//System.out.println("bep hijo");
 									return o;
 
 								}
@@ -762,11 +762,11 @@ public class EMFOperationsUtilNew {
 			for (EReference eReference : eAllReferences) {
 
 				if (eReference.getName().equals(relationName)) {
-					System.out.println("bep relacion");
+					//System.out.println("bep relacion");
 
 					referenceExists = true;
 			
-							System.out.println("bep atributo");
+							//System.out.println("bep atributo");
 
 							EList<EObject> y = focusObject.eCrossReferences();
 							

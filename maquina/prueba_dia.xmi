@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="ASCII"?>
+<eMFProject:Statemachine xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:eMFProject="http://www.example.org/eMFProject">
+  <events name="evento"/>
+  <commands name="holita"/>
+  <states name="ruben">
+    <transitions event="//@events.0"/>
+    <transitions state="//@states.0"/>
+  </states>
+  <states/>
+  <states name="hola"/>
+</eMFProject:Statemachine>

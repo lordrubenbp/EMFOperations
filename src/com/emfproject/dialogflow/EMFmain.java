@@ -39,12 +39,12 @@ import com.google.protobuf.Value;
 public class EMFmain {
 
 	public static String audioFilePath = "";
-	public static String projectId = "emf-api";
+	public static String projectId = "emf-api-v2";
 	public static String sessionId = UUID.randomUUID().toString();
-	public static String languageCode = "es-ES";// en-US
+	public static String languageCode = "es";// en-US
 	public static SessionName session = null;
 	public static SessionsClient sessionsClient = null;
-	public static EMFDialogflowParse parse = null;
+	public static EMFDialogflowParseNew parse = null;
 	public static final String RESET_CONTEXT_QUERY = "reset all context";
 
 	public static boolean checkInternetConection() throws UnknownHostException, IOException 
@@ -69,13 +69,13 @@ public class EMFmain {
 				
 				if(System.getProperty("user.language").equals("es")) 
 				{
-					languageCode="es_ES";
+					languageCode="es";
 				}
 				else 
 				{
-					languageCode="en_US";
+					languageCode="en";
 				}
-				parse = new EMFDialogflowParse();
+				parse = new EMFDialogflowParseNew();
 				
 				sessionsClient = SessionsClient.create();
 				// Set the session name using the sessionId (UUID) and projectID (my-project-id)
@@ -104,10 +104,10 @@ public class EMFmain {
 		// Display the query result
 
 		System.out.println("[DEBUG] ====================");
-		System.out.format("[DEBUG] Query Text: '%s'\n", queryResult.getQueryText());
-		System.out.format("[DEBUG] Detected Intent: %s (confidence: %f)\n", queryResult.getIntent().getDisplayName(),
-				queryResult.getIntentDetectionConfidence());
-		System.out.format("[DEBUG] Fulfillment Text: '%s'\n", queryResult.getFulfillmentText());
+		//System.out.format("[DEBUG] Query Text: '%s'\n", queryResult.getQueryText());
+//		System.out.format("[DEBUG] Detected Intent: %s (confidence: %f)\n", queryResult.getIntent().getDisplayName(),
+//				queryResult.getIntentDetectionConfidence());
+		//System.out.format("[DEBUG] Fulfillment Text: '%s'\n", queryResult.getFulfillmentText());
 		System.out.format("[DEBUG] Contexts: '%s'\n", queryResult.getOutputContextsList());
 		// System.out.format("Parameters: '%s'\n",
 		// queryResult.getParameters().getFieldsMap());
@@ -168,6 +168,9 @@ public class EMFmain {
 				}
 
 				if (queryResult.getAllRequiredParamsPresent()) {
+					
+					System.out.println(queryResult.getAction());
+//			    printQueryResultInfo(queryResult);
 					parse.parseCode(queryResult, queryResult.getAction());
 				}
 
@@ -186,6 +189,8 @@ public class EMFmain {
 				// .setLifespanCount(0).build();
 				// }
 			} catch (Exception e) {
+				
+				e.printStackTrace();
 				if(text==null){
 				EMFOperationsMessages.printMessage("ERROR_NO_TEXT");
 
