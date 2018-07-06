@@ -24,6 +24,7 @@ public class EMFOperationsUtilNew {
 		return wordNormalized;
 
 	}
+
 	public static String getMetaModelFilePath(final File folder) {
 		String metaModelFilePath = "";
 		for (final File fileEntry : folder.listFiles()) {
@@ -39,6 +40,7 @@ public class EMFOperationsUtilNew {
 		}
 		return metaModelFilePath;
 	}
+
 	public static EPackage getMetaModelPackage() {
 
 		ResourceSet rs = new ResourceSetImpl();
@@ -55,6 +57,7 @@ public class EMFOperationsUtilNew {
 		return metapackage;
 
 	}
+
 	public static boolean checkElementInsertion(String nameElement) {
 		for (int i = 0; i < getMetaModelPackage().eContents().size(); i++) {
 
@@ -62,7 +65,7 @@ public class EMFOperationsUtilNew {
 				EClass myEclass = (EClass) getMetaModelPackage().eContents().get(i);
 
 				if (myEclass.getName().toLowerCase().equals(nameElement.toLowerCase())) {
-					//System.out.println(EMFOperationsMessages.ELEMENT_EXITS_METAMODEL);
+					// System.out.println(EMFOperationsMessages.ELEMENT_EXITS_METAMODEL);
 					return true;
 
 				}
@@ -71,6 +74,7 @@ public class EMFOperationsUtilNew {
 		return false;
 
 	}
+
 	// TODO hacer que cada getElementFromResource me devuelve el numero de objetos
 	// encontrados y en caso de ser mas de uno, me permita elegir cual
 	public static Object getSimpleElementEmpty(String nameElement, Resource resource) {
@@ -113,49 +117,48 @@ public class EMFOperationsUtilNew {
 		}
 		return null;
 	}
-//CHEQUEADO
-	public static Object getSimpleElementOrder(String nameElement, Resource resource,int order) {
+
+	// CHEQUEADO
+	public static Object getSimpleElementOrder(String nameElement, Resource resource, int order) {
 
 		String nameNormalized = EMFOperationsUtil.normalizedString(nameElement) + "Impl";
 		// System.out.println(nameNormalized);
 
-		TreeIterator<EObject> allEObjects =  resource.getAllContents();
+		TreeIterator<EObject> allEObjects = resource.getAllContents();
 		ArrayList<EObject> allEObjectsWithName = new ArrayList<EObject>();
 
-		while(allEObjects.hasNext()) {
-			
-			EObject o=allEObjects.next();
+		while (allEObjects.hasNext()) {
+
+			EObject o = allEObjects.next();
 			if (o.toString().contains(nameNormalized))
 
 			{
 
-//				boolean isNull = true;
-//				EList<EAttribute> eAllAttributes = o.eClass().getEAllAttributes();
-//				for (EAttribute eAttribute : eAllAttributes) {
-//
-//					if (o.eGet(eAttribute) == null) {
-//						isNull = true;
-//					} else {
-//						isNull = false;
-//					}
-//
-//				}
-//
-//				if (isNull) {
-					
-					allEObjectsWithName.add(o);
+				// boolean isNull = true;
+				// EList<EAttribute> eAllAttributes = o.eClass().getEAllAttributes();
+				// for (EAttribute eAttribute : eAllAttributes) {
+				//
+				// if (o.eGet(eAttribute) == null) {
+				// isNull = true;
+				// } else {
+				// isNull = false;
+				// }
+				//
+				// }
+				//
+				// if (isNull) {
 
-					//return o;
-//				}
+				allEObjectsWithName.add(o);
+
+				// return o;
+				// }
 
 			}
 			// System.out.println(o);
 		}
-		
-		
-		if (allEObjectsWithName.size()>0) 
-		{
-			return allEObjectsWithName.get(order-1);
+
+		if (allEObjectsWithName.size() > 0) {
+			return allEObjectsWithName.get(order - 1);
 		}
 		return null;
 
@@ -164,15 +167,14 @@ public class EMFOperationsUtilNew {
 	public static Object getElementInAllModel(String nameElement, String atributeName, Object atributeValue,
 			Resource resource) {
 
-		
 		String nameNormalized = EMFOperationsUtil.normalizedString(nameElement);
 
-		TreeIterator<EObject> allEObjects =  resource.getAllContents();
+		TreeIterator<EObject> allEObjects = resource.getAllContents();
 		ArrayList<EObject> allEObjectsWithName = new ArrayList<EObject>();
-		
-		while(allEObjects.hasNext()){
-			
-			EObject o=allEObjects.next();
+
+		while (allEObjects.hasNext()) {
+
+			EObject o = allEObjects.next();
 
 			if (o.eClass().getName().equals(nameNormalized)) {
 
@@ -182,7 +184,7 @@ public class EMFOperationsUtilNew {
 
 					if (eAttribute.getName().equals(atributeName) && o.eGet(eAttribute) != null
 							&& o.eGet(eAttribute).equals(atributeValue)) {
-						
+
 						allEObjectsWithName.add(o);
 
 					}
@@ -190,31 +192,25 @@ public class EMFOperationsUtilNew {
 			}
 
 		}
-		if(allEObjectsWithName.size()==1) 
-		{
+		if (allEObjectsWithName.size() == 1) {
 			return allEObjectsWithName.get(0);
-		}
-		else if(allEObjectsWithName.size()>1)
-		{
+		} else if (allEObjectsWithName.size() > 1) {
 			System.out.println("HAY MAS DE UN OBJETO IGUAL");
 		}
 		return null;
 
 	}
 
-	public static Object getElement(String nameElement, String atributeName, Object atributeValue,
-			Resource resource) {
+	public static Object getElement(String nameElement, String atributeName, Object atributeValue, Resource resource) {
 
-		
 		String nameNormalized = EMFOperationsUtil.normalizedString(nameElement);
 
-		TreeIterator<EObject> allEObjects =  resource.getAllContents();
+		TreeIterator<EObject> allEObjects = resource.getAllContents();
 		ArrayList<EObject> allEObjectsWithName = new ArrayList<EObject>();
-		
-		while(allEObjects.hasNext())
-		{
 
-			EObject o=allEObjects.next();
+		while (allEObjects.hasNext()) {
+
+			EObject o = allEObjects.next();
 			if (o.eClass().getName().equals(nameNormalized)) {
 
 				EList<EAttribute> eAllAttributes = o.eClass().getEAllAttributes();
@@ -223,7 +219,7 @@ public class EMFOperationsUtilNew {
 
 					if (eAttribute.getName().equals(atributeName) && o.eGet(eAttribute) != null
 							&& o.eGet(eAttribute).equals(atributeValue)) {
-						
+
 						allEObjectsWithName.add(o);
 
 					}
@@ -231,451 +227,444 @@ public class EMFOperationsUtilNew {
 			}
 
 		}
-		if(allEObjectsWithName.size()==1) 
-		{
+		if (allEObjectsWithName.size() == 1) {
 			return allEObjectsWithName.get(0);
-		}
-		else if(allEObjectsWithName.size()>1)
-		{
+		} else if (allEObjectsWithName.size() > 1) {
 			System.out.println("HAY MAS DE UN OBJETO IGUAL");
 		}
 		return null;
 
 	}
 
+	// public static Object getElementReferencedSimpleElement(String parentElement,
+	// String childElement, String childAtributeName,
+	// Object childAtributeValue, String relationName, Resource resource) {
+	//
+	// String childNameNormalized =
+	// EMFOperationsUtil.normalizedString(childElement);
+	// String parentNameNormalized =
+	// EMFOperationsUtil.normalizedString(parentElement);
+	// TreeIterator<EObject> i = resource.getAllContents();
+	//
+	// while (i.hasNext()) {
+	// EObject eObjectParent = i.next();
+	//
+	// if (eObjectParent.eClass().getName().equals(parentNameNormalized)) {
+	// System.out.println("bep padre");
+	//
+	// EList<EReference> eAllReferences =
+	// eObjectParent.eClass().getEAllReferences();
+	//
+	// boolean referenceExists = false;
+	// for (EReference eReference : eAllReferences) {
+	//
+	// if (eReference.getName().equals(relationName)) {
+	// System.out.println("bep relacion");
+	//
+	// referenceExists = true;
+	// EList<EObject> h = eObjectParent.eCrossReferences();
+	//
+	// for(EObject obj:h)
+	// {
+	// System.out.println(obj.eClass().getName());
+	// if (obj.eClass().getName().equals(childNameNormalized)) {
+	// System.out.println("bep hijo");
+	//
+	//
+	// EList<EAttribute> eAllAttributes = obj.eClass().getEAllAttributes();
+	//
+	// for (EAttribute eAttribute : eAllAttributes) {
+	//
+	// if (eAttribute.getName().equals(childAtributeName) && obj.eGet(eAttribute) !=
+	// null
+	// && obj.eGet(eAttribute).equals(childAtributeValue)) {
+	//
+	// System.out.println("bep atributo");
+	//
+	//
+	// return obj;
+	//
+	// }
+	// }
+	// }
+	// }
+	//
+	// }
+	//
+	// }
+	// if (!referenceExists) {
+	// EMFOperationsMessages.printMessage("REFERENCE_NOT_EXISTS");
+	// }
+	// }
+	//
+	// }
+	// return null;
+	//
+	// }
+	// public static Object getElementContentSimpleElement(String parentElement,
+	// String childElement, String childAtributeName,
+	// Object childAtributeValue, String relationName, Resource resource) {
+	//
+	// String childNameNormalized =
+	// EMFOperationsUtil.normalizedString(childElement);
+	// String parentNameNormalized =
+	// EMFOperationsUtil.normalizedString(parentElement);
+	// TreeIterator<EObject> i = resource.getAllContents();
+	//
+	// while (i.hasNext()) {
+	// EObject eObjectParent = i.next();
+	//
+	// if (eObjectParent.eClass().getName().equals(parentNameNormalized)) {
+	// System.out.println("bep padre");
+	//
+	// EList<EReference> eAllReferences =
+	// eObjectParent.eClass().getEAllReferences();
+	//
+	// boolean referenceExists = false;
+	// for (EReference eReference : eAllReferences) {
+	//
+	// if (eReference.getName().equals(relationName)) {
+	// System.out.println("bep relacion");
+	//
+	// referenceExists = true;
+	// TreeIterator<EObject> y = eObjectParent.eAllContents();
+	// EList<EObject> h = eObjectParent.eCrossReferences();
+	//
+	//
+	// while (y.hasNext()) {
+	//
+	// EObject o = y.next();
+	//
+	//
+	// if (o.eClass().getName().equals(childNameNormalized)) {
+	// System.out.println("bep hijo");
+	//
+	//
+	// EList<EAttribute> eAllAttributes = o.eClass().getEAllAttributes();
+	//
+	// for (EAttribute eAttribute : eAllAttributes) {
+	//
+	// if (eAttribute.getName().equals(childAtributeName) && o.eGet(eAttribute) !=
+	// null
+	// && o.eGet(eAttribute).equals(childAtributeValue)) {
+	//
+	// System.out.println("bep atributo");
+	//
+	//
+	// return o;
+	//
+	// }
+	// }
+	// }
+	//
+	// }
+	//
+	//
+	// }
+	//
+	// }
+	// if (!referenceExists) {
+	// EMFOperationsMessages.printMessage("REFERENCE_NOT_EXISTS");
+	// }
+	// }
+	//
+	// }
+	// return null;
+	//
+	// }
+	//
+	// public static Object getSimpleElementContentElement(String childElement,
+	// String parentElement, String parentAtributeName,
+	// Object parentAtributeValue, String relationName, Resource resource) {
+	//
+	// String childNameNormalized =
+	// EMFOperationsUtil.normalizedString(childElement);
+	// String parentNameNormalized =
+	// EMFOperationsUtil.normalizedString(parentElement);
+	// TreeIterator<EObject> i = resource.getAllContents();
+	//
+	// while (i.hasNext()) {
+	// EObject eObjectParent = i.next();
+	//
+	// if (eObjectParent.eClass().getName().equals(parentNameNormalized)) {
+	// System.out.println("bep padre");
+	//
+	// EList<EReference> eAllReferences =
+	// eObjectParent.eClass().getEAllReferences();
+	//
+	// boolean referenceExists = false;
+	// for (EReference eReference : eAllReferences) {
+	//
+	// if (eReference.getName().equals(relationName)) {
+	// System.out.println("bep relacion");
+	//
+	// referenceExists = true;
+	//
+	// EList<EAttribute> eAllAttributes =
+	// eObjectParent.eClass().getEAllAttributes();
+	//
+	// for (EAttribute eAttribute : eAllAttributes) {
+	//
+	// if (eAttribute.getName().equals(parentAtributeName) &&
+	// eObjectParent.eGet(eAttribute) != null
+	// && eObjectParent.eGet(eAttribute).equals(parentAtributeValue)) {
+	//
+	// System.out.println("bep atributo");
+	//
+	// TreeIterator<EObject> y = eObjectParent.eAllContents();
+	//
+	// while (y.hasNext()) {
+	//
+	// EObject o = y.next();
+	//
+	// System.out.println(o.eClass().getName());
+	// if (o.eClass().getName().equals(childNameNormalized)) {
+	// System.out.println("bep hijo");
+	// return o;
+	//
+	// }
+	//
+	// }
+	//
+	// }
+	// }
+	//
+	//
+	// }
+	//
+	// }
+	// if (!referenceExists) {
+	// EMFOperationsMessages.printMessage("REFERENCE_NOT_EXISTS");
+	// }
+	// }
+	//
+	// }
+	// return null;
+	//
+	// }
+	// public static Object getSimpleElementReferencedElement(String childElement,
+	// String parentElement, String parentAtributeName,
+	// Object parentAtributeValue, String relationName, Resource resource) {
+	//
+	// String childNameNormalized =
+	// EMFOperationsUtil.normalizedString(childElement);
+	// String parentNameNormalized =
+	// EMFOperationsUtil.normalizedString(parentElement);
+	// TreeIterator<EObject> i = resource.getAllContents();
+	//
+	// while (i.hasNext()) {
+	// EObject eObjectParent = i.next();
+	//
+	// if (eObjectParent.eClass().getName().equals(parentNameNormalized)) {
+	// System.out.println("bep padre");
+	//
+	// EList<EReference> eAllReferences =
+	// eObjectParent.eClass().getEAllReferences();
+	//
+	// boolean referenceExists = false;
+	// for (EReference eReference : eAllReferences) {
+	//
+	// if (eReference.getName().equals(relationName)) {
+	// System.out.println("bep relacion");
+	//
+	// referenceExists = true;
+	//
+	// EList<EAttribute> eAllAttributes =
+	// eObjectParent.eClass().getEAllAttributes();
+	//
+	// for (EAttribute eAttribute : eAllAttributes) {
+	//
+	// if (eAttribute.getName().equals(parentAtributeName) &&
+	// eObjectParent.eGet(eAttribute) != null
+	// && eObjectParent.eGet(eAttribute).equals(parentAtributeValue)) {
+	//
+	// System.out.println("bep atributo");
+	//
+	// EList<EObject> h = eObjectParent.eCrossReferences();
+	//
+	// for(EObject obj:h)
+	// {
+	// System.out.println(obj.eClass().getName());
+	// if (obj.eClass().getName().equals(childNameNormalized)) {
+	// System.out.println("bep hijo");
+	//
+	// return obj;
+	//
+	// }
+	// }
+	//
+	// }
+	// }
+	//
+	//
+	// }
+	//
+	// }
+	// if (!referenceExists) {
+	// EMFOperationsMessages.printMessage("REFERENCE_NOT_EXISTS");
+	// }
+	// }
+	//
+	// }
+	// return null;
+	//
+	// }
+	//
 
-//	public static Object getElementReferencedSimpleElement(String parentElement, String childElement, String childAtributeName,
-//			Object childAtributeValue, String relationName, Resource resource) {
-//		
-//		String childNameNormalized = EMFOperationsUtil.normalizedString(childElement);
-//		String parentNameNormalized = EMFOperationsUtil.normalizedString(parentElement);
-//	TreeIterator<EObject> i = resource.getAllContents();
-//
-//	while (i.hasNext()) {
-//		EObject eObjectParent = i.next();
-//
-//		if (eObjectParent.eClass().getName().equals(parentNameNormalized)) {
-//			System.out.println("bep padre");
-//
-//			EList<EReference> eAllReferences = eObjectParent.eClass().getEAllReferences();
-//
-//			boolean referenceExists = false;
-//			for (EReference eReference : eAllReferences) {
-//
-//				if (eReference.getName().equals(relationName)) {
-//					System.out.println("bep relacion");
-//
-//					referenceExists = true;
-//					EList<EObject> h = eObjectParent.eCrossReferences();
-//					
-//					for(EObject obj:h) 
-//					{
-//						System.out.println(obj.eClass().getName());
-//						if (obj.eClass().getName().equals(childNameNormalized)) {
-//							System.out.println("bep hijo");
-//
-//
-//							EList<EAttribute> eAllAttributes = obj.eClass().getEAllAttributes();
-//
-//							for (EAttribute eAttribute : eAllAttributes) {
-//
-//								if (eAttribute.getName().equals(childAtributeName) && obj.eGet(eAttribute) != null
-//										&& obj.eGet(eAttribute).equals(childAtributeValue)) {
-//									
-//									System.out.println("bep atributo");
-//
-//
-//									return obj;
-//
-//								}
-//							}
-//						}
-//					}
-//
-//				}
-//
-//			}
-//			if (!referenceExists) {
-//				EMFOperationsMessages.printMessage("REFERENCE_NOT_EXISTS");
-//			}
-//		}
-//
-//	}
-//	return null;
-//
-//}
-//	public static Object getElementContentSimpleElement(String parentElement, String childElement, String childAtributeName,
-//			Object childAtributeValue, String relationName, Resource resource) {
-//
-//			String childNameNormalized = EMFOperationsUtil.normalizedString(childElement);
-//			String parentNameNormalized = EMFOperationsUtil.normalizedString(parentElement);
-//		TreeIterator<EObject> i = resource.getAllContents();
-//
-//		while (i.hasNext()) {
-//			EObject eObjectParent = i.next();
-//
-//			if (eObjectParent.eClass().getName().equals(parentNameNormalized)) {
-//				System.out.println("bep padre");
-//
-//				EList<EReference> eAllReferences = eObjectParent.eClass().getEAllReferences();
-//
-//				boolean referenceExists = false;
-//				for (EReference eReference : eAllReferences) {
-//
-//					if (eReference.getName().equals(relationName)) {
-//						System.out.println("bep relacion");
-//
-//						referenceExists = true;
-//						TreeIterator<EObject> y = eObjectParent.eAllContents();
-//						EList<EObject> h = eObjectParent.eCrossReferences();
-//						
-//
-//						while (y.hasNext()) {
-//
-//							EObject o = y.next();
-//
-//							
-//							if (o.eClass().getName().equals(childNameNormalized)) {
-//								System.out.println("bep hijo");
-//
-//
-//								EList<EAttribute> eAllAttributes = o.eClass().getEAllAttributes();
-//
-//								for (EAttribute eAttribute : eAllAttributes) {
-//
-//									if (eAttribute.getName().equals(childAtributeName) && o.eGet(eAttribute) != null
-//											&& o.eGet(eAttribute).equals(childAtributeValue)) {
-//										
-//										System.out.println("bep atributo");
-//
-//
-//										return o;
-//
-//									}
-//								}
-//							}
-//
-//						}
-//						
-//
-//					}
-//
-//				}
-//				if (!referenceExists) {
-//					EMFOperationsMessages.printMessage("REFERENCE_NOT_EXISTS");
-//				}
-//			}
-//
-//		}
-//		return null;
-//
-//	}
-//
-//	public static Object getSimpleElementContentElement(String childElement, String parentElement, String parentAtributeName,
-//			Object parentAtributeValue, String relationName, Resource resource) {
-//
-//			String childNameNormalized = EMFOperationsUtil.normalizedString(childElement);
-//			String parentNameNormalized = EMFOperationsUtil.normalizedString(parentElement);
-//		TreeIterator<EObject> i = resource.getAllContents();
-//
-//		while (i.hasNext()) {
-//			EObject eObjectParent = i.next();
-//
-//			if (eObjectParent.eClass().getName().equals(parentNameNormalized)) {
-//				System.out.println("bep padre");
-//
-//				EList<EReference> eAllReferences = eObjectParent.eClass().getEAllReferences();
-//
-//				boolean referenceExists = false;
-//				for (EReference eReference : eAllReferences) {
-//
-//					if (eReference.getName().equals(relationName)) {
-//						System.out.println("bep relacion");
-//
-//						referenceExists = true;
-//						
-//						EList<EAttribute> eAllAttributes = eObjectParent.eClass().getEAllAttributes();
-//
-//						for (EAttribute eAttribute : eAllAttributes) {
-//
-//							if (eAttribute.getName().equals(parentAtributeName) && eObjectParent.eGet(eAttribute) != null
-//									&& eObjectParent.eGet(eAttribute).equals(parentAtributeValue)) {
-//								
-//								System.out.println("bep atributo");
-//
-//								TreeIterator<EObject> y = eObjectParent.eAllContents();
-//								
-//								while (y.hasNext()) {
-//
-//									EObject o = y.next();
-//
-//									System.out.println(o.eClass().getName());
-//									if (o.eClass().getName().equals(childNameNormalized)) {
-//										System.out.println("bep hijo");
-//										return o;
-//
-//									}
-//
-//								}
-//
-//							}
-//						}
-//						
-//	
-//					}
-//
-//				}
-//				if (!referenceExists) {
-//					EMFOperationsMessages.printMessage("REFERENCE_NOT_EXISTS");
-//				}
-//			}
-//
-//		}
-//		return null;
-//
-//	}
-//	public static Object getSimpleElementReferencedElement(String childElement, String parentElement, String parentAtributeName,
-//			Object parentAtributeValue, String relationName, Resource resource) {
-//
-//			String childNameNormalized = EMFOperationsUtil.normalizedString(childElement);
-//			String parentNameNormalized = EMFOperationsUtil.normalizedString(parentElement);
-//		TreeIterator<EObject> i = resource.getAllContents();
-//
-//		while (i.hasNext()) {
-//			EObject eObjectParent = i.next();
-//
-//			if (eObjectParent.eClass().getName().equals(parentNameNormalized)) {
-//				System.out.println("bep padre");
-//
-//				EList<EReference> eAllReferences = eObjectParent.eClass().getEAllReferences();
-//
-//				boolean referenceExists = false;
-//				for (EReference eReference : eAllReferences) {
-//
-//					if (eReference.getName().equals(relationName)) {
-//						System.out.println("bep relacion");
-//
-//						referenceExists = true;
-//						
-//						EList<EAttribute> eAllAttributes = eObjectParent.eClass().getEAllAttributes();
-//
-//						for (EAttribute eAttribute : eAllAttributes) {
-//
-//							if (eAttribute.getName().equals(parentAtributeName) && eObjectParent.eGet(eAttribute) != null
-//									&& eObjectParent.eGet(eAttribute).equals(parentAtributeValue)) {
-//								
-//								System.out.println("bep atributo");
-//
-//								EList<EObject> h = eObjectParent.eCrossReferences();
-//								
-//								for(EObject obj:h) 
-//								{
-//									System.out.println(obj.eClass().getName());
-//									if (obj.eClass().getName().equals(childNameNormalized)) {
-//										System.out.println("bep hijo");
-//										
-//										return obj;
-//
-//									}
-//								}
-//
-//							}
-//						}
-//						
-//	
-//					}
-//
-//				}
-//				if (!referenceExists) {
-//					EMFOperationsMessages.printMessage("REFERENCE_NOT_EXISTS");
-//				}
-//			}
-//
-//		}
-//		return null;
-//
-//	}
-//	
-	
-	//TEST
-	public static Object getElementContentOrderFocusedElement(String nameElement,String atributeName,Object atributeValue,EObject focusObject,String relationName,int order) 
-	{
-		ArrayList<EObject> allMatchElements=new ArrayList<EObject>();
+	// TEST
+	public static Object getElementContentOrderFocusedElement(String nameElement, String atributeName,
+			Object atributeValue, EObject focusObject, String relationName, int order) {
+		ArrayList<EObject> allMatchElements = new ArrayList<EObject>();
 
 		String nameNormalized = EMFOperationsUtil.normalizedString(nameElement);
-	
 
-			EList<EReference> eAllReferences = focusObject.eClass().getEAllReferences();
+		EList<EReference> eAllReferences = focusObject.eClass().getEAllReferences();
 
-			boolean referenceExists = false;
-			for (EReference eReference : eAllReferences) {
+		boolean referenceExists = false;
+		for (EReference eReference : eAllReferences) {
 
-				if (eReference.getName().equals(relationName)) {
-				
+			if (eReference.getName().equals(relationName)) {
 
-					referenceExists = true;
-			
-							
-							TreeIterator<EObject> y = focusObject.eAllContents();
-							
-							while (y.hasNext()) {
+				referenceExists = true;
 
-								EObject o = y.next();
+				TreeIterator<EObject> y = focusObject.eAllContents();
 
-								EList<EAttribute> eAllAttributes = o.eClass().getEAllAttributes();
-																				
-								System.out.println(o.eClass().getName());
-								if (o.eClass().getName().equals(nameNormalized)) {
-									
-									for (EAttribute eAttribute : eAllAttributes) {
-										
-										if (eAttribute.getName().equals(atributeName) && o.eGet(eAttribute) != null
-												&& o.eGet(eAttribute).equals(atributeValue)) {
-											
-											allMatchElements.add(o);
-										}
-										
-									}
-									
-									
+				while (y.hasNext()) {
 
-								}
+					EObject o = y.next();
 
+					EList<EAttribute> eAllAttributes = o.eClass().getEAllAttributes();
+
+					System.out.println(o.eClass().getName());
+					if (o.eClass().getName().equals(nameNormalized)) {
+
+						for (EAttribute eAttribute : eAllAttributes) {
+
+							if (eAttribute.getName().equals(atributeName) && o.eGet(eAttribute) != null
+									&& o.eGet(eAttribute).equals(atributeValue)) {
+
+								allMatchElements.add(o);
 							}
 
+						}
+
+					}
 
 				}
 
 			}
-			if (!referenceExists) {
-				EMFOperationsMessages.printMessage("REFERENCE_NOT_EXISTS");
-			}
-			if(allMatchElements.size()>0) 
-			{
-				return allMatchElements.get(order-1);
-			}
-	return null;
 
-	
-		
+		}
+		if (!referenceExists) {
+			EMFOperationsMessages.printMessage("REFERENCE_NOT_EXISTS");
+		}
+		if (allMatchElements.size() > 0) {
+			return allMatchElements.get(order - 1);
+		}
+		return null;
+
 	}
-	public static Object getSimpleElementContentOrderFocusedElement(String nameElement,EObject focusObject,String relationName,int order) 
-	{
-		ArrayList<EObject> allMatchElements=new ArrayList<EObject>();
+
+	public static Object getSimpleElementContentOrderFocusedElement(String nameElement, EObject focusObject,
+			String relationName, int order) {
+		ArrayList<EObject> allMatchElements = new ArrayList<EObject>();
 
 		String nameNormalized = EMFOperationsUtil.normalizedString(nameElement);
-	
 
-			EList<EReference> eAllReferences = focusObject.eClass().getEAllReferences();
+		EList<EReference> eAllReferences = focusObject.eClass().getEAllReferences();
 
-			boolean referenceExists = false;
-			for (EReference eReference : eAllReferences) {
+		boolean referenceExists = false;
+		for (EReference eReference : eAllReferences) {
 
-				if (eReference.getName().equals(relationName)) {
-				
+			if (eReference.getName().equals(relationName)) {
 
-					referenceExists = true;
-			
-							
+				referenceExists = true;
 
-							TreeIterator<EObject> y = focusObject.eAllContents();
-							
-							while (y.hasNext()) {
+				TreeIterator<EObject> y = focusObject.eAllContents();
 
-								EObject o = y.next();
+				while (y.hasNext()) {
 
-								//System.out.println(o.eClass().getName());
-								if (o.eClass().getName().equals(nameNormalized)) {
-									
-									allMatchElements.add(o);
+					EObject o = y.next();
 
-								}
+					// System.out.println(o.eClass().getName());
+					if (o.eClass().getName().equals(nameNormalized)) {
 
-							}
+						allMatchElements.add(o);
 
+					}
 
 				}
 
 			}
-			if (!referenceExists) {
-				EMFOperationsMessages.printMessage("REFERENCE_NOT_EXISTS");
-			}
-			if(allMatchElements.size()>0) 
-			{
-				return allMatchElements.get(order-1);
-			}
-	return null;
 
-	
-		
+		}
+		if (!referenceExists) {
+			EMFOperationsMessages.printMessage("REFERENCE_NOT_EXISTS");
+		}
+		if (allMatchElements.size() > 0) {
+			return allMatchElements.get(order - 1);
+		}
+		return null;
+
 	}
 
-	
-	
-	//NUEVO
-	public static Object getSimpleElementContentFocusedElement(String nameElement,EObject focusObject,String relationName) 
-	{
-		
+	// NUEVO
+	public static Object getSimpleElementContentFocusedElement(String nameElement, EObject focusObject,
+			String relationName) {
+
 		String nameNormalized = EMFOperationsUtil.normalizedString(nameElement);
-	
 
-			EList<EReference> eAllReferences = focusObject.eClass().getEAllReferences();
+		EList<EReference> eAllReferences = focusObject.eClass().getEAllReferences();
 
-			boolean referenceExists = false;
-			for (EReference eReference : eAllReferences) {
+		boolean referenceExists = false;
+		for (EReference eReference : eAllReferences) {
 
-				if (eReference.getName().equals(relationName)) {
-					//System.out.println("bep relacion");
+			if (eReference.getName().equals(relationName)) {
+				// System.out.println("bep relacion");
 
-					referenceExists = true;
-			
-							//System.out.println("bep atributo");
+				referenceExists = true;
 
-							TreeIterator<EObject> y = focusObject.eAllContents();
-							
-							while (y.hasNext()) {
+				// System.out.println("bep atributo");
 
-								EObject o = y.next();
+				TreeIterator<EObject> y = focusObject.eAllContents();
 
-								System.out.println(o.eClass().getName());
-								if (o.eClass().getName().equals(nameNormalized)) {
-									//System.out.println("bep hijo");
-									return o;
+				while (y.hasNext()) {
 
-								}
+					EObject o = y.next();
 
-							}
+					System.out.println(o.eClass().getName());
+					if (o.eClass().getName().equals(nameNormalized)) {
+						// System.out.println("bep hijo");
+						return o;
 
+					}
 
 				}
 
 			}
-			if (!referenceExists) {
-				EMFOperationsMessages.printMessage("REFERENCE_NOT_EXISTS");
-			}
-		
-	return null;
 
-	
-		
+		}
+		if (!referenceExists) {
+			EMFOperationsMessages.printMessage("REFERENCE_NOT_EXISTS");
+		}
+
+		return null;
+
 	}
-	public static void getParentsObject(EObject o) 
-	{
-		//System.out.println("aquiii"+ o.eContainer());
-		boolean start=true;
-		EObject object=o;
-		String spaces=" ";
-		System.out.println("[element]: "+o.eClass().getName());
-		while(start) 
-		{
-			if(o.eContainer()!=null) 
-			{
-				System.out.println(spaces+"[container]: "+o.eContainer().eClass().getName());
-				o=o.eContainer();
-				spaces=spaces+" ";
-			}else 
-			{
-				start=false;
+
+	public static void getParentsObject(EObject o) {
+		// System.out.println("aquiii"+ o.eContainer());
+		boolean start = true;
+		EObject object = o;
+		String spaces = " ";
+		System.out.println("[element]: " + o.eClass().getName());
+		while (start) {
+			if (o.eContainer() != null) {
+				System.out.println(spaces + "[container]: " + o.eContainer().eClass().getName());
+				o = o.eContainer();
+				spaces = spaces + " ";
+			} else {
+				start = false;
 			}
 		}
 		System.out.println("\n\n");
@@ -683,123 +672,137 @@ public class EMFOperationsUtilNew {
 
 	public static Object getElementContentFocusedElement(String nameElement, String atributeName, String atributeValue,
 			EObject focusObject, String relationName) {
-		
-		
-		
+
 		String nameNormalized = EMFOperationsUtil.normalizedString(nameElement);
-	
 
-			EList<EReference> eAllReferences = focusObject.eClass().getEAllReferences();
-			ArrayList<EObject> allMatchObjects=new ArrayList<EObject>();
+		EList<EReference> eAllReferences = focusObject.eClass().getEAllReferences();
+		ArrayList<EObject> allMatchObjects = new ArrayList<EObject>();
 
-			boolean referenceExists = false;
-			for (EReference eReference : eAllReferences) {
+		boolean referenceExists = false;
+		for (EReference eReference : eAllReferences) {
 
-				if (eReference.getName().equals(relationName)) {
-					
+			if (eReference.getName().equals(relationName)) {
 
-					referenceExists = true;
-			
-							
+				referenceExists = true;
 
-							TreeIterator<EObject> y = focusObject.eAllContents();
-							
-							while (y.hasNext()) {
+				TreeIterator<EObject> y = focusObject.eAllContents();
 
-								EObject o = y.next();
+				while (y.hasNext()) {
 
+					EObject o = y.next();
 
-								if (o.eClass().getName().equals(nameNormalized)) {
-									
-									EList<EAttribute> eAllAttributes = o.eClass().getEAllAttributes();
+					if (o.eClass().getName().equals(nameNormalized)) {
 
-									for (EAttribute eAttribute : eAllAttributes) {
+						EList<EAttribute> eAllAttributes = o.eClass().getEAllAttributes();
 
-										if (eAttribute.getName().equals(atributeName) && o.eGet(eAttribute) != null
-												&& o.eGet(eAttribute).equals(atributeValue)) {
-											
-											allMatchObjects.add(o);
-											
+						for (EAttribute eAttribute : eAllAttributes) {
 
-										}
-									}
+							if (eAttribute.getName().equals(atributeName) && o.eGet(eAttribute) != null
+									&& o.eGet(eAttribute).equals(atributeValue)) {
 
-								}
+								allMatchObjects.add(o);
 
 							}
+						}
 
+					}
 
 				}
 
 			}
-			if (!referenceExists) {
-				EMFOperationsMessages.printMessage("REFERENCE_NOT_EXISTS");
-			}
-		
-			if(allMatchObjects.size()==1) 
-			{
-				return allMatchObjects.get(0);
-			}
-			else if(allMatchObjects.size()>1)
-			{
-				System.out.println("HAY MAS DE UN OBJETO IGUAL");
-			}
-			return null;
 
+		}
+		if (!referenceExists) {
+			EMFOperationsMessages.printMessage("REFERENCE_NOT_EXISTS");
+		}
 
-	
+		if (allMatchObjects.size() == 1) {
+			return allMatchObjects.get(0);
+		} else if (allMatchObjects.size() > 1) {
+			System.out.println("HAY MAS DE UN OBJETO IGUAL");
+		}
+		return null;
+
+	}
+
+	public static String getRootElement() {
+		ArrayList<String> elementosName = new ArrayList<String>();
+		ArrayList<EClass> elementosEClass = new ArrayList<EClass>();
+
+		for (int i = 0; i < getMetaModelPackage().eContents().size(); i++) {
+
+			if (getMetaModelPackage().eContents().get(i).getClass().getSimpleName().equals("EClassImpl")) {
+				EClass myEclass = (EClass) getMetaModelPackage().eContents().get(i);
+
+				elementosEClass.add(myEclass);
+				elementosName.add(myEclass.getName());
+
+			}
+
+		}
+		for (EClass myEclass : elementosEClass) {
+			for (int d = 0; d < myEclass.getEAllContainments().size(); d++) {
+
+				EReference reference = myEclass.getEAllContainments().get(d);
+
+				if (elementosName.contains(reference.getEType().getName())) {
+					elementosName.remove(reference.getEType().getName());
+				}
+				System.out.println(
+						myEclass.getName() + ": " + reference.getName() + ": " + reference.getEType().getName());
+
+			}
+		}
+		return elementosName.get(0);
 	}
 
 	public static Object getElementReferenceFocusedElement(String nameElement, String atributeName,
 			Object atributeValue, EObject focusObject, String relationName) {
 
 		String nameNormalized = EMFOperationsUtil.normalizedString(nameElement);
-	
 
-			EList<EReference> eAllReferences = focusObject.eClass().getEAllReferences();
+		EList<EReference> eAllReferences = focusObject.eClass().getEAllReferences();
 
-			boolean referenceExists = false;
-			for (EReference eReference : eAllReferences) {
+		boolean referenceExists = false;
+		for (EReference eReference : eAllReferences) {
 
-				if (eReference.getName().equals(relationName)) {
-					//System.out.println("bep relacion");
+			if (eReference.getName().equals(relationName)) {
+				// System.out.println("bep relacion");
 
-					referenceExists = true;
-			
-							//System.out.println("bep atributo");
+				referenceExists = true;
 
-							EList<EObject> y = focusObject.eCrossReferences();
-							
-							for(EObject o : y) {
+				// System.out.println("bep atributo");
 
-								
-								if (o.eClass().getName().equals(nameNormalized)) {
-									
-									EList<EAttribute> eAllAttributes = o.eClass().getEAllAttributes();
+				EList<EObject> y = focusObject.eCrossReferences();
 
-									for (EAttribute eAttribute : eAllAttributes) {
+				for (EObject o : y) {
 
-										if (eAttribute.getName().equals(atributeName) && o.eGet(eAttribute) != null
-												&& o.eGet(eAttribute).equals(atributeValue)) {
-											
-										return o;
+					if (o.eClass().getName().equals(nameNormalized)) {
 
-										}
-									}
+						EList<EAttribute> eAllAttributes = o.eClass().getEAllAttributes();
 
-								}
+						for (EAttribute eAttribute : eAllAttributes) {
+
+							if (eAttribute.getName().equals(atributeName) && o.eGet(eAttribute) != null
+									&& o.eGet(eAttribute).equals(atributeValue)) {
+
+								return o;
 
 							}
+						}
 
+					}
 
 				}
 
 			}
-			if (!referenceExists) {
-				EMFOperationsMessages.printMessage("REFERENCE_NOT_EXISTS");
-			}
-		
-	return null;
+
+		}
+		if (!referenceExists) {
+			EMFOperationsMessages.printMessage("REFERENCE_NOT_EXISTS");
+		}
+
+		return null;
 
 	}
 }

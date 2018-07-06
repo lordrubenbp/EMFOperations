@@ -95,7 +95,7 @@ public class EMFDialogflowParseNew {
 			 objectCreated = null;
 			element = queryResult.getParameters().getFieldsMap().get("element").getStringValue().toLowerCase();
 			atribute = queryResult.getParameters().getFieldsMap().get("atribute").getStringValue().toLowerCase();
-			value = queryResult.getParameters().getFieldsMap().get("value").getStringValue().toLowerCase();
+			value = queryResult.getParameters().getFieldsMap().get("value").getStringValue();
 			
 			switch (numberOfParameters) {
 			case 2:
@@ -121,7 +121,7 @@ public class EMFDialogflowParseNew {
 			
 			element = queryResult.getParameters().getFieldsMap().get("element").getStringValue().toLowerCase();
 			atribute = queryResult.getParameters().getFieldsMap().get("atribute").getStringValue().toLowerCase();
-			value = queryResult.getParameters().getFieldsMap().get("value").getStringValue().toLowerCase();
+			value = queryResult.getParameters().getFieldsMap().get("value").getStringValue();
 			relationship = queryResult.getParameters().getFieldsMap().get("relationship").getStringValue();
 			
 			switch (numberOfParameters) {
@@ -145,9 +145,10 @@ public class EMFDialogflowParseNew {
 			
 			element = queryResult.getParameters().getFieldsMap().get("element").getStringValue().toLowerCase();
 			atribute = queryResult.getParameters().getFieldsMap().get("atribute").getStringValue().toLowerCase();
-			value = queryResult.getParameters().getFieldsMap().get("value").getStringValue().toLowerCase();
+			value = queryResult.getParameters().getFieldsMap().get("value").getStringValue();
 			order=(int) queryResult.getParameters().getFieldsMap().get("order").getNumberValue();
 			if(order==0) {order=1;}
+			System.out.println("ORDER: "+order);
 			switch (numberOfParameters) {
 			case 3:
 				
@@ -169,7 +170,7 @@ public class EMFDialogflowParseNew {
 			
 			element = queryResult.getParameters().getFieldsMap().get("element").getStringValue().toLowerCase();
 			atribute = queryResult.getParameters().getFieldsMap().get("atribute").getStringValue().toLowerCase();
-			value = queryResult.getParameters().getFieldsMap().get("value").getStringValue().toLowerCase();
+			value = queryResult.getParameters().getFieldsMap().get("value").getStringValue();
 			relationship = queryResult.getParameters().getFieldsMap().get("relationship").getStringValue();
 			order=(int) queryResult.getParameters().getFieldsMap().get("order").getNumberValue();
 			if(order==0) {order=1;}
@@ -196,7 +197,7 @@ public class EMFDialogflowParseNew {
 			
 			element = queryResult.getParameters().getFieldsMap().get("element").getStringValue().toLowerCase();
 			atribute = queryResult.getParameters().getFieldsMap().get("atribute").getStringValue().toLowerCase();
-			value = queryResult.getParameters().getFieldsMap().get("value").getStringValue().toLowerCase();
+			value = queryResult.getParameters().getFieldsMap().get("value").getStringValue();
 			order=(int) queryResult.getParameters().getFieldsMap().get("order").getNumberValue();
 			if(order==0) {order=1;}
 			switch (numberOfParameters) {
@@ -220,7 +221,7 @@ public class EMFDialogflowParseNew {
 			
 			element = queryResult.getParameters().getFieldsMap().get("element").getStringValue().toLowerCase();
 			atribute = queryResult.getParameters().getFieldsMap().get("atribute").getStringValue().toLowerCase();
-			value = queryResult.getParameters().getFieldsMap().get("value").getStringValue().toLowerCase();
+			value = queryResult.getParameters().getFieldsMap().get("value").getStringValue();
 			relationship = queryResult.getParameters().getFieldsMap().get("relationship").getStringValue();
 			order=(int) queryResult.getParameters().getFieldsMap().get("order").getNumberValue();
 			if(order==0) {order=1;}
@@ -246,7 +247,7 @@ public class EMFDialogflowParseNew {
 			
 			element = queryResult.getParameters().getFieldsMap().get("element").getStringValue().toLowerCase();
 			atribute = queryResult.getParameters().getFieldsMap().get("atribute").getStringValue().toLowerCase();
-			value = queryResult.getParameters().getFieldsMap().get("value").getStringValue().toLowerCase();
+			value = queryResult.getParameters().getFieldsMap().get("value").getStringValue();
 			relationship = queryResult.getParameters().getFieldsMap().get("relationship").getStringValue();
 			
 
@@ -267,7 +268,7 @@ public class EMFDialogflowParseNew {
 			
 			element = queryResult.getParameters().getFieldsMap().get("element").getStringValue().toLowerCase();
 			atribute = queryResult.getParameters().getFieldsMap().get("atribute").getStringValue().toLowerCase();
-			value = queryResult.getParameters().getFieldsMap().get("value").getStringValue().toLowerCase();
+			value = queryResult.getParameters().getFieldsMap().get("value").getStringValue();
 			relationship = queryResult.getParameters().getFieldsMap().get("relationship").getStringValue();
 			
 
@@ -288,7 +289,7 @@ public class EMFDialogflowParseNew {
 			
 		
 			atribute = queryResult.getParameters().getFieldsMap().get("atribute").getStringValue().toLowerCase();
-			value = queryResult.getParameters().getFieldsMap().get("value").getStringValue().toLowerCase();
+			value = queryResult.getParameters().getFieldsMap().get("value").getStringValue();
 			
 			
 			switch (numberOfParameters) {
@@ -348,6 +349,11 @@ public class EMFDialogflowParseNew {
 				autoFocus=false;
 				System.out.println("autofocus off");
 			}
+			
+			break;
+		case "GPFE":
+			
+			op.getPropertiesFocusElement();
 			
 			break;
 		case "EXIT":

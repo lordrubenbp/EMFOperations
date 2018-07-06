@@ -67,14 +67,14 @@ public class EMFmain {
 			if(checkInternetConection()) 
 			{
 				
-				if(System.getProperty("user.language").equals("es")) 
-				{
-					languageCode="es";
-				}
-				else 
-				{
-					languageCode="en";
-				}
+//				if(System.getProperty("user.language").equals("es")) 
+//				{
+//					languageCode="es";
+//				}
+//				else 
+//				{
+//					languageCode="en";
+//				}
 				parse = new EMFDialogflowParseNew();
 				
 				sessionsClient = SessionsClient.create();

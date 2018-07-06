@@ -480,42 +480,38 @@ public class EMFOperationsUtil {
 
 	public static void showAllMetaModelData() {
 
+		ArrayList<String> elementosName=new ArrayList<String>();
+		ArrayList<EClass> elementosEClass=new ArrayList<EClass>();
+		
 		for (int i = 0; i < getMetaModelPackage().eContents().size(); i++) {
 
 			if (getMetaModelPackage().eContents().get(i).getClass().getSimpleName().equals("EClassImpl")) {
 				EClass myEclass = (EClass) getMetaModelPackage().eContents().get(i);
 
-				//System.out.println(myEclass.eContainer());
-				//System.out.println(myEclass.getName());
-				for (int y = 0; y < myEclass.getEAllAttributes().size(); y++) {
-					// System.out.println(myEclass.getEAllAttributes().get(y).getName());
-					// TODO aqui puedo obtener informacion de las referencias que tiene el elemento
-					// en el metamodelo
-					// System.out.println(myEclass.getEAllReferences());
+				elementosEClass.add(myEclass);
+				elementosName.add(myEclass.getName());
 
-					EAttribute atribute = myEclass.getEAllAttributes().get(y);
-
-					//System.out.println("Atribute name: " + atribute.getName());
-					//System.out.println("Atribute type: " + atribute.getEAttributeType().getName());
-
-				}
-				for (int d = 0; d < myEclass.getEAllReferences().size(); d++) {
-					// System.out.println(myEclass.getEAllAttributes().get(y).getName());
-					// TODO aqui puedo obtener informacion de las referencias que tiene el elemento
-					// en el metamodelo
-					// System.out.println(myEclass.getEAllReferences());
-
-					EReference reference = myEclass.getEAllReferences().get(d);
-
-					//System.out.println("Reference name: " + reference.getName());
-					//System.out.println("Min elements: " + reference.getLowerBound());
-					//System.out.println("Max elements: " + reference.getUpperBound());
-
-				}
-
+				
+				
+			
 			}
 
 		}
+		for(EClass myEclass:elementosEClass) {
+		for (int d = 0; d < myEclass.getEAllContainments().size(); d++) {
+		
+			EReference reference = myEclass.getEAllContainments().get(d);
+			
+			if(elementosName.contains(reference.getEType().getName())) 
+			{
+				elementosName.remove(reference.getEType().getName());
+			}
+			System.out.println(myEclass.getName()+": "+reference.getName()+": "+reference.getEType().getName());
+	
+
+		}
+		}
+		System.out.println(elementosName);
 
 	}
 
