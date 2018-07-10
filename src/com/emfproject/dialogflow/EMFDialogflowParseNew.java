@@ -16,12 +16,27 @@ public class EMFDialogflowParseNew {
 	EMFOperationsNew op = null;
 	boolean autoFocus=false;
 	EObject objectCreated = null;
+	boolean objectFocused=false;
 	public boolean modelLoadedCorrectly = true;
+	//START
+	//MODEL CREATED/LOADED
+	//ELEMENT CREATED
+	//ELEMENT FOCUSED
+	
+	public enum UserStatus {
+	    START,
+	    MODEL_CREATED,
+	    MODEL_LOADED,
+	    NODE_CREATED,
+	    ELEMENT_FOCUSED,
+	    EXIT;
+	}
+	UserStatus status;
 
 	public EMFDialogflowParseNew() throws ClassNotFoundException, IllegalAccessException, IllegalArgumentException,
 			InvocationTargetException, NoSuchMethodException, SecurityException {
 		op = new EMFOperationsNew();
-		
+		status=UserStatus.START;
 		// op.loadModelInstance("maquina/testDialog.xmi");
 	}
 
@@ -62,6 +77,14 @@ public class EMFDialogflowParseNew {
 
 		switch (actionCode) {
 
+		case "RNE":
+			
+			System.out.println("[ROOT_ELEMENT]: "+op.rootNodeName);
+			break;
+		case "HELP":
+			
+			EMFOperationsMessages.printHelp(status);
+			break;
 		// validateModel
 		case "VM":
 			// op.validateModel();
@@ -75,14 +98,23 @@ public class EMFDialogflowParseNew {
 		// createModel
 		case "CM":
 			modelName = queryResult.getParameters().getFieldsMap().get("modelName").getStringValue().toLowerCase();
-			System.out.println(modelName);
+			
 			modelLoadedCorrectly = op.createModelInstance("maquina/" + modelName + ".xmi");
-			op.saveModelInstance();
-			// EMFOperationsMessages.printMessage("NEW_MODEL_ADVICE");
+			status=UserStatus.MODEL_CREATED;
+			
 			break;
 		case "LM":
 			modelName = queryResult.getParameters().getFieldsMap().get("modelName").getStringValue().toLowerCase();
 			modelLoadedCorrectly = op.loadModelInstance("maquina/" + modelName + ".xmi");
+			
+			if(op.rootNodeCreated)
+			{
+				status=UserStatus.NODE_CREATED;
+			}
+			else {
+				status=UserStatus.MODEL_LOADED;
+				}
+			
 
 			break;
 
@@ -110,7 +142,12 @@ public class EMFDialogflowParseNew {
 			}
 
 			op.saveModelInstance();
+			if(objectCreated!=null&&element.equals(op.rootNodeName.toLowerCase())) 
+			{
+				status=UserStatus.NODE_CREATED;
+			}
 			if(objectCreated!=null && autoFocus) {op.focusedElement=objectCreated;}
+			
 			
 
 			break;
@@ -148,20 +185,22 @@ public class EMFDialogflowParseNew {
 			value = queryResult.getParameters().getFieldsMap().get("value").getStringValue();
 			order=(int) queryResult.getParameters().getFieldsMap().get("order").getNumberValue();
 			if(order==0) {order=1;}
-			System.out.println("ORDER: "+order);
+			//System.out.println("ORDER: "+order);
+			objectFocused=false;
 			switch (numberOfParameters) {
 			case 3:
 				
-				op.focusSimpleElementOrder(element, order);
+				objectFocused=op.focusSimpleElementOrder(element, order);
 
 				break;
 			case 4:
 				
-				op.focusElement(element, atribute, value);
+				objectFocused=op.focusElement(element, atribute, value);
 
 				break;
 			}
 
+			if(objectFocused) {status=UserStatus.ELEMENT_FOCUSED;}
 			op.saveModelInstance();
 
 			break;
@@ -174,21 +213,21 @@ public class EMFDialogflowParseNew {
 			relationship = queryResult.getParameters().getFieldsMap().get("relationship").getStringValue();
 			order=(int) queryResult.getParameters().getFieldsMap().get("order").getNumberValue();
 			if(order==0) {order=1;}
-
-			System.out.println("ORDER: "+order);
+			objectFocused=false;
+			//System.out.println("ORDER: "+order);
 			switch (numberOfParameters) {
 			case 4:
 				
-				op.focusSimpleElementContentOrderFocusElement(element, relationship, order);
+				objectFocused=op.focusSimpleElementContentOrderFocusElement(element, relationship, order);
 
 				break;
 			case 5:
 				
-				op.focusElementContentFocusedElement(element, atribute, value, relationship);
+				objectFocused=op.focusElementContentFocusedElement(element, atribute, value, relationship);
 
 				break;
 			}
-
+			if(objectFocused) {status=UserStatus.ELEMENT_FOCUSED;}
 			op.saveModelInstance();
 
 			break;

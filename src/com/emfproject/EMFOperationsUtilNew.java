@@ -195,7 +195,9 @@ public class EMFOperationsUtilNew {
 		if (allEObjectsWithName.size() == 1) {
 			return allEObjectsWithName.get(0);
 		} else if (allEObjectsWithName.size() > 1) {
-			System.out.println("HAY MAS DE UN OBJETO IGUAL");
+			
+			EMFOperationsMessages.printMessage("ELEMENT_REPETED");
+			
 		}
 		return null;
 
@@ -230,7 +232,8 @@ public class EMFOperationsUtilNew {
 		if (allEObjectsWithName.size() == 1) {
 			return allEObjectsWithName.get(0);
 		} else if (allEObjectsWithName.size() > 1) {
-			System.out.println("HAY MAS DE UN OBJETO IGUAL");
+			
+			EMFOperationsMessages.printMessage("ELEMENT_REPETED");
 		}
 		return null;
 
@@ -535,7 +538,7 @@ public class EMFOperationsUtilNew {
 
 					EList<EAttribute> eAllAttributes = o.eClass().getEAllAttributes();
 
-					System.out.println(o.eClass().getName());
+					//System.out.println(o.eClass().getName());
 					if (o.eClass().getName().equals(nameNormalized)) {
 
 						for (EAttribute eAttribute : eAllAttributes) {
@@ -632,7 +635,7 @@ public class EMFOperationsUtilNew {
 
 					EObject o = y.next();
 
-					System.out.println(o.eClass().getName());
+					//System.out.println(o.eClass().getName());
 					if (o.eClass().getName().equals(nameNormalized)) {
 						// System.out.println("bep hijo");
 						return o;
@@ -719,7 +722,7 @@ public class EMFOperationsUtilNew {
 		if (allMatchObjects.size() == 1) {
 			return allMatchObjects.get(0);
 		} else if (allMatchObjects.size() > 1) {
-			System.out.println("HAY MAS DE UN OBJETO IGUAL");
+			EMFOperationsMessages.printMessage("ELEMENT_REPETED");
 		}
 		return null;
 
@@ -748,8 +751,8 @@ public class EMFOperationsUtilNew {
 				if (elementosName.contains(reference.getEType().getName())) {
 					elementosName.remove(reference.getEType().getName());
 				}
-				System.out.println(
-						myEclass.getName() + ": " + reference.getName() + ": " + reference.getEType().getName());
+//				System.out.println(
+//						myEclass.getName() + ": " + reference.getName() + ": " + reference.getEType().getName());
 
 			}
 		}

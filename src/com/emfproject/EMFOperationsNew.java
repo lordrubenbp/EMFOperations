@@ -26,8 +26,9 @@ public class EMFOperationsNew {
 	Object factory;
 	String metaModelURI;
 	public Object focusedElement = null;
-	String rootNodeName = null;
-
+	public String rootNodeName = null;
+	public boolean rootNodeCreated=false;
+	
 	public EMFOperationsNew() throws ClassNotFoundException, IllegalAccessException, IllegalArgumentException,
 			InvocationTargetException, NoSuchMethodException, SecurityException {
 
@@ -63,6 +64,19 @@ public class EMFOperationsNew {
 
 	}
 
+	public boolean isRootNodeCreated() 
+	{
+		if (EMFOperationsUtilNew.getSimpleElementOrder(rootNodeName, inst_resource, 1) == null) {
+			
+			return false;
+			
+		}else 
+		{
+			return true;
+		}
+		
+		
+	}
 	public boolean createModelInstance(String path) {
 
 		try {
@@ -106,6 +120,7 @@ public class EMFOperationsNew {
 
 			inst_resource.load(null);
 			EMFOperationsMessages.printMessage("MODEL_LOADED");
+			rootNodeCreated=isRootNodeCreated();
 
 			return true;
 		} catch (IOException e) {
@@ -144,7 +159,20 @@ public class EMFOperationsNew {
 					EMFOperationsMessages.printMessage("ELEMENT_NODE_EXISTS");
 				}
 			} else {
-				EMFOperationsMessages.printMessage("ELEMENT_NOT_NODE");
+				
+				if (EMFOperationsUtilNew.getSimpleElementOrder(rootNodeName, inst_resource, 1) != null) {
+					try {
+
+						Class<?> pfcl = Class.forName(EMFOperationsUtilNew.getMetaModelPackage().getName() + "."
+								+ packageNameNormalized + "Factory");
+						eObj = (EObject) pfcl.getMethod("create" + nameNormalized).invoke(factory);
+						inst_resource.getContents().add(eObj);
+
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+				//EMFOperationsMessages.printMessage("ELEMENT_NOT_NODE");
 			}
 
 		} else {
@@ -172,6 +200,7 @@ public class EMFOperationsNew {
 				if (eAtribute.getName().equals(atributeName)) {
 					atributeExists = true;
 
+					
 					if (eAtribute.isUnique()) {
 						if (EMFOperationsUtilNew.getElement(nameNormalized, atributeName, atributeValue,
 								inst_resource) == null) {
@@ -243,28 +272,32 @@ public class EMFOperationsNew {
 	}
 
 	// CHEQUEADO //CAMBIADO
-	public void focusElement(String nameElement, String atributeName, Object atributeValue) {
+	public boolean focusElement(String nameElement, String atributeName, Object atributeValue) {
 
 		focusedElement = EMFOperationsUtilNew.getElement(nameElement, atributeName, atributeValue, inst_resource);
 		if (focusedElement == null) {
 
 			EMFOperationsMessages.printMessage("ELEMENT_TO_FOCUS_NOT_EXITS");
+			return false;
 
 		} else {
 			EMFOperationsMessages.printMessage("ELEMENT_FOCUSED");
+			return true;
 		}
 
 	}
 
 	// CHEQUEADO
-	public void focusSimpleElementOrder(String nameElement, int order) {
+	public boolean focusSimpleElementOrder(String nameElement, int order) {
 
 		focusedElement = EMFOperationsUtilNew.getSimpleElementOrder(nameElement, inst_resource, order);
 		if (focusedElement == null) {
 
 			EMFOperationsMessages.printMessage("ELEMENT_TO_FOCUS_NOT_EXITS");
+			return false;
 		} else {
 			EMFOperationsMessages.printMessage("ELEMENT_FOCUSED");
+			return true;
 		}
 
 	}
@@ -272,28 +305,32 @@ public class EMFOperationsNew {
 	// FUNCTIONS OVER FOCUSED ELEMENT
 
 	// CHEQUEADO
-	public void focusSimpleElementContentOrderFocusElement(String nameElement, String relationName, int order) {
+	public boolean focusSimpleElementContentOrderFocusElement(String nameElement, String relationName, int order) {
 		focusedElement = EMFOperationsUtilNew.getSimpleElementContentOrderFocusedElement(nameElement,
 				(EObject) focusedElement, relationName, order);
 		if (focusedElement == null) {
 
 			EMFOperationsMessages.printMessage("ELEMENT_TO_FOCUS_NOT_EXITS");
+			return false;
 		} else {
 			EMFOperationsMessages.printMessage("ELEMENT_FOCUSED");
+			return true;
 		}
 
 	}
 
 	// CHEQUEADO
-	public void focusElementContentFocusedElement(String nameElement, String atributeName, String atributeValue,
+	public boolean focusElementContentFocusedElement(String nameElement, String atributeName, String atributeValue,
 			String relationName) {
 		focusedElement = EMFOperationsUtilNew.getElementContentFocusedElement(nameElement, atributeName, atributeValue,
 				(EObject) focusedElement, relationName);
 		if (focusedElement == null) {
 
 			EMFOperationsMessages.printMessage("ELEMENT_TO_FOCUS_NOT_EXITS");
+			return false;
 		} else {
 			EMFOperationsMessages.printMessage("ELEMENT_FOCUSED");
+			return true;
 		}
 	}
 
@@ -398,6 +435,7 @@ public class EMFOperationsNew {
 
 					try {
 						((EObject) focusedElement).eSet(eAtribute, null);
+						EMFOperationsMessages.printMessage("CLEAN_ATRIBUTE");
 
 					} catch (Exception e) {
 						EMFOperationsMessages.printMessage("NEW_ATRIBUTE_VALUE_INCORRECT");
@@ -421,7 +459,9 @@ public class EMFOperationsNew {
 		EObject elementToRemove = (EObject) EMFOperationsUtilNew.getElementReferenceFocusedElement(nameElement,
 				atributeName, atributeValue, (EObject) focusedElement, relationName);
 
-		if (focusedElement != null && elementToRemove != null) {
+		if (focusedElement != null ) {
+			
+			if(elementToRemove != null) {
 
 			EList<EReference> eAllReferences = ((EObject) focusedElement).eClass().getEAllReferences();
 
@@ -437,9 +477,11 @@ public class EMFOperationsNew {
 
 							EList<EObject> list = (EList<EObject>) ((EObject) focusedElement).eGet(eReference);
 							list.remove(elementToRemove);
+							EMFOperationsMessages.printMessage("REMOVE_ELEMENT");
 
 						} else {
 							((EObject) focusedElement).eSet(eReference, null);
+							EMFOperationsMessages.printMessage("REMOVE_ELEMENT");
 						}
 
 					} else {
@@ -455,6 +497,11 @@ public class EMFOperationsNew {
 
 				EMFOperationsMessages.printMessage("NO_REFERENCE");
 			}
+		}else 
+		{
+			
+			EMFOperationsMessages.printMessage("ELEMENT_TO_REMOVE_AS_REFERENCE_NOT_EXITS");
+		}
 		} else {
 			EMFOperationsMessages.printMessage("NOT_FOCUS_ELEMENT");
 		}
@@ -478,7 +525,7 @@ public class EMFOperationsNew {
 					if (!eReference.isContainment()) {
 
 						((EObject) focusedElement).eUnset(eReference);
-						// EMFOperationsMessages.printMessage("REFERENCE_CLEAN");
+						EMFOperationsMessages.printMessage("CLEAN_REFERENCE");
 
 					} else {
 						isContaintReference = true;
@@ -526,9 +573,11 @@ public class EMFOperationsNew {
 
 							EList<EObject> hola = (EList<EObject>) ((EObject) focusedElement).eGet(eReference);
 							hola.add(eObjectToAdd);
+							EMFOperationsMessages.printMessage("ADD_ELEMENT");
 
 						} else {
 							((EObject) focusedElement).eSet(eReference, eObjectToAdd);
+							EMFOperationsMessages.printMessage("ADD_ELEMENT");
 						}
 
 					}
@@ -543,6 +592,9 @@ public class EMFOperationsNew {
 			if (!referenceExists) {
 				EMFOperationsMessages.printMessage("REFERENCE_NOT_EXISTS");
 			}
+		}else 
+		{
+			EMFOperationsMessages.printMessage("ELEMENT_TO_ADD_AS_REFERENCE_NOT_EXITS");
 		}
 
 	}
@@ -679,7 +731,7 @@ public class EMFOperationsNew {
 								atributeValue, inst_resource) == null) {
 							try {
 								((EObject) focusedElement).eSet(eAtribute, atributeValue);
-								// EMFOperationsMessages.printMessage("NEW_ATRIBUTE_ADDED_CORRECTLY");
+								EMFOperationsMessages.printMessage("NEW_ATRIBUTE_ADDED_CORRECTLY");
 							} catch (Exception e) {
 								EMFOperationsMessages.printMessage("NEW_ATRIBUTE_VALUE_INCORRECT");
 

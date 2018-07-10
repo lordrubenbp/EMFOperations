@@ -67,14 +67,14 @@ public class EMFmain {
 			if(checkInternetConection()) 
 			{
 				
-//				if(System.getProperty("user.language").equals("es")) 
-//				{
-//					languageCode="es";
-//				}
-//				else 
-//				{
-//					languageCode="en";
-//				}
+				if(System.getProperty("user.language").equals("es")) 
+				{
+					languageCode="es";
+				}
+				else 
+				{
+					languageCode="en";
+				}
 				parse = new EMFDialogflowParseNew();
 				
 				sessionsClient = SessionsClient.create();
@@ -133,15 +133,16 @@ public class EMFmain {
 		 * "/contexts/_empty_") .setLifespanCount(2).build(); QueryParameters parameters
 		 * = QueryParameters.newBuilder().addContexts(context).build();
 		 */
-		EMFOperationsMessages.printMessage("START");
+//		EMFOperationsMessages.printMessage("START");
 		String text = null;
 		
 		QueryResult queryResult = null;
 		while (true) {
 			try {
-				EMFOperationsMessages.printMessage("QUERY");
+				
 			if (parse.getModelLoadedStatus()) {
-
+				
+				EMFOperationsMessages.printMessage("QUERY");
 				text = sc.nextLine();
 
 			} else {
@@ -169,31 +170,16 @@ public class EMFmain {
 
 				if (queryResult.getAllRequiredParamsPresent()) {
 					
-					System.out.println(queryResult.getAction());
+					System.out.println("[ACTION CODE]: "+queryResult.getAction());
 //			    printQueryResultInfo(queryResult);
 					parse.parseCode(queryResult, queryResult.getAction());
 				}
 
-				// if(parse.getModelLoadedStatus()) {
-				// System.out.println("entre");
-				// for (int i = 0; i < queryResult.getOutputContextsList().size(); i++) {
-				// context = queryResult.getOutputContextsList().get(i);
-
-				// }
-				// }else
-				// {
-
-				// context = Context.newBuilder()
-				// .setName("projects/emf-api/agent/sessions/" + sessionId +
-				// "/contexts/model_load")
-				// .setLifespanCount(0).build();
-				// }
 			} catch (Exception e) {
 				
-				e.printStackTrace();
-				if(text==null){
+				//e.printStackTrace();
+				if(text.equals("")){
 				EMFOperationsMessages.printMessage("ERROR_NO_TEXT");
-
 				}
 			}
 		}
