@@ -546,6 +546,22 @@ public class EMFOperationsNew {
 
 	}
 
+	public  String getElementNameFromRelation(String relationName) 
+	{
+		EList<EReference> eAllReferences = ((EObject) focusedElement).eClass().getEAllReferences();
+		for (EReference eReference : eAllReferences) {
+
+			if (eReference.getName().equals(relationName)) {
+
+				
+				return eReference.getEType().getName().toLowerCase();
+
+			}
+
+		}
+		return "";
+	}
+	
 	// CHEQUEADA
 	public void addElementAsReferenceFocusElement(String nameElement, String atributeName, Object atributeValue,
 			String relationName) {
@@ -568,7 +584,7 @@ public class EMFOperationsNew {
 
 					if (!eReference.isContainment()) {
 						isContaintReference = false;
-						// PONER RESTRICCIONES PARA NO SUPERAR EL NUMERO DE INSERCCIONES
+						//  TODO PONER RESTRICCIONES PARA NO SUPERAR EL NUMERO DE INSERCCIONES
 						if (eReference.getUpperBound() > 1 || eReference.getUpperBound() == -1) {
 
 							EList<EObject> hola = (EList<EObject>) ((EObject) focusedElement).eGet(eReference);

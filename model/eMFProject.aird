@@ -18,12 +18,12 @@
     <semanticResources>Statemachine.xmi</semanticResources>
     <semanticResources>../maquina/juanito.xmi</semanticResources>
     <semanticResources>../maquina/prueba_dialog.xmi</semanticResources>
-    <semanticResources>../maquina/prueba_dia.xmi</semanticResources>
     <semanticResources>../maquina/statemachine_test_final.xmi</semanticResources>
-    <semanticResources>../maquina/prueba_message.xmi</semanticResources>
     <semanticResources>../maquina/pepelu.xmi</semanticResources>
     <semanticResources>../maquina/juan.xmi</semanticResources>
     <semanticResources>../maquina/josemiguel.xmi</semanticResources>
+    <semanticResources>../maquina/jsjsjs.xmi</semanticResources>
+    <semanticResources>../maquina/gugu.xmi</semanticResources>
     <ownedViews xmi:type="viewpoint:DView" xmi:id="_k3I3kDjxEeiRdLn5REsVUA">
       <viewpoint xmi:type="description:Viewpoint" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']"/>
       <ownedRepresentationDescriptors xmi:type="viewpoint:DRepresentationDescriptor" xmi:id="_gqXEsEZQEeicGrCl-WGssg" name="eMFProject class diagram" repPath="#_gqNTsEZQEeicGrCl-WGssg">

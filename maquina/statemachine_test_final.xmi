@@ -11,7 +11,7 @@
   <commands name="unlockdoor"/>
   <states name="active">
     <transitions event="//@events.3" state="//@states.2"/>
-    <transitions event="//@events.1" state="//@states.1"/>
+    <transitions event="//@events.1" state="//@states.4"/>
   </states>
   <states name="waitingforlight">
     <transitions event="//@events.3" state="//@states.3"/>
@@ -25,4 +25,6 @@
   <states name="idle" actions="//@commands.3 //@commands.1">
     <transitions event="//@events.0" state="//@states.0"/>
   </states>
+  <states name="prueba"/>
+  <states/>
 </eMFProject:Statemachine>

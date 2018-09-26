@@ -164,7 +164,12 @@ public class EMFDialogflowParseNew {
 			switch (numberOfParameters) {
 			case 3:
 				
-				objectCreated=op.createSimpleElementContentFocusElement(element, relationship);
+				if(!element.equals("")) {
+					objectCreated=op.createSimpleElementContentFocusElement(element, relationship);
+				}else 
+				{
+					objectCreated=op.createElementContentFocusElement(op.getElementNameFromRelation(relationship), atribute, value, relationship);
+				}
 
 				break;
 			case 4:
@@ -296,6 +301,9 @@ public class EMFDialogflowParseNew {
 				op.addElementAsReferenceFocusElement(element, atribute, value, relationship);
 
 				break;
+			case 3:
+				op.addElementAsReferenceFocusElement(op.getElementNameFromRelation(relationship), atribute, value, relationship);
+				break;
 			
 			}
 
@@ -316,6 +324,9 @@ public class EMFDialogflowParseNew {
 				
 				op.removeElementAsReferenceFocusElement(element, atribute, value, relationship);
 
+				break;
+			case 3:
+				op.removeElementAsReferenceFocusElement(op.getElementNameFromRelation(relationship), atribute, value, relationship);
 				break;
 			
 			}
