@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 // [END dialogflow_import_libraries]
+import java.util.UUID;
 
 /**
  * DialogFlow API Entity sample.
@@ -113,13 +114,25 @@ public class EntityManagement {
   // [END dialogflow_delete_entity]
 
   // [START run_application]
-  public static void main(String[] args) throws Exception {
+  public static void main(String[] argsw) throws Exception {
     String method = "";
     String entityTypeId = "";
     String entityValue = "";
     List<String> synonyms = new ArrayList<>();
     String projectId = "";
 
+    String args[]= new String[8];
+    args[0]="create";
+    args[1]="cuarto";
+    args[2]="--projectId";
+    args[3]="emf-api-v2";
+    args[4]="--entityTypeId";
+    args[5]="aa5aff20-d7f8-4294-be5a-3b9f2621568f";
+    args[6]="--synonyms";
+    args[7]="habitacion";
+      
+
+    
     try {
       method = args[0];
       String command = args[1];

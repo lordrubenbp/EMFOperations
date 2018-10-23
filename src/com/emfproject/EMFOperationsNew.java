@@ -121,7 +121,7 @@ public class EMFOperationsNew {
 			inst_resource.load(null);
 			EMFOperationsMessages.printMessage("MODEL_LOADED");
 			rootNodeCreated=isRootNodeCreated();
-			EMFOperationsUtil.showAllMetaModelData();
+			
 
 			return true;
 		} catch (IOException e) {

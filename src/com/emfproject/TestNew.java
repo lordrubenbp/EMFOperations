@@ -1,9 +1,12 @@
 package com.emfproject;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.HashSet;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
+
+import com.emfproject.dialogflow.EMFMetalModelToDialogflow;
 
 public class TestNew {
 	
@@ -87,6 +90,14 @@ public class TestNew {
 ////		op.removeElementAsReferenceFocusElement("command", "name", "unlockPanel", "actions");
 //		
 		EMFOperationsUtilNew.extractMetaModelData();
+//		HashSet<String> collecion= new HashSet<String>();
+//		collecion.add("testeo");
+//		try {
+//			EMFMetalModelToDialogflow.loadMetadataModelCollection(collecion, "attribute");
+//		} catch (Exception e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 		
 //		op.focusSimpleElementContentOrderFocusElement("transition", "transitions", 1);
 //		op.getPropertiesFocusElement();

@@ -18,6 +18,8 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 
+import com.emfproject.dialogflow.EMFMetalModelToDialogflow;
+
 public class EMFOperationsUtilNew {
 
 	public static String normalizedString(String word) {
@@ -204,13 +206,24 @@ public class EMFOperationsUtilNew {
 
 	}
 
+	private static String splitCamelCase(String s) {
+		   return s.replaceAll(
+				      String.format("%s|%s|%s",
+				         "(?<=[A-Z])(?=[A-Z][a-z])",
+				         "(?<=[^A-Z])(?=[A-Z])",
+				         "(?<=[A-Za-z])(?=[^A-Za-z])"
+				      ),
+				      " "
+				   );
+				}
 	public static void extractMetaModelData() 
 	{
 		TreeIterator<EObject> allEObjects = getMetaModelPackage().eAllContents();
 		
 		HashSet<String> attributes= new HashSet<String>();
-		HashSet<String> objects= new HashSet<String>();
+		HashSet<String> elements= new HashSet<String>();
 		HashSet<String> relationships= new HashSet<String>();
+		
 		
        while (allEObjects.hasNext()) {
 			
@@ -218,20 +231,22 @@ public class EMFOperationsUtilNew {
 			
 			if(o.eClass().getName().equals("EClass"))
 					{
-				objects.add(((EClass) o).getName());
+				
+				elements.add(splitCamelCase(((EClass) o).getName()).toLowerCase());
 					//System.out.println(((EClass) o).getName());
 					}
 			else if(o.eClass().getName().equals("EAttribute")) 
 			{
 				{
-					attributes.add(((EAttribute) o).getName());
+					attributes.add(splitCamelCase(((EAttribute) o).getName()).toLowerCase());
 					//System.out.println(((EAttribute) o).getName());
 					}
 			}
 			else if(o.eClass().getName().equals("EReference")) 
 			{
 				{
-					relationships.add(((EReference) o).getName());
+					
+					relationships.add(splitCamelCase(((EReference) o).getName()).toLowerCase());
 					//System.out.println(((EReference) o).getName());
 					}
 			}
@@ -240,9 +255,18 @@ public class EMFOperationsUtilNew {
 			
 
 		}
-       System.out.print(objects);
-       System.out.print(attributes);
-       System.out.print(relationships);
+//       System.out.print(objects);
+//       System.out.print(attributes);
+//       System.out.print(relationships);
+       
+       try {
+		EMFMetalModelToDialogflow.loadMetadataModelCollection(attributes, "attribute");
+		EMFMetalModelToDialogflow.loadMetadataModelCollection(elements, "element");
+		EMFMetalModelToDialogflow.loadMetadataModelCollection(relationships, "relationship");
+	} catch (Exception e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
 	}
 	public static Object getElement(String nameElement, String atributeName, Object atributeValue, Resource resource) {
 

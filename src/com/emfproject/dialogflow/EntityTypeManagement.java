@@ -27,6 +27,7 @@ import com.google.cloud.dialogflow.v2.ProjectAgentName;
 import java.util.ArrayList;
 import java.util.List;
 // [END dialogflow_import_libraries]
+import java.util.UUID;
 
 /**
  * DialogFlow API EntityType sample.
@@ -118,13 +119,23 @@ public class EntityTypeManagement {
   }
 
   // [START run_application]
-  public static void main(String[] args) throws Exception {
+  public static void main(String[] argsw) throws Exception {
     String method = "";
     String entityTypeId = "";
     String displayName = "";
     String kind = "KIND_MAP";
     String projectId = "";
 
+    String args[]= new String[4];
+    args[0]="create";
+    args[1]="cuarto";
+    args[2]="--projectId";
+    args[3]="emf-api-v2";
+//    args[4]="--entityTypeId";
+//    args[5]=UUID.randomUUID().toString();
+//    args[6]="--synonyms";
+//    args[7]="habitacion";
+    
     try {
       method = args[0];
       String command;
