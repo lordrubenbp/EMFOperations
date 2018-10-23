@@ -3,6 +3,7 @@ package com.emfproject;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.TreeIterator;
@@ -203,6 +204,46 @@ public class EMFOperationsUtilNew {
 
 	}
 
+	public static void extractMetaModelData() 
+	{
+		TreeIterator<EObject> allEObjects = getMetaModelPackage().eAllContents();
+		
+		HashSet<String> attributes= new HashSet<String>();
+		HashSet<String> objects= new HashSet<String>();
+		HashSet<String> relationships= new HashSet<String>();
+		
+       while (allEObjects.hasNext()) {
+			
+			EObject o = allEObjects.next();
+			
+			if(o.eClass().getName().equals("EClass"))
+					{
+				objects.add(((EClass) o).getName());
+					//System.out.println(((EClass) o).getName());
+					}
+			else if(o.eClass().getName().equals("EAttribute")) 
+			{
+				{
+					attributes.add(((EAttribute) o).getName());
+					//System.out.println(((EAttribute) o).getName());
+					}
+			}
+			else if(o.eClass().getName().equals("EReference")) 
+			{
+				{
+					relationships.add(((EReference) o).getName());
+					//System.out.println(((EReference) o).getName());
+					}
+			}
+			//System.out.println(o.eClass().getName());
+			//System.out.println(o);
+			
+
+		}
+       System.out.print(objects);
+       System.out.print(attributes);
+       System.out.print(relationships);
+	}
 	public static Object getElement(String nameElement, String atributeName, Object atributeValue, Resource resource) {
 
 		String nameNormalized = EMFOperationsUtil.normalizedString(nameElement);

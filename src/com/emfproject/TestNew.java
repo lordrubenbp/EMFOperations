@@ -86,9 +86,8 @@ public class TestNew {
 ////		op.addElementAsReferenceFocusElement("command", "name", "lockDoor", "actions");
 ////		op.removeElementAsReferenceFocusElement("command", "name", "unlockPanel", "actions");
 //		
-		op.loadModelInstance("maquina/statemachine.xmi");
-		op.focusElement("state", "name", "active");
-		System.out.println(op.getElementNameFromRelation("transitions"));
+		EMFOperationsUtilNew.extractMetaModelData();
+		
 //		op.focusSimpleElementContentOrderFocusElement("transition", "transitions", 1);
 //		op.getPropertiesFocusElement();
 

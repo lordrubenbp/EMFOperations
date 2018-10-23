@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import org.eclipse.emf.common.util.EList;
@@ -478,6 +479,46 @@ public class EMFOperationsUtil {
 
 	}
 
+	public static void newVersionMetaModelData() 
+	{
+		TreeIterator<EObject> allEObjects = getMetaModelPackage().eAllContents();
+		
+		HashSet<String> attributes= new HashSet<String>();
+		HashSet<String> objects= new HashSet<String>();
+		HashSet<String> relationships= new HashSet<String>();
+		
+       while (allEObjects.hasNext()) {
+			
+			EObject o = allEObjects.next();
+			
+			if(o.eClass().getName().equals("EClass"))
+					{
+				objects.add(((EClass) o).getName());
+					//System.out.println(((EClass) o).getName());
+					}
+			else if(o.eClass().getName().equals("EAttribute")) 
+			{
+				{
+					attributes.add(((EAttribute) o).getName());
+					//System.out.println(((EAttribute) o).getName());
+					}
+			}
+			else if(o.eClass().getName().equals("EReference")) 
+			{
+				{
+					relationships.add(((EReference) o).getName());
+					//System.out.println(((EReference) o).getName());
+					}
+			}
+			//System.out.println(o.eClass().getName());
+			//System.out.println(o);
+			
+
+		}
+       System.out.print(objects);
+       System.out.print(attributes);
+       System.out.print(relationships);
+	}
 	public static void showAllMetaModelData() {
 
 		ArrayList<String> elementosName=new ArrayList<String>();
